@@ -1,0 +1,49 @@
+.timeline_container {
+    background-color: #2b2f37;
+    position: relative;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+}
+
+.timeline_cursor {
+    z-index: 10;
+    width: 1px;
+    height: 70px;
+    background-color: red;
+    opacity: 0.4;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+}
+
+.ruler_outer{
+    z-index: 2;
+    display: flex;
+    cursor: move;
+    overflow-x: auto;
+    position: absolute;
+    bottom: 0;
+    // transition: 0.25;
+    // -webkit-transition: 1s;
+}
+
+.rulerblock_container {
+    height: 70px;
+    width: 249px; // 1second = 50px
+    background-color: #1a1c21;
+    border-left: 1px solid #363943;
+    border-right: none;
+    position: relative;
+}
+
+.ruler_line {
+    height: 20px;
+    width: 1px;
+    background-color: #363943;
+    position: absolute;
+    top: 0;
+}

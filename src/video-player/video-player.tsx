@@ -1,13 +1,8 @@
-import { useVideoSubStore } from "@/store";
 import React from "react";
-import { useVideo } from "./use-video";
 import styles from "./video-player.module.scss";
+import { useVideo } from "./use-video";
+import { useVideoSubStore } from "@/store";
 
-export const VideoPlayer = () => {
-  const { data } = useVideo();
-  if (data?.videoUrl == null) return null;
-  return <VideoPlayerContent videoUrl={data.videoUrl} />;
-};
 const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
   const { setCurrentTime, setEndTime } = useVideoSubStore();
   const ref = React.useRef<HTMLVideoElement>(null);
@@ -32,6 +27,7 @@ const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
       el.removeEventListener("endTime", updateEndTime);
     };
   }, [setCurrentTime, setEndTime]);
+
   return (
     <div className={styles.player_container}>
       <div className={styles.video_container}>
@@ -42,4 +38,12 @@ const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
       <div className={styles.subtitle_container}>here is subtitle</div>
     </div>
   );
+};
+
+export const VideoPlayer = () => {
+  const { data } = useVideo();
+
+  if (data?.videoUrl == null) return null;
+
+  return <VideoPlayerContent videoUrl={data.videoUrl} />;
 };

@@ -5,7 +5,11 @@ function App() {
   return (
     <div className="App">
       <main>
-        <VideoPlayer />
+        <div style={{ width: "50%" }}>
+          <VideoPlayer />
+        </div>
+
+        <div style={{ color: "red" }}>My new change</div>
       </main>
     </div>
   );

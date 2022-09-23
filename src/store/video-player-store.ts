@@ -8,7 +8,7 @@ interface IStore {
   setEndTime: (miliseconds: number) => void;
 }
 
-export const useVideoSubStore = create<IStore>((set) => ({
+export const useVideoPlayerStore = create<IStore>((set) => ({
   currentTime: 0,
   endTime: undefined,
   setEndTime: (miliseconds: number) => {

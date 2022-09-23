@@ -1,10 +1,10 @@
 import React from "react";
-import { useVideoSubStore } from "./store";
+import { useVideoPlayerStore } from "./store";
 import { Timeline } from "./timestamp/timeline";
 import { VideoPlayer } from "./video-player/video-player";
 
 function App() {
-  const { currentTime } = useVideoSubStore();
+  const { currentTime } = useVideoPlayerStore();
   return (
     <div className="App">
       <main>

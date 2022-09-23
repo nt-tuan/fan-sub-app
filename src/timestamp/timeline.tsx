@@ -1,6 +1,6 @@
 import React from "react";
 import Konva from "konva";
-import { useVideoSubStore } from "@/store";
+import { useVideoPlayerStore } from "@/store";
 import styles from "./timeline.module.scss";
 
 interface Size {
@@ -52,7 +52,7 @@ export const Timeline = ({
   width: number;
   height: number;
 }) => {
-  const { currentTime, endTime } = useVideoSubStore();
+  const { currentTime, endTime } = useVideoPlayerStore();
 
   const milestone = React.useRef<{ group: Konva.Group; stage: Konva.Stage }>();
   React.useEffect(() => {

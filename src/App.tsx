@@ -1,24 +1,20 @@
-import "antd/dist/antd.css";
-
+import React from "react";
 import { Tabs } from "antd";
+import { useVideoStore } from "./store";
 import TimebarScreen from "./timebar-screen/timebar-screen";
-
-// import { useVideoSubStore } from "./store";
-// import { Timeline } from "./timestamp/timeline";
-// import { VideoPlayer } from "./video-player/video-player";
+import { Translator } from "./translator/translator";
 
 function App() {
+  const { loadData } = useVideoStore();
+  React.useEffect(() => {
+    loadData();
+  }, [loadData]);
   return (
     <div className="App">
       <main>
-        {/* <div style={{ width: "50%" }}>
-          <VideoPlayer />
-        </div>
-        <div style={{ color: "red" }}>My time: {currentTime}</div>
-        <Timeline width={500} height={200} /> */}
-        <Tabs centered defaultActiveKey="2">
+        <Tabs centered defaultActiveKey="1">
           <Tabs.TabPane tab="Translator" key="1">
-            Translator
+            <Translator />
           </Tabs.TabPane>
           <Tabs.TabPane tab="Timebar" key="2">
             <TimebarScreen />

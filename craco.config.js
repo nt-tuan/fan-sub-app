@@ -1,4 +1,5 @@
 const CracoAlias = require("craco-alias");
+const CracoAntDesignPlugin = require("craco-antd");
 
 module.exports = {
   plugins: [
@@ -14,5 +15,6 @@ module.exports = {
         tsConfigPath: "./tsconfig.paths.json",
       },
     },
+    { plugin: CracoAntDesignPlugin },
   ],
 };

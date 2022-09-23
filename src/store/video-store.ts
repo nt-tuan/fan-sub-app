@@ -9,11 +9,13 @@ interface SubtitleBlock {
 interface IState {
   isLoading: boolean;
   videoUrl?: string;
-  subtitles?: Record<string, SubtitleBlock[]>;
+  defaultSubtitles?: SubtitleBlock[];
+  subtitles?: SubtitleBlock[];
 }
 
 interface IStore extends IState {
   loadData: () => Promise<void>;
+  changeSubtitleText: (index: number, value: string) => void;
 }
 
 const readTime = (str: string) => {
@@ -36,7 +38,7 @@ const getSubtitles = async (path: string) => {
   const subtitles: SubtitleBlock[] = [];
   while (index < lines.length) {
     const lineStr = lines[index];
-    if (!isNaN(parseInt(lineStr))) {
+    if (isNaN(parseInt(lineStr))) {
       index++;
       continue;
     }
@@ -52,7 +54,7 @@ const getSubtitles = async (path: string) => {
     } catch {}
     index += 3;
   }
-  return { en: subtitles };
+  return subtitles;
 };
 
 export const useVideoStore = create<IStore>((set) => ({
@@ -65,10 +67,28 @@ export const useVideoStore = create<IStore>((set) => ({
         videoUrl: string;
         subtitleUrl: string;
       } = await response.json();
-      const subtitles = await getSubtitles(data.subtitleUrl);
-      set({ videoUrl: data.videoUrl, subtitles });
+      const defaultSubtitles = await getSubtitles(data.subtitleUrl);
+      const currentSubtitles = defaultSubtitles.map((item) => ({
+        ...item,
+        text: "",
+      }));
+      set({
+        videoUrl: data.videoUrl,
+        subtitles: currentSubtitles,
+        defaultSubtitles: defaultSubtitles,
+      });
     } finally {
       set({ isLoading: false });
     }
+  },
+  changeSubtitleText: (index: number, value: string) => {
+    set((state) => {
+      if (state.subtitles == null) {
+        return {};
+      }
+      const newSubtitles = [...state.subtitles];
+      newSubtitles[index].text = value;
+      return { subtitles: newSubtitles };
+    });
   },
 }));

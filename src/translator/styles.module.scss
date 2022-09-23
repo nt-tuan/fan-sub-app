@@ -1,0 +1,25 @@
+.subtitle_container {
+  padding: 24px;
+  height: 100%;
+}
+
+.subtitle_time_segment {
+  padding-bottom: 0px;
+}
+
+.subtitle_segment_preference {
+  padding-bottom: 8px;
+}
+
+.subtitle_segment_actions {
+  display: flex;
+  flex-direction: row;
+  justify-items: flex-end;
+  justify-content: flex-end;
+  align-items: center;
+
+  a {
+    color: black;
+    font-size: 12px;
+  }
+}

@@ -2,6 +2,7 @@ import React from "react";
 import Konva from "konva";
 import { useVideoPlayerStore } from "@/store";
 import styles from "./timeline.module.scss";
+import { formatTime } from "@/utils/format";
 
 interface Size {
   width: number;
@@ -9,8 +10,6 @@ interface Size {
 }
 
 const MILISECOND_TO_PIXEL = 50 / 1000;
-const zeroPad = (num: number, places: number) =>
-  String(num).padStart(places, "0");
 const getMilestoneGroup = (endTime: number, size: Size) => {
   const group = new Konva.Group({
     ...size,
@@ -29,10 +28,7 @@ const getMilestoneGroup = (endTime: number, size: Size) => {
       const text = new Konva.Text({
         x: x - 13,
         y: 15,
-        text: `${zeroPad(Math.floor(i / 1000 / 60), 2)}:${zeroPad(
-          Math.floor(i / 1000) % 60,
-          2
-        )}`,
+        text: formatTime(i),
         align: "center",
         fontSize: 12,
       });

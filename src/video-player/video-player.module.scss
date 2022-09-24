@@ -1,23 +1,41 @@
 .player_container {
-  height: 450px;
+  height: 100%;
   position: relative;
   .video_container {
+    background-color: #000;
     height: 100%;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .video {
+      min-width: 100%;
+      min-height: 100%;
+      height: auto;
+      width: auto;
+    }
   }
 
   .subtitle_container {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 40;
-  }
-  .video {
-    height: auto;
-    width: 100%;
+    bottom: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .subtitle_text {
+      padding: 14px 16px 18px;
+      background-color: #000;
+      opacity: 0.75;
+      width: 80%;
+      color: #fff;
+      text-align: center;
+      font-size: 25px;
+    }
   }
 }

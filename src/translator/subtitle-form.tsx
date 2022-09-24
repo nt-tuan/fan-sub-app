@@ -5,29 +5,28 @@ import { FixedSizeList } from "react-window";
 import { SubtitleBlock } from "./subtitle-block";
 import styles from "./styles.module.scss";
 
+const ItemRenderer = ({
+  index,
+  style,
+}: {
+  index: number;
+  style: React.CSSProperties;
+}) => <SubtitleBlock key={index} style={style} index={index} />;
 export const SubtitleForm = () => {
-  const subtitles = useVideoStore((state) => state.subtitles);
-  const defaultSubtitles = useVideoStore((state) => state.defaultSubtitles);
-  if (subtitles == null || defaultSubtitles == null) return <Spin />;
+  const nSubtitleSegments = useVideoStore((state) => state.nSubtitleSegments);
+
+  if (nSubtitleSegments == null) return <Spin />;
   return (
     <div className={styles.subtitle_container}>
       <AutoSizer>
         {({ width, height }) => (
           <FixedSizeList
             height={height}
-            itemCount={subtitles.length}
+            itemCount={nSubtitleSegments}
             itemSize={150}
             width={width}
           >
-            {({ index, style }) => (
-              <SubtitleBlock
-                key={`${subtitles[index].from}_${subtitles[index].to}`}
-                style={style}
-                index={index}
-                defaultSubtitle={defaultSubtitles[index]}
-                subtitle={subtitles[index]}
-              />
-            )}
+            {ItemRenderer}
           </FixedSizeList>
         )}
       </AutoSizer>

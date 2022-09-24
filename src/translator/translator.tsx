@@ -1,10 +1,11 @@
 import { Col, Row } from "antd";
 import { VideoPlayer } from "@/video-player/video-player";
 import { SubtitleForm } from "./subtitle-form";
+import styles from "./styles.module.scss";
 
 export const Translator = () => {
   return (
-    <Row>
+    <Row className={styles.video_translator_container}>
       <Col span={16}>
         <VideoPlayer />
       </Col>

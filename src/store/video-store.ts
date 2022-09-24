@@ -9,6 +9,7 @@ interface SubtitleBlock {
 interface IState {
   isLoading: boolean;
   videoUrl?: string;
+  nSubtitleSegments?: number;
   defaultSubtitles?: SubtitleBlock[];
   subtitles?: SubtitleBlock[];
 }
@@ -16,6 +17,7 @@ interface IState {
 interface IStore extends IState {
   loadData: () => Promise<void>;
   changeSubtitleText: (index: number, value: string) => void;
+  getCurrentSubtitle: (currentTime: number) => SubtitleBlock | null;
 }
 
 const readTime = (str: string) => {
@@ -57,7 +59,7 @@ const getSubtitles = async (path: string) => {
   return subtitles;
 };
 
-export const useVideoStore = create<IStore>((set) => ({
+export const useVideoStore = create<IStore>((set, get) => ({
   isLoading: false,
   loadData: async () => {
     try {
@@ -76,6 +78,7 @@ export const useVideoStore = create<IStore>((set) => ({
         videoUrl: data.videoUrl,
         subtitles: currentSubtitles,
         defaultSubtitles: defaultSubtitles,
+        nSubtitleSegments: currentSubtitles.length,
       });
     } finally {
       set({ isLoading: false });
@@ -90,5 +93,18 @@ export const useVideoStore = create<IStore>((set) => ({
       newSubtitles[index].text = value;
       return { subtitles: newSubtitles };
     });
+  },
+  getCurrentSubtitle: (currentTime: number) => {
+    const subtitles = get().subtitles;
+    if (subtitles == null) return null;
+    for (const sub of subtitles) {
+      if (sub.from <= currentTime && currentTime < sub.to) {
+        return sub;
+      }
+      if (currentTime < sub.to) {
+        return null;
+      }
+    }
+    return null;
   },
 }));

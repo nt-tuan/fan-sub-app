@@ -15,3 +15,7 @@ code {
 main {
   border: 1px solid red;
 }
+
+#root, .app, body, main {
+  height: 100%;
+}

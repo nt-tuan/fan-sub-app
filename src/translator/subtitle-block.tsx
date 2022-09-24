@@ -1,48 +1,73 @@
 import React from "react";
-import { useVideoStore } from "@/store";
+import { useVideoPlayerStore, useVideoStore } from "@/store";
 import { formatTime } from "@/utils/format";
-import { Divider, Input } from "antd";
+import { Button, Divider, Input } from "antd";
 import styles from "./styles.module.scss";
+import debounce from "lodash.debounce";
+import classnames from "classnames";
 
-interface ISubtitle {
-  from: number;
-  to: number;
-  text?: string;
-}
 export const SubtitleBlock = ({
   index,
-  subtitle,
-  defaultSubtitle,
   style,
 }: {
   index: number;
-  subtitle: ISubtitle;
-  defaultSubtitle: ISubtitle;
   style?: React.CSSProperties;
 }) => {
-  const [localValue, setLocalValue] = React.useState(subtitle.text);
-  const { changeSubtitleText } = useVideoStore();
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setLocalValue(e.target.value);
-    changeSubtitleText(index, e.target.value);
+  const currentTime = useVideoPlayerStore((state) => state.currentTime);
+  const getCurrentSubtitle = useVideoStore((state) => state.getCurrentSubtitle);
+  const subtitle = useVideoStore((state) => state.subtitles?.[index]);
+  const changeSubtitleText = useVideoStore((state) => state.changeSubtitleText);
+  const goTo = useVideoPlayerStore((state) => state.goTo);
+  const defaultSubtitle = useVideoStore(
+    (state) => state.defaultSubtitles?.[index]
+  );
+
+  const debounceChangeSubtitle = React.useMemo(
+    () => debounce(changeSubtitleText, 300),
+    [changeSubtitleText]
+  );
+
+  const handleChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      debounceChangeSubtitle(index, e.target.value);
+    },
+    [index, debounceChangeSubtitle]
+  );
+  const handleFocus = () => {
+    if (!subtitle) return;
+    goTo(subtitle.from);
   };
+  const currentSubtitle = getCurrentSubtitle(currentTime);
+  if (subtitle == null || defaultSubtitle == null)
+    return <div style={style} className={styles.segment_container}></div>;
   return (
-    <div style={style}>
-      <div className={styles.subtitle_time_segment}>
+    <div style={style} className={styles.segment_container}>
+      <div
+        className={classnames(styles.subtitle_time_segment, {
+          [styles.subtitle_time_segment_active]:
+            currentSubtitle?.from === subtitle.from,
+        })}
+      >
         {formatTime(subtitle.from)} - {formatTime(subtitle.to)}
       </div>
       <div className={styles.subtitle_segment_preference}>
         {defaultSubtitle.text && "There is no reference subtitle."}
       </div>
       <Input.TextArea
+        onFocus={handleFocus}
+        className={styles.subtitle_input}
         defaultValue={subtitle.text}
         onChange={handleChange}
         autoSize={{ minRows: 3, maxRows: 3 }}
       />
       <div className={styles.subtitle_segment_actions}>
-        <a href="#">Cancel</a>
+        <Button className={styles.subtitle_segment_action_item} type="text">
+          Cancel
+        </Button>
         <Divider type="vertical" />
-        <a href="#">Save</a>
+        <Button className={styles.subtitle_segment_action_item} type="text">
+          Save
+        </Button>
       </div>
     </div>
   );

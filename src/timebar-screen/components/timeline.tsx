@@ -1,73 +1,62 @@
 import { useRef, useState } from "react";
+import { useVideoPlayerStore, useVideoStore } from "@/store";
 
+import Ruler from "./ruler";
+import Subtitles from "./subtitles/subtitles";
 import styles from "./timeline.module.scss";
-import useDebounce from "../../hooks/useDebounce";
 import useEventListener from "../../hooks/useEventListener";
 
-const RuleBlock5s = () => {
-  return (
-    <div className={styles.ruleblock_container}>
-      <div className={styles.rule_line} style={{ left: "50px" }} />
-      <div className={styles.rule_line} style={{ left: "100px" }} />
-      <div className={styles.rule_line} style={{ left: "150px" }} />
-      <div className={styles.rule_line} style={{ left: "200px" }} />
-    </div>
-  );
-};
+// import { getTimeLabel } from "../../utils/time-utils";
+
+// dump data
+const VIDEO_TIME = 1 * 60 * 1000 + 13000; // 5 minutes in miliseconds
 
 const Timeline = () => {
-  const ruleOuterRef = useRef<any>(null);
-  const [barPosision, setBarPosition] = useState(500);
+  const rulerOuterRef = useRef<any>(null);
+  const [rulerPosision, setRulerPosision] = useState(0);
   const [startPosision, setStartPosition] = useState({
     mousePosition: 0,
     elPosition: 0,
   });
-  // const debouncedBarPosision = useDebounce<number>(barPosision, 0);
+
+  // const { subtitles } = useVideoStore();
+
+  // Event
 
   const onMouseDown = (event: any) => {
     setStartPosition({
       mousePosition: event.clientX,
-      elPosition: barPosision,
+      elPosition: rulerPosision,
     });
   };
 
-  const onMouseUp = (event: any) => {
-    setStartPosition({ mousePosition: 0, elPosition: 0 });
-  };
+  const onMouseUp = () => setStartPosition({ mousePosition: 0, elPosition: 0 });
 
   const onMouseMove = (event: any) => {
     if (startPosision.mousePosition !== 0) {
-      console.log(
-        " onMouseMove mousePosition:",
-        startPosision.mousePosition,
+      setRulerPosision(
         startPosision.elPosition + (event.clientX - startPosision.mousePosition)
-      );
-      setBarPosition(
-        startPosision.elPosition + (event.clientX - startPosision.mousePosition)
-        // ruleOuterRef.current.offsetLeft +
-        //   (event.clientX - startPosision.mousePosition)
       );
     }
   };
 
-  useEventListener("mousedown", onMouseDown, ruleOuterRef);
-  useEventListener("mouseup", onMouseUp, ruleOuterRef);
+  useEventListener("mousedown", onMouseDown, rulerOuterRef);
+  useEventListener("mouseup", onMouseUp, rulerOuterRef);
   useEventListener("mousemove", onMouseMove);
 
   return (
     <div className={styles.timeline_container}>
       <div className={styles.timeline_cursor} />
       <div
-        ref={ruleOuterRef}
-        className={styles.rule_outer}
+        className={styles.timeline}
         style={{
-          left: barPosision,
-          // transform: `translateX(${debouncedBarPosision}px)`;
+          left: rulerPosision,
         }}
       >
-        <RuleBlock5s />
-        <RuleBlock5s />
-        <RuleBlock5s />
+        <Subtitles />
+        <div ref={rulerOuterRef} className={styles.ruler_outer}>
+          <Ruler duration={VIDEO_TIME} />
+        </div>
       </div>
     </div>
   );

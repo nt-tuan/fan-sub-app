@@ -1,6 +1,6 @@
 import create from "zustand";
 
-interface SubtitleBlock {
+export interface SubtitleBlock {
   from: number;
   to: number;
   text?: string;

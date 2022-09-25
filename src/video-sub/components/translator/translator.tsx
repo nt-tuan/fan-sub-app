@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import { VideoPlayer } from "@/video-player/video-player";
+import VideoPlayer from "@/video-sub/components/video-player/video-player";
 import { SubtitleForm } from "./subtitle-form";
 import styles from "./styles.module.scss";
 

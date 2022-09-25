@@ -4,12 +4,9 @@ import React from "react";
 import styles from "./video-player.module.scss";
 import { VideoSubtitleDisplayer } from "./video-subtitle-displayer";
 
-export const VideoPlayer = () => {
-  const { isLoading, loadData, videoUrl } = useVideoStore();
-  React.useEffect(() => {
-    loadData();
-  }, [loadData]);
-  if (isLoading || videoUrl == null) return null;
+const VideoPlayer = () => {
+  const { isLoading, videoUrl, subtitleData } = useVideoStore();
+  if (isLoading || videoUrl == null || subtitleData == null) return null;
   return <VideoPlayerContent videoUrl={videoUrl} />;
 };
 const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
@@ -45,3 +42,4 @@ const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
     </div>
   );
 };
+export default VideoPlayer;

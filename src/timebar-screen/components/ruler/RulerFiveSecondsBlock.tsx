@@ -16,7 +16,7 @@ const RulerFiveSecondsBlock = ({ index }: { index: number }) => {
       <label className={styles.rulerblock_time_label}>{timeLabel}</label>
       <div
         className={styles.rulerblock_container}
-        style={{ width: UNIT * UNIT_SPACE[5] - 1 }}
+        style={{ width: UNIT * UNIT_SPACE[5] }}
       >
         <div
           className={styles.ruler_line}

@@ -3,6 +3,7 @@ import { SubtitleBlock, useVideoStore } from "../store";
 
 import React from "react";
 import { SubtitleStore } from "@/store/subtitle-store";
+import TimebarScreen from "@/timebar-screen/timebar-screen";
 import { Translator } from "./components/translator/translator";
 import VideoSubProvider from "./components/provider";
 import styles from "./styles.module.scss";
@@ -19,7 +20,7 @@ const VideoSubTranslator = ({
       <Tabs
         className={styles.video_sub_container}
         centered
-        defaultActiveKey="1"
+        defaultActiveKey="2"
         items={[
           {
             key: "1",
@@ -29,8 +30,7 @@ const VideoSubTranslator = ({
           {
             key: "2",
             label: "Timebar",
-            // children: <TimebarScreen />,
-            children: null,
+            children: <TimebarScreen />,
           },
         ]}
       ></Tabs>

@@ -10,49 +10,58 @@ import useEventListener from "../../../hooks/useEventListener";
 interface ExtendMountProps {
   id?: string;
   parentRef?: any;
-  onMouseMove: (distance: number, event: any) => void;
+  onMouseMove: (event: any) => void;
 }
 const ExtendMount = ({ onMouseMove, parentRef }: ExtendMountProps) => {
   const ref = useRef<any>(null);
 
-  //   const [startPos, setStartPos] = useState<number | null>(0);
-
-  //   const onMouseUp = () => setStartPos(null);
+  const [startPos, setStartPos] = useState<number | null>(0);
 
   const onMove = useCallback(
-    (startPos: number) => (event: any) => {
+    (event: any) => {
       event.stopPropagation();
-
-      const newPos = event.clientX as number;
-      //   console.log("startPos,  newPos:", startPos, newPos);
-      if (startPos) onMouseMove(newPos - startPos, event);
+      event.preventDefault();
+      onMouseMove(event);
     },
     [onMouseMove]
   );
 
+  const onMouseUp = useCallback(
+    (event: any) => {
+      // setStartPos(null);
+
+      event.stopPropagation();
+      event.preventDefault();
+      console.log("onMouseUp :");
+      document.removeEventListener("mousemove", onMove);
+    },
+    [onMove]
+  );
+
   const onMouseDown = (event: any) => {
     event.stopPropagation();
+
     const xPos = event.clientX as number;
-    // setStartPos(event.clientX);
+    setStartPos(xPos);
 
-    const element = parentRef.current;
-    const onM = onMove(xPos);
-    element.addEventListener("mousemove", onM);
-  };
-
-  const onMouseUp = () => {
-    parentRef?.current?.removeEventListener("mousemove", onMove);
+    document.addEventListener("mousemove", onMove, false);
+    // document.addEventListener("mouseup", onMouseUp);
   };
 
   useEventListener("mousedown", onMouseDown, ref);
-  useEventListener("mouseup", onMouseUp, ref);
-  //   useEventListener("mousemove", onMove);
+  useEventListener("mouseup", onMouseUp);
+  // useEventListener("mousemove", onMove);
 
-  //   useEffect(() => {
-  //     return () => {
-  //       ref?.current?.removeEventListener("mousemove", onMove);
-  //     };
-  //   }, [ref, onMove]);
+  // useEffect(() => {
+  //   const onMouseUp = () => {
+  //     setStartPos(null);
+  //     document.removeEventListener("mousemove", onMove);
+  //   };
+  //   document.addEventListener("mouseup", onMouseUp);
+  //   return () => {
+  //     document.removeEventListener("mouseup", onMouseUp);
+  //   };
+  // }, [onMove]);
 
   return <div ref={ref} className={styles.subtitle_block_mock} />;
 };

@@ -53,32 +53,10 @@ const SubtitleBlock = ({
   const onResizeLeftSize = (event: any) => {
     // event.stopPropagation();
   };
-  const onResizeRightSize = (extendedWidth: number, event: any) => {
-    // console.log(
-    //   "🚀onResizeRightSize ~ distance",
-    //   subBlockRef.current.offsetTop,
-    //   subBlockRef.current.getBoundingClientRect()
-    // );
-    //c1
-    // const currentWidth = subBlockRef.current.offsetWidth;
-    // const newWidth = currentWidth + extendedWidth;
-    // const extendTime = getMilisecondFromPx(extendedWidth);
-    // setSub((c) => ({ ...c, to: c.to + newTime }));
-
-    //c2
-
+  const onResizeRightSize = (event: any) => {
     const leftPosX = subBlockRef.current.getBoundingClientRect().x;
     const newWidth = (event.clientX as number) - leftPosX;
     const newTime = getMilisecondFromPx(newWidth);
-    console.log(" :", subBlockRef.current.getBoundingClientRect());
-    console.log(" event.clientX:", event.clientX);
-    console.log(
-      "🚀 ~  leftPosX, newWidth, newTime, from",
-      leftPosX,
-      newWidth,
-      newTime,
-      from
-    );
 
     setSub((c) => ({ ...c, to: c.from + newTime }));
   };

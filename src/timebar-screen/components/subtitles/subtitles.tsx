@@ -1,8 +1,12 @@
 import React, { useRef, useState } from "react";
 
-import SubtitleBlock from "./subtitles-block";
+import SubtitleBlock from "./subtitle-block";
 import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
 import styles from "./subtitles.module.scss";
+
+export interface NewSubtitleBlockInterface extends SubtitleBlockInterface {
+  id: number | string;
+}
 
 const subtitles: SubtitleBlockInterface[] = [
   {
@@ -18,19 +22,21 @@ const subtitles: SubtitleBlockInterface[] = [
 ];
 
 const Subtitles = () => {
-  const [slectedSubId, setSlectedSubId] = useState<number | null>(null);
+  const [slectedSubId, setSlectedSubId] = useState<number | undefined>(
+    undefined
+  );
 
-  const onBlockSelected = (id: number) => {
+  const onBlockSelected = (id: number | undefined) => {
     setSlectedSubId(id);
-    // setSlectedSubId((curId) => (curId === id ? null : id));
   };
 
   return (
     <div className={styles.subtitles_container}>
       {subtitles.map((subtitle, index) => (
         <SubtitleBlock
-          key={subtitle.from}
-          prviousSub={subtitles[index - 1]}
+          key={`${index}-key`}
+          index={index}
+          previousSub={subtitles[index - 1]}
           nextSub={subtitles[index + 1]}
           subtitle={subtitle}
           onSelected={onBlockSelected}

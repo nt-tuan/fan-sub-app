@@ -1,48 +1,18 @@
-import { useRef, useState } from "react";
-import { useVideoPlayerStore, useVideoStore } from "@/store";
+import { useCallback, useRef, useState } from "react";
 
 import Ruler from "./ruler";
 import Subtitles from "./subtitles/subtitles";
 import styles from "./timeline.module.scss";
-import useEventListener from "../../hooks/useEventListener";
+import useMouseDragging from "../../hooks/useMouseDragging";
 
-// import { getTimeLabel } from "../../utils/time-utils";
+// import { useVideoPlayerStore, useVideoStore } from "@/store";
 
 // dump data
 const VIDEO_TIME = 1 * 60 * 1000 + 13000; // 5 minutes in miliseconds
 
 const Timeline = () => {
   const rulerOuterRef = useRef<any>(null);
-  const [rulerPosision, setRulerPosision] = useState(0);
-  const [startPosision, setStartPosition] = useState({
-    mousePosition: 0,
-    elPosition: 0,
-  });
-
-  // const { subtitles } = useVideoStore();
-
-  // Event
-
-  const onMouseDown = (event: any) => {
-    setStartPosition({
-      mousePosition: event.clientX,
-      elPosition: rulerPosision,
-    });
-  };
-
-  const onMouseUp = () => setStartPosition({ mousePosition: 0, elPosition: 0 });
-
-  const onMouseMove = (event: any) => {
-    if (startPosision.mousePosition !== 0) {
-      setRulerPosision(
-        startPosision.elPosition + (event.clientX - startPosision.mousePosition)
-      );
-    }
-  };
-
-  useEventListener("mousedown", onMouseDown, rulerOuterRef);
-  useEventListener("mouseup", onMouseUp, rulerOuterRef);
-  useEventListener("mousemove", onMouseMove);
+  const rulerPosition = useMouseDragging(0, rulerOuterRef);
 
   return (
     <div className={styles.timeline_container}>
@@ -50,7 +20,7 @@ const Timeline = () => {
       <div
         className={styles.timeline}
         style={{
-          left: rulerPosision,
+          left: rulerPosition,
         }}
       >
         <Subtitles />

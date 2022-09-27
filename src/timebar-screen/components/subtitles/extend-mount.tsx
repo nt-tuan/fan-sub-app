@@ -1,26 +1,22 @@
-// import { PIXEL_PER_SECOND, UNIT } from "../ruler/ruler.enum";
-
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useRef } from "react";
 
 import styles from "./subtitles.module.scss";
 import useEventListener from "../../../hooks/useEventListener";
 
-// import classNames from "classnames";
-
 interface ExtendMountProps {
-  id?: string;
-  parentRef?: any;
+  id?: string | number;
   onMouseMove: (event: any) => void;
 }
-const ExtendMount = ({ onMouseMove, parentRef }: ExtendMountProps) => {
-  const ref = useRef<any>(null);
 
-  const [startPos, setStartPos] = useState<number | null>(0);
+const ExtendMount = ({ id, onMouseMove }: ExtendMountProps) => {
+  const ref = useRef<any>(null);
+  const dragging = useRef<boolean>(false);
 
   const onMove = useCallback(
     (event: any) => {
       event.stopPropagation();
       event.preventDefault();
+      if (!dragging.current) return;
       onMouseMove(event);
     },
     [onMouseMove]
@@ -28,42 +24,34 @@ const ExtendMount = ({ onMouseMove, parentRef }: ExtendMountProps) => {
 
   const onMouseUp = useCallback(
     (event: any) => {
-      // setStartPos(null);
-
       event.stopPropagation();
       event.preventDefault();
-      console.log("onMouseUp :");
-      document.removeEventListener("mousemove", onMove);
+      dragging.current = false;
+      document.removeEventListener("mousemove", onMove, false);
+      document?.removeEventListener("mouseup", onMouseUp);
     },
     [onMove]
   );
 
-  const onMouseDown = (event: any) => {
-    event.stopPropagation();
-
-    const xPos = event.clientX as number;
-    setStartPos(xPos);
-
-    document.addEventListener("mousemove", onMove, false);
-    // document.addEventListener("mouseup", onMouseUp);
-  };
+  const onMouseDown = useCallback(
+    (event: any) => {
+      event.stopPropagation();
+      dragging.current = true;
+      document.addEventListener("mousemove", onMove);
+      document.addEventListener("mouseup", onMouseUp);
+    },
+    [onMove, onMouseUp]
+  );
 
   useEventListener("mousedown", onMouseDown, ref);
-  useEventListener("mouseup", onMouseUp);
-  // useEventListener("mousemove", onMove);
 
-  // useEffect(() => {
-  //   const onMouseUp = () => {
-  //     setStartPos(null);
-  //     document.removeEventListener("mousemove", onMove);
-  //   };
-  //   document.addEventListener("mouseup", onMouseUp);
-  //   return () => {
-  //     document.removeEventListener("mouseup", onMouseUp);
-  //   };
-  // }, [onMove]);
-
-  return <div ref={ref} className={styles.subtitle_block_mock} />;
+  return (
+    <div
+      id={`${id}-extend-mount`}
+      ref={ref}
+      className={styles.subtitle_block_mock}
+    />
+  );
 };
 
 export default React.memo(ExtendMount);

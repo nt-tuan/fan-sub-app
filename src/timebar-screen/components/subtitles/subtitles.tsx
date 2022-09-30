@@ -1,44 +1,23 @@
-import React, { useRef, useState } from "react";
-
-import SubtitleBlock from "./subtitles-block";
-import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
+import SubtitleBlock from "./subtitle-block";
 import styles from "./subtitles.module.scss";
-
-const subtitles: SubtitleBlockInterface[] = [
-  {
-    from: 2000,
-    to: 5000,
-    text: "",
-  },
-  {
-    from: 7000,
-    to: 8000,
-    text: "",
-  },
-];
+import { useMemo } from "react";
+import { useSubtitleEditor } from "@/video-sub/components/provider";
 
 const Subtitles = () => {
-  const [slectedSubId, setSlectedSubId] = useState<number | null>(null);
+  const { editingSubtitles = [] } = useSubtitleEditor();
 
-  const onBlockSelected = (id: number) => {
-    setSlectedSubId(id);
-    // setSlectedSubId((curId) => (curId === id ? null : id));
-  };
-
+  // const nSubtitleSegments = useMemo(
+  //   () => editingSubtitles?.length,
+  //   [editingSubtitles]
+  // );
+  const nSubtitleSegments = 10;
   return (
     <div className={styles.subtitles_container}>
-      {subtitles.map((subtitle, index) => (
-        <SubtitleBlock
-          key={subtitle.from}
-          prviousSub={subtitles[index - 1]}
-          nextSub={subtitles[index + 1]}
-          subtitle={subtitle}
-          onSelected={onBlockSelected}
-          selectedId={slectedSubId}
-        />
+      {Array.from(Array(nSubtitleSegments).keys()).map((index) => (
+        <SubtitleBlock key={`${index}-key`} index={index} />
       ))}
     </div>
   );
 };
 
-export default React.memo(Subtitles);
+export default Subtitles;

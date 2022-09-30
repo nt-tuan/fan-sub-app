@@ -1,8 +1,8 @@
 import { useVideoPlayerStore, useVideoStore } from "@/store";
-import React from "react";
 
-import styles from "./video-player.module.scss";
+import React from "react";
 import { VideoSubtitleDisplayer } from "./video-subtitle-displayer";
+import styles from "./video-player.module.scss";
 
 const VideoPlayer = () => {
   const { isLoading, videoUrl, subtitleData } = useVideoStore();

@@ -1,61 +1,63 @@
-import { useRef, useState } from "react";
-import { useVideoPlayerStore, useVideoStore } from "@/store";
+import { getMilisecondFromPx, getPxFromMilisecond } from "@/utils/time-utils";
+import { useCallback, useMemo, useRef } from "react";
 
 import Ruler from "./ruler";
 import Subtitles from "./subtitles/subtitles";
 import styles from "./timeline.module.scss";
-import useEventListener from "../../hooks/useEventListener";
+import useMouseDragging from "../../hooks/useMouseDragging";
+import { useVideoPlayerStore } from "@/store";
 
-// import { getTimeLabel } from "../../utils/time-utils";
-
-// dump data
-const VIDEO_TIME = 1 * 60 * 1000 + 13000; // 5 minutes in miliseconds
+// import { useVideoPlayerStore, useVideoStore } from "@/store";
 
 const Timeline = () => {
   const rulerOuterRef = useRef<any>(null);
-  const [rulerPosision, setRulerPosision] = useState(0);
-  const [startPosision, setStartPosition] = useState({
-    mousePosition: 0,
-    elPosition: 0,
+  const timelineContainerRef = useRef<any>(null);
+
+  const { currentTime, endTime, goTo } = useVideoPlayerStore();
+
+  const containerWidth =
+    timelineContainerRef?.current?.getBoundingClientRect()?.width || 0;
+
+  const onMouseUpCallBack = useCallback(
+    (mouseClientX) => {
+      goTo(
+        getMilisecondFromPx(
+          mouseClientX - rulerOuterRef?.current?.getBoundingClientRect()?.left
+        )
+      );
+    },
+    [goTo]
+  );
+
+  const { draggingPosition: rulerOffsetByDrag, isDragging } = useMouseDragging({
+    initPosition: 0,
+    elementRef: rulerOuterRef,
+    onMouseUpCallBack,
   });
 
-  // const { subtitles } = useVideoStore();
+  const rulerOffsetByVideoTime = useMemo(() => {
+    const currentTimePosition = getPxFromMilisecond(currentTime);
+    return containerWidth / 2 - currentTimePosition - 1;
+  }, [currentTime, containerWidth]);
 
-  // Event
-
-  const onMouseDown = (event: any) => {
-    setStartPosition({
-      mousePosition: event.clientX,
-      elPosition: rulerPosision,
-    });
-  };
-
-  const onMouseUp = () => setStartPosition({ mousePosition: 0, elPosition: 0 });
-
-  const onMouseMove = (event: any) => {
-    if (startPosision.mousePosition !== 0) {
-      setRulerPosision(
-        startPosision.elPosition + (event.clientX - startPosision.mousePosition)
-      );
-    }
-  };
-
-  useEventListener("mousedown", onMouseDown, rulerOuterRef);
-  useEventListener("mouseup", onMouseUp, rulerOuterRef);
-  useEventListener("mousemove", onMouseMove);
+  const rulerOffset = isDragging ? rulerOffsetByDrag : rulerOffsetByVideoTime;
 
   return (
-    <div className={styles.timeline_container}>
+    <div ref={timelineContainerRef} className={styles.timeline_container}>
       <div className={styles.timeline_cursor} />
       <div
         className={styles.timeline}
         style={{
-          left: rulerPosision,
+          left: rulerOffset,
+          ...(!isDragging && {
+            transition: "all 0.25s",
+            // "-webkit-transition": "all 0.25s",
+          }),
         }}
       >
-        <Subtitles />
+        {/* <Subtitles /> */}
         <div ref={rulerOuterRef} className={styles.ruler_outer}>
-          <Ruler duration={VIDEO_TIME} />
+          {endTime && <Ruler duration={endTime} />}
         </div>
       </div>
     </div>

@@ -23,7 +23,13 @@ const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
 
   React.useEffect(() => {
     setVideoRef(ref);
-  }, [setVideoRef]);
+    const timer = setInterval(() => {
+      setCurrentTime((ref.current?.currentTime ?? 0) * 1000);
+    }, 40);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [setCurrentTime, setVideoRef]);
 
   return (
     <div className={styles.player_container}>

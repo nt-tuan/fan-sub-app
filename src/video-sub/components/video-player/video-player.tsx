@@ -23,18 +23,26 @@ const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
 
   React.useEffect(() => {
     setVideoRef(ref);
-    const timer = setInterval(() => {
-      setCurrentTime((ref.current?.currentTime ?? 0) * 1000);
+  }, [setVideoRef]);
+
+  const refUpdateTimer = React.useRef<NodeJS.Timer>();
+  const handlePlay = () => {
+    refUpdateTimer.current = setInterval(() => {
+      const currentTimeInMiliseconds = (ref.current?.currentTime ?? 0) * 1000;
+      console.log("Interval", currentTimeInMiliseconds);
+      setCurrentTime(currentTimeInMiliseconds);
     }, 40);
-    return () => {
-      clearInterval(timer);
-    };
-  }, [setCurrentTime, setVideoRef]);
+  };
+  const handlePause = () => {
+    clearInterval(refUpdateTimer.current);
+  };
 
   return (
     <div className={styles.player_container}>
       <div className={styles.video_container}>
         <video
+          onPlay={handlePlay}
+          onPause={handlePause}
           onCanPlay={handleCanPlay}
           onTimeUpdate={handleTimeUpdate}
           ref={ref}

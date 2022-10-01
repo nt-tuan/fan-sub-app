@@ -42,7 +42,7 @@ const Timeline = () => {
   }, [currentTime, halfOfContainer]);
 
   const rulerOffset = isDragging ? rulerOffsetByDrag : rulerOffsetByVideoTime;
-  console.log(rulerOffset);
+
   return (
     <div ref={timelineContainerRef} className={styles.timeline_container}>
       <div className={styles.timeline_cursor} />
@@ -51,10 +51,6 @@ const Timeline = () => {
         ref={subtitleParent}
         style={{
           left: rulerOffset,
-          ...(!isDragging && {
-            transition: "all 0.4s",
-            // "-webkit-transition": "all 0.25s",
-          }),
         }}
       >
         <Subtitles getParentElement={() => subtitleParent.current} />

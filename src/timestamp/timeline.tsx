@@ -51,6 +51,7 @@ export const Timeline = ({
   const { currentTime, endTime } = useVideoPlayerStore();
 
   const milestone = React.useRef<{ group: Konva.Group; stage: Konva.Stage }>();
+
   React.useEffect(() => {
     if (endTime == null) return;
     const stage = new Konva.Stage({
@@ -68,8 +69,7 @@ export const Timeline = ({
 
   React.useEffect(() => {
     if (milestone.current?.group == null) return;
-    const nextX = -currentTime * MILISECOND_TO_PIXEL;
-    console.log(nextX);
+    // const nextX = -currentTime * MILISECOND_TO_PIXEL;
     milestone.current?.group.setAttrs({
       x: -currentTime * MILISECOND_TO_PIXEL,
       y: 0,

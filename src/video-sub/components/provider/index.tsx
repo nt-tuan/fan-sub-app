@@ -25,6 +25,7 @@ const VideoSubProvider = ({
   subtitleStore: SubtitleStore;
 }) => {
   const store = createSubtitleEditorStore(subtitleData, subtitleStore);
+
   return (
     <SubtitleEditorContext.Provider value={{ store }}>
       {children}

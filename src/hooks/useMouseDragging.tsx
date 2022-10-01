@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import useEventListener from "./useEventListener";
 
@@ -48,7 +48,6 @@ const useMouseDragging = ({
       event.stopPropagation();
       event.preventDefault();
       dragging.current = false;
-      console.log("mouse up");
       if (onMouseUpCallBack && previousMouseClientX.current !== event.clientX)
         onMouseUpCallBack();
       previousMouseClientX.current = 0;

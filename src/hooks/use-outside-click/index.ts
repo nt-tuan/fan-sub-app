@@ -1,6 +1,6 @@
 import React from "react";
 
-const events = ["lostpointercapture", "mousedown", "touchstart"];
+const events = ["lostpointercapture", "click", "touchstart"];
 const useOutsideClick = (
   ref: React.RefObject<HTMLElement>,
   callback: () => void

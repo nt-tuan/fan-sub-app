@@ -1,7 +1,7 @@
-import React, { useCallback, useRef } from "react";
+import React, { useRef } from "react";
+import useDrag from "@/hooks/useDrag";
 
 import styles from "./subtitles.module.scss";
-import useEventListener from "../../../hooks/useEventListener";
 
 interface ExtendMountProps {
   id?: string | number;
@@ -14,47 +14,12 @@ const ExtendMount = ({
   onMouseMove,
   onMouseUpCallback,
 }: ExtendMountProps) => {
-  const ref = useRef<any>(null);
-  const dragging = useRef<boolean>(false);
-  const previousMouseClientX = useRef<number>(0);
-
-  const onMove = useCallback(
-    (event: any) => {
-      event.stopPropagation();
-      event.preventDefault();
-      if (!dragging.current) return;
-      const mouseClientX = event.clientX;
-      const distance = mouseClientX - previousMouseClientX.current;
-      onMouseMove(distance, event);
-    },
-    [onMouseMove]
-  );
-
-  const onMouseUp = useCallback(
-    (event: any) => {
-      event.stopPropagation();
-      event.preventDefault();
-      dragging.current = false;
-      document.removeEventListener("mousemove", onMove, false);
-      document?.removeEventListener("mouseup", onMouseUp);
-      onMouseUpCallback();
-    },
-    [onMove, onMouseUpCallback]
-  );
-
-  const onMouseDown = useCallback(
-    (event: any) => {
-      event.stopPropagation();
-      dragging.current = true;
-      previousMouseClientX.current = event.clientX;
-      document.addEventListener("mousemove", onMove);
-      document.addEventListener("mouseup", onMouseUp);
-    },
-    [onMove, onMouseUp]
-  );
-
-  useEventListener("mousedown", onMouseDown, ref);
-
+  const ref = useRef<HTMLDivElement>(null);
+  useDrag(ref, {
+    id,
+    onMouseMove,
+    onMouseUpCallback,
+  });
   return (
     <div
       id={`${id}-extend-mount`}

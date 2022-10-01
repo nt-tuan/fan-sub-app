@@ -1,15 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
+import classNames from "classnames";
 
+import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
+import { getMilisecondFromPx } from "@/utils/time-utils";
+import useOutsideClick from "@/hooks/use-outside-click";
+import styles from "./subtitles.module.scss";
 import ExtendMount from "./extend-mount";
 import SubtitleOverlay from "./subtitle-overlay";
 import { PIXEL_PER_SECOND } from "../ruler/ruler.enum";
-import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
-import classNames from "classnames";
-import { getMilisecondFromPx } from "@/utils/time-utils";
-import styles from "./subtitles.module.scss";
-// import useMouseDragging from "@/hooks/useMouseDragging";
-import useOutsideClick from "@/hooks/use-outside-click";
-// import { useTimelineEditor } from "../../provider/useTimelineEditor";
 
 export interface ResizeEventInterface {
   distancePixel: number;
@@ -76,24 +74,8 @@ const SubtitleBlock = ({
     });
   };
 
-  const onMouseDownCallBack = () => {
-    // setSubtitleEditting(subtitle);
-    // isEdittingRef.current = true;
-  };
-
   const onMouseUp = () => {
     onMouseUpCallback();
-    // const leftXPosition = subtitleRef?.current.getBoundingClientRect().left;
-    // const rightXPosition = subtitleRef?.current.getBoundingClientRect().right;
-    // const newFrom = getMilisecondFromPx(leftXPosition);
-    // const newTo = getMilisecondFromPx(rightXPosition);
-    // console.log(
-    //   "🚀 ~ file: subtitle-block.tsx ~ line 69 ~ onMouseUpCallBack ~ leftXPosition",
-    //   leftXPosition
-    // );
-    // const subWidth = subtitleRef?.current.getBoundingClientRect().width;
-    // setSubtitleEditting({ ...subtitleEditting, from: newFrom, to: newTo });
-    // isEdittingRef.current = false;
   };
 
   const onFocusSubtitle = () => {
@@ -101,23 +83,7 @@ const SubtitleBlock = ({
   };
 
   const subWidth = ((to - from) / 1000) * PIXEL_PER_SECOND;
-  const subLeftDefault = (from / 1000) * PIXEL_PER_SECOND;
-
-  // const onMouseMouseMoveValidator = useCallback((newPos) => {
-  //   if (newPos >= 0) return true;
-  //   return false;
-  // }, []);
-
-  // const { draggingPosition: subLeftByDrag, isDragging } = useMouseDragging({
-  //   initPosition: subLeftDefault,
-  //   elementRef: subtitleRef,
-  //   onMouseDownCallBack,
-  //   onMouseUpCallBack,
-  //   onMouseMouseMoveValidator,
-  //   getParentElement,
-  // });
-
-  // const subLeft = isDragging ? subLeftByDrag : subLeftDefault;
+  const subLeft = (from / 1000) * PIXEL_PER_SECOND;
 
   return (
     <div
@@ -126,30 +92,30 @@ const SubtitleBlock = ({
       })}
       style={{
         width: subWidth,
-        left: subLeftDefault,
+        left: subLeft,
       }}
       onClick={onFocusSubtitle}
       ref={subtitleRef}
     >
       {isActive && (
         <ExtendMount
-          id={index}
+          id={`${index}left`}
           onMouseMove={onResizeLeftSide}
-          onMouseUpCallback={onMouseUpCallback}
+          onMouseUpCallback={onMouseUp}
         />
       )}
       {isActive && (
         <ExtendMount
-          id={index}
+          id={`${index}right`}
           onMouseMove={onResizeRightSide}
-          onMouseUpCallback={onMouseUpCallback}
+          onMouseUpCallback={onMouseUp}
         />
       )}
       {isActive && (
         <SubtitleOverlay
-          id={index}
+          id="overlay"
           onMouseMove={onMoveSub}
-          onMouseUpCallback={onMouseUpCallback}
+          onMouseUpCallback={onMouseUp}
         />
       )}
     </div>

@@ -8,7 +8,7 @@ import useMouseDragging from "../../hooks/useMouseDragging";
 import { useVideoPlayerStore } from "@/store";
 import { useDebounce } from "usehooks-ts";
 
-const Timeline = () => {
+const Timeline = (props: any) => {
   const rulerOuterRef = useRef<any>(null);
   const timelineContainerRef = useRef<any>(null);
   const subtitleParent = useRef<HTMLDivElement>(null);
@@ -53,7 +53,7 @@ const Timeline = () => {
           left: rulerOffset,
         }}
       >
-        <Subtitles getParentElement={() => subtitleParent.current} />
+        <Subtitles {...props} />
         <div ref={rulerOuterRef} className={styles.ruler_outer}>
           {endTime && <Ruler duration={endTime} />}
         </div>

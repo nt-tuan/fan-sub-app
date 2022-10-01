@@ -33,7 +33,6 @@ export const useVideoPlayerStore = create(
       if (videoRef?.current == null) {
         return;
       }
-      console.log("  goto:");
       videoRef.current.currentTime = miliseconds / 1000;
       set({ currentTime: miliseconds });
     },

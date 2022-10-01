@@ -29,7 +29,6 @@ const VideoPlayerContent = ({ videoUrl }: { videoUrl: string }) => {
   const handlePlay = () => {
     refUpdateTimer.current = setInterval(() => {
       const currentTimeInMiliseconds = (ref.current?.currentTime ?? 0) * 1000;
-      console.log("Interval", currentTimeInMiliseconds);
       setCurrentTime(currentTimeInMiliseconds);
     }, 40);
   };

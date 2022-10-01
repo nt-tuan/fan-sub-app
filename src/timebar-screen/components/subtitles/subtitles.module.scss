@@ -23,21 +23,20 @@
   box-sizing: border-box;
 }
 
+.subtitle_block_overplay {
+  height: 70px;
+  width: inherit;
+  background-color: #13db62;
+  opacity: 0.3;
+  position: absolute;
+  top: -10;
+  left: 0;
+  z-index: 4;
+}
+
 .subtitle_block_selected {
   border-top: 1px solid #13db62;
   border-bottom: 1px solid #13db62;
-}
-
-.subtitle_block_selected::after {
-  content: "";
-  background-color: #13db62;
-  opacity: 0.3;
-  height: 70px;
-  width: inherit;
-  position: absolute;
-  z-index: -1;
-  top: -10;
-  left: 0;
 }
 
 .subtitle_block_mock {

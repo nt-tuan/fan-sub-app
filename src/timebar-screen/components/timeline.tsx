@@ -6,56 +6,58 @@ import Subtitles from "./subtitles/subtitles";
 import styles from "./timeline.module.scss";
 import useMouseDragging from "../../hooks/useMouseDragging";
 import { useVideoPlayerStore } from "@/store";
-
-// import { useVideoPlayerStore, useVideoStore } from "@/store";
+import { useDebounce } from "usehooks-ts";
 
 const Timeline = () => {
   const rulerOuterRef = useRef<any>(null);
   const timelineContainerRef = useRef<any>(null);
+  const subtitleParent = useRef<HTMLDivElement>(null);
 
   const { currentTime, endTime, goTo } = useVideoPlayerStore();
 
   const containerWidth =
     timelineContainerRef?.current?.getBoundingClientRect()?.width || 0;
-
-  const onMouseUpCallBack = useCallback(
-    (mouseClientX) => {
-      goTo(
-        getMilisecondFromPx(
-          mouseClientX - rulerOuterRef?.current?.getBoundingClientRect()?.left
-        )
-      );
-    },
-    [goTo]
+  const containerWidthDebounce = useDebounce(containerWidth, 1000);
+  const halfOfContainer = useMemo(
+    () => containerWidthDebounce / 2,
+    [containerWidthDebounce]
   );
+
+  // update video current time onDraggEnd
+  const onMouseUpCallBack = useCallback(() => {
+    const currentLeft = rulerOuterRef?.current?.getBoundingClientRect()?.left;
+    goTo(getMilisecondFromPx(halfOfContainer + -1 * currentLeft));
+  }, [goTo, halfOfContainer]);
 
   const { draggingPosition: rulerOffsetByDrag, isDragging } = useMouseDragging({
     initPosition: 0,
     elementRef: rulerOuterRef,
     onMouseUpCallBack,
+    getParentElement: () => subtitleParent.current,
   });
 
   const rulerOffsetByVideoTime = useMemo(() => {
     const currentTimePosition = getPxFromMilisecond(currentTime);
-    return containerWidth / 2 - currentTimePosition - 1;
-  }, [currentTime, containerWidth]);
+    return halfOfContainer - currentTimePosition - 1;
+  }, [currentTime, halfOfContainer]);
 
   const rulerOffset = isDragging ? rulerOffsetByDrag : rulerOffsetByVideoTime;
-
+  console.log(rulerOffset);
   return (
     <div ref={timelineContainerRef} className={styles.timeline_container}>
       <div className={styles.timeline_cursor} />
       <div
         className={styles.timeline}
+        ref={subtitleParent}
         style={{
           left: rulerOffset,
           ...(!isDragging && {
-            transition: "all 0.25s",
+            transition: "all 0.4s",
             // "-webkit-transition": "all 0.25s",
           }),
         }}
       >
-        {/* <Subtitles /> */}
+        <Subtitles getParentElement={() => subtitleParent.current} />
         <div ref={rulerOuterRef} className={styles.ruler_outer}>
           {endTime && <Ruler duration={endTime} />}
         </div>

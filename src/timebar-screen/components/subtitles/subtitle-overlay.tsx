@@ -3,17 +3,17 @@ import React, { useCallback, useRef } from "react";
 import styles from "./subtitles.module.scss";
 import useEventListener from "../../../hooks/useEventListener";
 
-interface ExtendMountProps {
+interface SubtitleOverlayProps {
   id?: string | number;
   onMouseMove: (distance: number, event: any) => void;
   onMouseUpCallback: () => void;
 }
 
-const ExtendMount = ({
+const SubtitleOverlay = ({
   id,
   onMouseMove,
   onMouseUpCallback,
-}: ExtendMountProps) => {
+}: SubtitleOverlayProps) => {
   const ref = useRef<any>(null);
   const dragging = useRef<boolean>(false);
   const previousMouseClientX = useRef<number>(0);
@@ -57,11 +57,11 @@ const ExtendMount = ({
 
   return (
     <div
-      id={`${id}-extend-mount`}
+      id={`${id}-sub-overlay`}
       ref={ref}
-      className={styles.subtitle_block_mock}
+      className={styles.subtitle_block_overplay}
     />
   );
 };
 
-export default React.memo(ExtendMount);
+export default React.memo(SubtitleOverlay);

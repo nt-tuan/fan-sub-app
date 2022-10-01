@@ -1,88 +1,123 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import ExtendMount from "./extend-mount";
+import SubtitleOverlay from "./subtitle-overlay";
 import { PIXEL_PER_SECOND } from "../ruler/ruler.enum";
 import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
 import classNames from "classnames";
 import { getMilisecondFromPx } from "@/utils/time-utils";
 import styles from "./subtitles.module.scss";
-import useMouseDragging from "@/hooks/useMouseDragging";
+// import useMouseDragging from "@/hooks/useMouseDragging";
 import useOutsideClick from "@/hooks/use-outside-click";
-import { useTimelineEditor } from "../../provider";
+// import { useTimelineEditor } from "../../provider/useTimelineEditor";
 
-// const subtitles: SubtitleBlockInterface[] = [
-//   {
-//     from: 2000,
-//     to: 5000,
-//     text: "",
-//   },
-//   {
-//     from: 7000,
-//     to: 8000,
-//     text: "",
-//   },
-//   {
-//     from: 9000,
-//     to: 10000,
-//     text: "",
-//   },
-// ];
+export interface ResizeEventInterface {
+  distancePixel: number;
+  distanceDuration: number;
+  subElement: any;
+}
 
 interface SubtitleBlockProps {
   index: number;
+  isActive: boolean;
+  subtitle: SubtitleBlockInterface | undefined;
+  getParentElement?: () => HTMLElement | null;
+  onFocus: (index: number | null) => void;
+  onResizeLeft: (event: ResizeEventInterface) => void;
+  onResizeRight: (event: ResizeEventInterface) => void;
+  onMove: (event: ResizeEventInterface) => void;
+  onMouseUpCallback: () => void;
+  prevSub: SubtitleBlockInterface | undefined;
+  nextSub: SubtitleBlockInterface | undefined;
 }
 
-const SubtitleBlock = ({ index }: SubtitleBlockProps) => {
+const SubtitleBlock = ({
+  index,
+  isActive,
+  subtitle,
+  onFocus,
+  onResizeLeft,
+  onResizeRight,
+  onMove,
+  onMouseUpCallback,
+}: SubtitleBlockProps) => {
   const subtitleRef = useRef<any>(null);
-  const {
-    isActiveSubtitle,
-    editingSubtitles = [],
-    focus,
-    unfocus,
-  } = useTimelineEditor();
+  const { from = 0, to = 0 } = subtitle ?? {};
 
-  const subtitle = editingSubtitles[index];
-  const previousSub = editingSubtitles[index - 1];
-  const nextSub = editingSubtitles[index + 1];
+  useOutsideClick(subtitleRef, () => onFocus(null));
 
-  const [subtitleState, setSubtitleState] = useState(subtitle);
-  const { from, to } = subtitleState;
-
-  const onFocus = () => focus(subtitle);
-  useOutsideClick(subtitleRef, unfocus);
-
-  const onResizeLeftSize = (event: any) => {
-    const leftXPosition = event.clientX as number;
-    const rightXPosition = subtitleRef?.current.getBoundingClientRect().right;
-    const newWidth = rightXPosition - leftXPosition;
-    const newDuration = getMilisecondFromPx(newWidth);
-    if (previousSub && previousSub.to < subtitleState.to - newDuration)
-      setSubtitleState((state) => ({ ...state, from: state.to - newDuration }));
+  const onResizeLeftSide = (distance: number) => {
+    const distanceDuration = getMilisecondFromPx(Math.abs(distance));
+    const direction = distance < 0 ? -1 : 1;
+    onResizeLeft({
+      distancePixel: distance,
+      distanceDuration: distanceDuration * direction,
+      subElement: subtitleRef,
+    });
   };
 
-  const onResizeRightSize = (event: any) => {
-    const rightXPosition = event.clientX as number;
-    const leftXPosition = subtitleRef?.current.getBoundingClientRect().left;
-    const newWidth = rightXPosition - leftXPosition;
-    const newDuration = getMilisecondFromPx(newWidth);
-    if (nextSub && subtitleState.from + newDuration < nextSub.from)
-      setSubtitleState((state) => ({ ...state, to: state.from + newDuration }));
+  const onResizeRightSide = (distance: number) => {
+    const distanceDuration = getMilisecondFromPx(Math.abs(distance));
+    const direction = distance < 0 ? -1 : 1;
+    onResizeRight({
+      distancePixel: distance,
+      distanceDuration: distanceDuration * direction,
+      subElement: subtitleRef,
+    });
   };
 
-  const blockWidthStyle = ((to - from) / 1000) * PIXEL_PER_SECOND;
-  const blockLeftStyleInit = (subtitle.from / 1000) * PIXEL_PER_SECOND;
+  const onMoveSub = (distance: number) => {
+    const distanceDuration = getMilisecondFromPx(Math.abs(distance));
+    const direction = distance < 0 ? -1 : 1;
+    onMove({
+      distancePixel: distance,
+      distanceDuration: distanceDuration * direction,
+      subElement: subtitleRef,
+    });
+  };
 
-  const onMouseUpCallBack = useCallback((newPo) => {
-    // console.log("🚀 ~ file: subtitle-block.tsx ~ line 84 ~ newPo", newPo);
-  }, []);
+  const onMouseDownCallBack = () => {
+    // setSubtitleEditting(subtitle);
+    // isEdittingRef.current = true;
+  };
 
-  const { draggingPosition: blockLeftStyle } = useMouseDragging({
-    initPosition: blockLeftStyleInit,
-    elementRef: subtitleRef,
-    onMouseUpCallBack,
-  });
+  const onMouseUp = () => {
+    onMouseUpCallback();
+    // const leftXPosition = subtitleRef?.current.getBoundingClientRect().left;
+    // const rightXPosition = subtitleRef?.current.getBoundingClientRect().right;
+    // const newFrom = getMilisecondFromPx(leftXPosition);
+    // const newTo = getMilisecondFromPx(rightXPosition);
+    // console.log(
+    //   "🚀 ~ file: subtitle-block.tsx ~ line 69 ~ onMouseUpCallBack ~ leftXPosition",
+    //   leftXPosition
+    // );
+    // const subWidth = subtitleRef?.current.getBoundingClientRect().width;
+    // setSubtitleEditting({ ...subtitleEditting, from: newFrom, to: newTo });
+    // isEdittingRef.current = false;
+  };
 
-  const isActive = subtitle && isActiveSubtitle(subtitle);
+  const onFocusSubtitle = () => {
+    onFocus(index);
+  };
+
+  const subWidth = ((to - from) / 1000) * PIXEL_PER_SECOND;
+  const subLeftDefault = (from / 1000) * PIXEL_PER_SECOND;
+
+  // const onMouseMouseMoveValidator = useCallback((newPos) => {
+  //   if (newPos >= 0) return true;
+  //   return false;
+  // }, []);
+
+  // const { draggingPosition: subLeftByDrag, isDragging } = useMouseDragging({
+  //   initPosition: subLeftDefault,
+  //   elementRef: subtitleRef,
+  //   onMouseDownCallBack,
+  //   onMouseUpCallBack,
+  //   onMouseMouseMoveValidator,
+  //   getParentElement,
+  // });
+
+  // const subLeft = isDragging ? subLeftByDrag : subLeftDefault;
 
   return (
     <div
@@ -90,14 +125,33 @@ const SubtitleBlock = ({ index }: SubtitleBlockProps) => {
         [styles.subtitle_block_selected]: isActive,
       })}
       style={{
-        width: blockWidthStyle,
-        left: blockLeftStyle,
+        width: subWidth,
+        left: subLeftDefault,
       }}
-      onClick={onFocus}
+      onClick={onFocusSubtitle}
       ref={subtitleRef}
     >
-      {isActive && <ExtendMount id={from} onMouseMove={onResizeLeftSize} />}
-      {isActive && <ExtendMount id={to} onMouseMove={onResizeRightSize} />}
+      {isActive && (
+        <ExtendMount
+          id={index}
+          onMouseMove={onResizeLeftSide}
+          onMouseUpCallback={onMouseUpCallback}
+        />
+      )}
+      {isActive && (
+        <ExtendMount
+          id={index}
+          onMouseMove={onResizeRightSide}
+          onMouseUpCallback={onMouseUpCallback}
+        />
+      )}
+      {isActive && (
+        <SubtitleOverlay
+          id={index}
+          onMouseMove={onMoveSub}
+          onMouseUpCallback={onMouseUpCallback}
+        />
+      )}
     </div>
   );
 };

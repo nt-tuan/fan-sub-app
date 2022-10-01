@@ -1,4 +1,5 @@
 export const UNIT = 8; // 1000 miliseconds = 1 second = UNIT*5 px
+// 1px = 25ms
 
 export const UNIT_SPACE = {
   0: 0,

@@ -1,0 +1,43 @@
+import { ConfigProvider, Tabs } from "antd";
+
+import React from "react";
+
+import TimebarScreen from "@/video-sub/components/timebar-screen/timebar-screen";
+import { Translator } from "./components/translator/translator";
+import VideoSubProvider from "./components/provider";
+import styles from "./styles.module.scss";
+
+const VideoSubTranslator = () => {
+  return (
+    <VideoSubProvider>
+      <Tabs
+        className={styles.video_sub_container}
+        centered
+        defaultActiveKey="2"
+        destroyInactiveTabPane
+        items={[
+          {
+            key: "1",
+            label: "Translator",
+            children: <Translator />,
+          },
+          {
+            key: "2",
+            label: "Timebar",
+            children: <TimebarScreen />,
+          },
+        ]}
+      ></Tabs>
+    </VideoSubProvider>
+  );
+};
+
+function VideoSub() {
+  return (
+    <ConfigProvider>
+      <VideoSubTranslator />
+    </ConfigProvider>
+  );
+}
+
+export default VideoSub;

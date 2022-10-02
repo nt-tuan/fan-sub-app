@@ -1,0 +1,49 @@
+.ruler_outer {
+  z-index: 2;
+  display: flex;
+
+  // overflow-x: auto;
+  position: absolute;
+  bottom: 0;
+  // transition: 0.25;
+  // -webkit-transition: 1s;
+  background-color: transparent;
+}
+
+.rulerblock_outer {
+  height: 86px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.rulerblock_container {
+  height: 70px;
+  width: 249px; // 1second = 50px
+  background-color: #1a1c21;
+  border-left: 1px solid #363943;
+  border-right: none;
+  cursor: default;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.rulerblock_time_label {
+  position: absolute;
+  color: white;
+  opacity: 0.5;
+  top: 0px;
+  left: -12px;
+  font-size: 10px;
+  z-index: 3;
+  user-select: none;
+}
+
+.ruler_line {
+  height: 15px;
+  width: 1px;
+  background-color: #363943;
+  position: absolute;
+  top: 0;
+}

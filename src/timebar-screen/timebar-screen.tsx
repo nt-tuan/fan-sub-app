@@ -1,16 +1,19 @@
 import { useState, useMemo } from "react";
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 
-import { useVideoPlayerStore } from "@/store";
 import { getMilisecondFromPx } from "@/utils/time-utils";
-import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
-import { useSubtitleEditorStore } from "@/video-sub/components/provider";
+import { SubtitleBlock as SubtitleBlockInterface } from "@/store/model";
+import {
+  useSubtitleEditorStore,
+  useVideoPlayerStore,
+} from "@/video-sub/components/provider";
 import VideoPlayer from "@/video-sub/components/video-player/video-player";
 
 import useTimelineEditor from "./provider/useTimelineEditor";
 import { ResizeEventInterface } from "./components/subtitles/subtitle-block";
 import Timeline from "./components/timeline";
 import TimelineMenu from "./components/timeline-menu";
+import { MINIMUM_BLOCK_SIZE } from "./constant";
 
 const useTimebar = ({ width }: { width: number }) => {
   const halfOfContainer = width / 2;
@@ -60,7 +63,7 @@ const useTimebar = ({ width }: { width: number }) => {
             option.from >= minFrom &&
             option.to <= maxTo &&
             (!keepSize || option.from - option.to === state.from - state.to) &&
-            option.to - option.from > 500
+            option.to - option.from > MINIMUM_BLOCK_SIZE
         ) ?? state;
 
       return {
@@ -77,7 +80,10 @@ const useTimebar = ({ width }: { width: number }) => {
     changePosition((state) => {
       return {
         ...state,
-        from: Math.min(state.to - 500, orginalFrom + extendDuration),
+        from: Math.min(
+          state.to - MINIMUM_BLOCK_SIZE,
+          orginalFrom + extendDuration
+        ),
       };
     }, false);
   };
@@ -90,7 +96,10 @@ const useTimebar = ({ width }: { width: number }) => {
     changePosition((state) => {
       return {
         ...state,
-        to: Math.max(state.from + 500, orginalTo + extendDuration),
+        to: Math.max(
+          state.from + MINIMUM_BLOCK_SIZE,
+          orginalTo + extendDuration
+        ),
       };
     }, false);
   };
@@ -175,7 +184,7 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
         }}
       >
         <div style={{ height: 480, width: 640 }}>
-          <VideoPlayer />
+          <VideoPlayer key="timeline-video" />
         </div>
       </div>
       <Timeline {...(props as any)} width={width} />

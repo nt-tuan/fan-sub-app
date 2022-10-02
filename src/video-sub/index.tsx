@@ -1,26 +1,20 @@
 import { ConfigProvider, Tabs } from "antd";
-import { SubtitleBlock, useVideoStore } from "../store";
 
 import React from "react";
-import { SubtitleStore } from "@/store/subtitle-store";
+
 import TimebarScreen from "@/timebar-screen/timebar-screen";
 import { Translator } from "./components/translator/translator";
 import VideoSubProvider from "./components/provider";
 import styles from "./styles.module.scss";
 
-const VideoSubTranslator = ({
-  subtitleData,
-  subtitleStore,
-}: {
-  subtitleData: Record<string, SubtitleBlock[]>;
-  subtitleStore: SubtitleStore;
-}) => {
+const VideoSubTranslator = () => {
   return (
-    <VideoSubProvider subtitleData={subtitleData} subtitleStore={subtitleStore}>
+    <VideoSubProvider>
       <Tabs
         className={styles.video_sub_container}
         centered
         defaultActiveKey="2"
+        destroyInactiveTabPane
         items={[
           {
             key: "1",
@@ -38,19 +32,10 @@ const VideoSubTranslator = ({
   );
 };
 
-const VIDEO_URL = "/video/data.json";
 function VideoSub() {
-  const { subtitleData, loadData, subtitleStore } = useVideoStore();
-  React.useEffect(() => {
-    loadData(VIDEO_URL);
-  }, [loadData]);
-  if (subtitleData == null || subtitleStore == null) return null;
   return (
     <ConfigProvider>
-      <VideoSubTranslator
-        subtitleData={subtitleData}
-        subtitleStore={subtitleStore}
-      />
+      <VideoSubTranslator />
     </ConfigProvider>
   );
 }

@@ -1,8 +1,4 @@
-interface SubtitleBlock {
-  from: number;
-  to: number;
-  text?: string;
-}
+import { SubtitleBlock } from "./model";
 
 const readTime = (str: string) => {
   const [hr, min, sec] = str.split(":");
@@ -92,8 +88,3 @@ export const createSubtitleStore = (videoId: string) => {
     save,
   };
 };
-
-export interface SubtitleStore {
-  get: () => Promise<Record<string, SubtitleBlock[]>>;
-  save: (lang: string, blocks: SubtitleBlock[]) => Promise<void>;
-}

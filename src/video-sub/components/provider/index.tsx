@@ -1,36 +1,68 @@
 import React from "react";
-import { StoreApi, useStore } from "zustand";
+import { createStore, StoreApi, useStore } from "zustand";
+import { createVideoPlayerSlice } from "@/store/video-player-store";
+
 import {
-  useVideoPlayerStore,
-  useVideoPlayerSubcribe,
-} from "@/store/video-player-store";
-import {
+  SubtitleBlock,
   createSubtitleEditorStore,
   SubtitleEditorStore,
-} from "@/store/subtitle-editor-store";
-import { SubtitleBlock } from "@/store";
-import { SubtitleStore } from "@/store/subtitle-store";
+  createVideoStore,
+  VideoStore,
+  VideoPlayerStore,
+} from "@/store";
 
 const SubtitleEditorContext = React.createContext<{
   store: StoreApi<SubtitleEditorStore>;
+  videoStore: StoreApi<VideoStore>;
+  videoPlayerStore: StoreApi<VideoPlayerStore>;
 }>({} as never);
 
-const VideoSubProvider = ({
-  children,
-  subtitleData,
-  subtitleStore,
-}: {
-  children: React.ReactNode;
-  subtitleData: Record<string, SubtitleBlock[]>;
-  subtitleStore: SubtitleStore;
-}) => {
-  const store = createSubtitleEditorStore(subtitleData, subtitleStore);
+const VIDEO_URL = "/video/data.json";
 
+const VideoSubProvider = ({ children }: { children: React.ReactNode }) => {
+  const [videoStore] = React.useState(createStore(createVideoStore));
+  const [videoPlayerStore] = React.useState(
+    createStore(createVideoPlayerSlice)
+  );
+  const { loadData, subtitleData, subtitleStore } = useStore(videoStore);
+
+  const store = React.useMemo(() => {
+    if (subtitleData == null || subtitleStore == null) return null;
+    return createSubtitleEditorStore(subtitleData, subtitleStore);
+  }, [subtitleData, subtitleStore]);
+
+  React.useEffect(() => {
+    loadData(VIDEO_URL);
+  }, [loadData]);
+
+  if (store == null) return null;
   return (
-    <SubtitleEditorContext.Provider value={{ store }}>
+    <SubtitleEditorContext.Provider
+      value={{ store, videoStore, videoPlayerStore }}
+    >
       {children}
     </SubtitleEditorContext.Provider>
   );
+};
+
+export const useVideoStore = () => {
+  const { videoStore } = React.useContext(SubtitleEditorContext);
+  return useStore(videoStore);
+};
+
+export const useVideoPlayerStore = () => {
+  const { videoPlayerStore, store } = React.useContext(SubtitleEditorContext);
+  const editingBlock = useStore(store, (state) => state.editingBlock);
+  const videoPlayer = useStore(videoPlayerStore);
+  const enhanceSetCurrentTime = (miliseconds: number) => {
+    const nextMiliseconds = miliseconds + 250;
+    if (editingBlock && editingBlock.to < nextMiliseconds) {
+      videoPlayer.videoRef?.current?.pause();
+      return;
+    }
+    videoPlayer.setCurrentTime(miliseconds);
+  };
+  return { ...videoPlayer, setCurrentTime: enhanceSetCurrentTime };
 };
 
 export const useSubtitleEditorStore = <U extends unknown>(
@@ -47,14 +79,11 @@ export const useSubtitleEditor = () => {
     state.setSubtitleData,
   ]);
 
-  const currentTime = useVideoPlayerStore((state) => state.currentTime);
+  const { currentTime, videoRef, goTo } = useVideoPlayerStore();
   const [srcLang, dstLang] = useSubtitleEditorStore((state) => [
     state.srcLang,
     state.dstLang,
   ]);
-
-  const goTo = useVideoPlayerStore((state) => state.goTo);
-  const videoRef = useVideoPlayerStore((state) => state.videoRef);
 
   const [editingBlock, setEditingBlock] = useSubtitleEditorStore((state) => [
     state.editingBlock,
@@ -97,28 +126,6 @@ export const useSubtitleEditor = () => {
     if (segment.from > currentTime || segment.to < currentTime)
       videoRef?.current?.play();
   };
-
-  const currentTimeListener = React.useCallback(
-    ([currentTime, videoRef]: [
-      number,
-      React.RefObject<HTMLVideoElement> | undefined
-    ]) => {
-      if (!editingBlock || !videoRef?.current) return;
-      if (currentTime + 250 > editingBlock.to) {
-        videoRef.current.pause();
-      }
-    },
-    [editingBlock]
-  );
-
-  useVideoPlayerSubcribe(
-    (state) =>
-      [state.currentTime, state.videoRef] as [
-        number,
-        React.RefObject<HTMLVideoElement> | undefined
-      ],
-    currentTimeListener
-  );
 
   const changeSubtitleText = (index: number, value: string) => {
     const subtitles = editingSubtitles;

@@ -1,9 +1,12 @@
 import { Space, Button } from "antd";
 import React, { useMemo, useCallback, useState, useEffect } from "react";
 import { PlusOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useVideoPlayerStore } from "@/store/video-player-store";
+
 import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
-import { useSubtitleEditorStore } from "@/video-sub/components/provider";
+import {
+  useSubtitleEditorStore,
+  useVideoPlayerStore,
+} from "@/video-sub/components/provider";
 import styles from "./timeline-menu.module.scss";
 
 const TimelineMenu = ({

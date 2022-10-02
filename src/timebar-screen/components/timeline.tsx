@@ -5,8 +5,8 @@ import Ruler from "./ruler";
 import Subtitles from "./subtitles/subtitles";
 import styles from "./timeline.module.scss";
 import useMouseDragging from "../../hooks/useMouseDragging";
-import { useVideoPlayerStore } from "@/store";
-import { useDebounce } from "usehooks-ts";
+
+import { useVideoPlayerStore } from "@/video-sub/components/provider";
 
 const Timeline = (props: any) => {
   const rulerOuterRef = useRef<any>(null);
@@ -15,13 +15,7 @@ const Timeline = (props: any) => {
 
   const { currentTime, endTime, goTo } = useVideoPlayerStore();
 
-  const containerWidth =
-    timelineContainerRef?.current?.getBoundingClientRect()?.width || 0;
-  const containerWidthDebounce = useDebounce(containerWidth, 1000);
-  const halfOfContainer = useMemo(
-    () => containerWidthDebounce / 2,
-    [containerWidthDebounce]
-  );
+  const halfOfContainer = props.width / 2;
 
   // update video current time onDraggEnd
   const onMouseUpCallBack = useCallback(() => {
@@ -33,7 +27,6 @@ const Timeline = (props: any) => {
     initPosition: 0,
     elementRef: rulerOuterRef,
     onMouseUpCallBack,
-    getParentElement: () => subtitleParent.current,
   });
 
   const rulerOffsetByVideoTime = useMemo(() => {

@@ -1,9 +1,11 @@
 import React from "react";
 
-const events = ["lostpointercapture", "click", "touchstart"];
+const defaultEvents = ["mousedown", "touchstart"];
+
 const useOutsideClick = (
   ref: React.RefObject<HTMLElement>,
-  callback: () => void
+  callback: () => void,
+  events: string[] = defaultEvents
 ) => {
   React.useEffect(() => {
     if (ref.current == null) return;
@@ -22,7 +24,7 @@ const useOutsideClick = (
         document.removeEventListener(event, listener);
       }
     };
-  }, [callback, ref]);
+  }, [callback, ref, events]);
 
   return ref;
 };

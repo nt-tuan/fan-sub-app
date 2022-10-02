@@ -1,31 +1,6 @@
-import { createStore } from "zustand";
-import { SubtitleStore } from "./subtitle-store";
-
-import { SubtitleBlock } from "./video-store";
-
-interface SubtitleEditorStoreState {
-  srcLang?: string;
-  dstLang?: string;
-  subtitleData?: Record<string, SubtitleBlock[]>;
-  editingSubtitles?: SubtitleBlock[];
-  editingBlock?: SubtitleBlock;
-  subtitleStore: SubtitleStore;
-}
-
-interface SubtitleEditorAction {
-  setSrcLang: (lang: string) => void;
-  setDstLang: (lang: string) => void;
-
-  setSubtitleData: (data: Record<string, SubtitleBlock[]>) => void;
-  setSubtitles: (subtitles: SubtitleBlock[]) => void;
-  setEditingBlock: (block?: SubtitleBlock) => void;
-
-  createSubtitle: (at: number) => number | undefined;
-  deleteSubtitle: (at: number) => void;
-}
-
-export type SubtitleEditorStore = SubtitleEditorStoreState &
-  SubtitleEditorAction;
+import { MINIMUM_BLOCK_SIZE } from "@/timebar-screen/constant";
+import { createStore, StateCreator } from "zustand";
+import { SubtitleBlock, SubtitleEditorStore, SubtitleStore } from "./model";
 
 const defaultDstLang = "vi";
 const getDefaultEditingSubtitle = (
@@ -52,11 +27,11 @@ const findCreatableSubtitle = (
   return -1;
 };
 
-export const createSubtitleEditorStore = (
+export const createSubtitleEditorCreator = (
   subtitleData: Record<string, SubtitleBlock[]>,
   subtitleStore: SubtitleStore
-) =>
-  createStore<SubtitleEditorStore>((set, get) => ({
+) => {
+  const stateCreator: StateCreator<SubtitleEditorStore> = (set, get) => ({
     srcLang: Object.keys(subtitleData)?.[0],
     subtitleStore,
     dstLang: defaultDstLang,
@@ -96,7 +71,7 @@ export const createSubtitleEditorStore = (
 
       if (index < 0) return;
       const from = at;
-      const to = at + 500;
+      const to = at + MINIMUM_BLOCK_SIZE;
       if (
         index < editingSubtitles.length - 1 &&
         to >= editingSubtitles[index + 1].from
@@ -119,4 +94,14 @@ export const createSubtitleEditorStore = (
       });
       return index;
     },
-  }));
+  });
+  return stateCreator;
+};
+
+export const createSubtitleEditorStore = (
+  subtitleData: Record<string, SubtitleBlock[]>,
+  subtitleStore: SubtitleStore
+) => {
+  const stateCreator = createSubtitleEditorCreator(subtitleData, subtitleStore);
+  return createStore(stateCreator);
+};

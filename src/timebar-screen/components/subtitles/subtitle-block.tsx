@@ -42,7 +42,7 @@ const SubtitleBlock = ({
   const subtitleRef = useRef<any>(null);
   const { from = 0, to = 0 } = subtitle ?? {};
 
-  useOutsideClick(subtitleRef, () => onFocus(null));
+  useOutsideClick(subtitleRef, () => onFocus(null), ["click", "touchstart"]);
 
   const onResizeLeftSide = (distance: number) => {
     const distanceDuration = getMilisecondFromPx(Math.abs(distance));

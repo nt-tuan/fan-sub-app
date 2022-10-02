@@ -4,9 +4,12 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { SubtitleBlock } from "./subtitle-block";
 import styles from "./styles.module.scss";
-import { useSubtitleEditor, useSubtitleEditorStore } from "../provider";
+import {
+  useSubtitleEditor,
+  useSubtitleEditorStore,
+  useVideoPlayerStore,
+} from "../provider";
 import { SubtitleLanguges } from "./subtitle-languages";
-import { useVideoPlayerSubcribe } from "@/store";
 
 const ItemRenderer = ({
   index,
@@ -20,7 +23,9 @@ export const SubtitleForm = () => {
   const ref = React.useRef<FixedSizeList<any>>(null);
   const { editingSubtitles } = useSubtitleEditor();
   const dstLang = useSubtitleEditorStore((state) => state.dstLang);
+  const { currentTime } = useVideoPlayerStore();
   const editingBlock = useSubtitleEditorStore((state) => state.editingBlock);
+  const lastEditingBlockIndex = React.useRef<number>();
   const nSubtitleSegments = editingSubtitles?.length;
 
   const scrollToCurrentTime = React.useCallback(
@@ -29,7 +34,19 @@ export const SubtitleForm = () => {
       if (editingSubtitles == null) return;
       for (let i = 0; i < editingSubtitles.length; i++) {
         if (editingSubtitles[i].to > currentTime) {
-          ref.current?.scrollToItem(i, "center");
+          if (lastEditingBlockIndex.current === i) {
+            return;
+          }
+
+          if (lastEditingBlockIndex.current == null) {
+            setTimeout(() => {
+              ref.current?.scrollToItem(i, "center");
+            });
+          } else {
+            ref.current?.scrollToItem(i, "smart");
+          }
+          lastEditingBlockIndex.current = i;
+
           return;
         }
       }
@@ -37,7 +54,9 @@ export const SubtitleForm = () => {
     [editingSubtitles, editingBlock]
   );
 
-  useVideoPlayerSubcribe((state) => state.currentTime, scrollToCurrentTime);
+  React.useEffect(() => {
+    scrollToCurrentTime(currentTime);
+  }, [currentTime, scrollToCurrentTime]);
 
   if (nSubtitleSegments == null) return <Spin />;
   return (

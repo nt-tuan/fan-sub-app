@@ -8,7 +8,6 @@ interface MouseDraggingInterface {
   onMouseDownCallBack?: () => void;
   onMouseUpCallBack?: () => void;
   onMouseMouseMoveValidator?: (newLeftPosition: number) => void;
-  getParentElement: () => HTMLElement | null;
 }
 
 const useMouseDragging = ({
@@ -17,7 +16,6 @@ const useMouseDragging = ({
   onMouseDownCallBack,
   onMouseUpCallBack,
   onMouseMouseMoveValidator,
-  getParentElement,
 }: MouseDraggingInterface) => {
   const dragging = useRef<boolean>(false);
   const previousPosition = useRef<number>(0);

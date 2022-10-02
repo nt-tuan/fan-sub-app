@@ -1,8 +1,8 @@
 import {
   useSubtitleEditor,
   useSubtitleEditorStore,
+  useVideoPlayerStore,
 } from "@/video-sub/components/provider";
-import { useVideoPlayerStore } from "@/store/video-player-store";
 import { SubtitleBlock } from "@/store";
 
 const useTimelineEditor = () => {
@@ -11,7 +11,7 @@ const useTimelineEditor = () => {
   );
 
   const { unfocus } = useSubtitleEditor();
-  const goTo = useVideoPlayerStore((state) => state.goTo);
+  const { goTo } = useVideoPlayerStore();
 
   const focus = (segment: SubtitleBlock) => {
     goTo(segment.from);

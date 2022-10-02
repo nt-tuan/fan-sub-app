@@ -13,10 +13,6 @@ const Ruler = ({ duration }: { duration: number }) => {
       {Array.from(Array(amountOfBlock).keys()).map((index) => (
         <RulerFiveSecondsBlock index={index} key={index} />
       ))}
-      {/* <RemainingBlock
-        durationMilisecond={duration}
-        remaining={videoDurationBySecond % 5}
-      /> */}
     </>
   );
 };

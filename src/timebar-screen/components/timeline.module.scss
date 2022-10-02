@@ -24,14 +24,18 @@
   position: absolute;
 }
 
+.background {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  background-color: #1a1c21;
+}
+
 .ruler_outer {
   z-index: 2;
   display: flex;
-
-  // overflow-x: auto;
   position: absolute;
   bottom: 0;
-  // transition: 0.25;
-  // -webkit-transition: 1s;
   background-color: transparent;
 }

@@ -46,6 +46,7 @@ const Timeline = (props: any) => {
   return (
     <div ref={timelineContainerRef} className={styles.timeline_container}>
       <div className={styles.timeline_cursor} />
+      <div className={styles.background}></div>
       <div
         className={styles.timeline}
         ref={subtitleParent}

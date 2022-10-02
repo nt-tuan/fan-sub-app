@@ -13,7 +13,9 @@ const RulerFiveSecondsBlock = ({ index }: { index: number }) => {
 
   return (
     <div className={styles.rulerblock_outer}>
-      <label className={styles.rulerblock_time_label}>{timeLabel}</label>
+      {index >= 0 && (
+        <label className={styles.rulerblock_time_label}>{timeLabel}</label>
+      )}
       <div
         className={styles.rulerblock_container}
         style={{ width: UNIT * UNIT_SPACE[5] }}

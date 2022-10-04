@@ -1,6 +1,6 @@
 import React from "react";
-import { useSubtitleEditor } from "../provider";
 
+import { useSubtitleEditor } from "../../provider";
 import styles from "./video-player.module.scss";
 
 export const VideoSubtitleDisplayer = () => {

@@ -1,19 +1,17 @@
-import React, { useRef } from "react";
 import classNames from "classnames";
+import React, { useRef } from "react";
 
-import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
-import { getMilisecondFromPx } from "@/utils/time-utils";
 import useOutsideClick from "@/hooks/use-outside-click";
-import styles from "./subtitles.module.scss";
+import {
+  ResizeEventInterface,
+  SubtitleBlock as SubtitleBlockInterface,
+} from "@/store";
+import { getMilisecondFromPx } from "@/utils/time-utils";
+
+import { PIXEL_PER_SECOND } from "../ruler/ruler.enum";
 import ExtendMount from "./extend-mount";
 import SubtitleOverlay from "./subtitle-overlay";
-import { PIXEL_PER_SECOND } from "../ruler/ruler.enum";
-
-export interface ResizeEventInterface {
-  distancePixel: number;
-  distanceDuration: number;
-  subElement: any;
-}
+import styles from "./subtitles.module.scss";
 
 interface SubtitleBlockProps {
   index: number;

@@ -1,9 +1,9 @@
+import { SubtitleBlock } from "@/store";
 import {
   useSubtitleEditor,
   useSubtitleEditorStore,
   useVideoPlayerStore,
-} from "@/video-sub/components/provider";
-import { SubtitleBlock } from "@/store";
+} from "@/video-sub/provider";
 
 const useTimelineEditor = () => {
   const [editingSubtitles, setEditingSubtitles] = useSubtitleEditorStore(
@@ -17,16 +17,16 @@ const useTimelineEditor = () => {
     goTo(segment.from);
   };
 
-  const updateSubtitle = (index: number, segment: SubtitleBlock) => {
-    const subtitlesTemp = editingSubtitles;
-    if (subtitlesTemp == null) return;
-    const newSubtitles = [...subtitlesTemp.map((item) => ({ ...item }))];
-    newSubtitles[index].from = segment.from;
-    newSubtitles[index].to = segment.to;
-    setEditingSubtitles(newSubtitles);
-  };
+  // const updateSubtitle = (index: number, segment: SubtitleBlock) => {
+  //   const subtitlesTemp = editingSubtitles;
+  //   if (subtitlesTemp == null) return;
+  //   const newSubtitles = [...subtitlesTemp.map((item) => ({ ...item }))];
+  //   newSubtitles[index].from = segment.from;
+  //   newSubtitles[index].to = segment.to;
+  //   setEditingSubtitles(newSubtitles);
+  // };
 
-  return { editingSubtitles, updateSubtitle, focus, unfocus };
+  return { focus, unfocus };
 };
 
 export default useTimelineEditor;

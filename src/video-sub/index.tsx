@@ -1,10 +1,9 @@
 import { ConfigProvider, Tabs } from "antd";
 
-import React from "react";
-
 import TimebarScreen from "@/video-sub/components/timebar-screen/timebar-screen";
+
 import { Translator } from "./components/translator/translator";
-import VideoSubProvider from "./components/provider";
+import VideoSubProvider from "./provider";
 import styles from "./styles.module.scss";
 
 const VideoSubTranslator = () => {

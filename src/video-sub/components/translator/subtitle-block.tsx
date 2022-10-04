@@ -1,12 +1,13 @@
-import React from "react";
-import { formatTime } from "@/utils/format";
 import { Button, Divider } from "antd";
-import styles from "./styles.module.scss";
-import debounce from "lodash.debounce";
 import classnames from "classnames";
+import debounce from "lodash.debounce";
+import React from "react";
 
-import { useSubtitleEditor } from "../provider";
 import useOutsideClick from "@/hooks/use-outside-click";
+import { formatTime } from "@/utils/format";
+
+import { useSubtitleEditor } from "../../provider";
+import styles from "./styles.module.scss";
 
 export const SubtitleBlock = ({
   index,

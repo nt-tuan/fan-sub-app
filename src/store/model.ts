@@ -59,3 +59,9 @@ interface SubtitleEditorAction {
 
 export type SubtitleEditorStore = SubtitleEditorStoreState &
   SubtitleEditorAction;
+
+export interface ResizeEventInterface {
+  distancePixel: number;
+  distanceDuration: number;
+  subElement: any;
+}

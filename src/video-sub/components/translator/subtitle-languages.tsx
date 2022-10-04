@@ -1,8 +1,8 @@
-import styles from "./styles.module.scss";
-
 import LangSelect from "@/components/lang-select";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { useSubtitleLanguages } from "../provider";
+
+import { useSubtitleLanguages } from "../../provider";
+import styles from "./styles.module.scss";
 
 export const SubtitleLanguges = () => {
   const { srcLang, setSrcLang, dstLang, setDstLang } = useSubtitleLanguages();

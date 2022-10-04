@@ -1,7 +1,8 @@
 import React from "react";
-import { VideoSubtitleDisplayer } from "./video-subtitle-displayer";
+
+import { useVideoPlayerStore, useVideoStore } from "../../provider";
 import styles from "./video-player.module.scss";
-import { useVideoPlayerStore, useVideoStore } from "../provider";
+import { VideoSubtitleDisplayer } from "./video-subtitle-displayer";
 
 interface Props {
   onPlay?: () => void;

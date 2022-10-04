@@ -1,14 +1,15 @@
-import React from "react";
 import { Spin } from "antd";
+import React from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
-import { SubtitleBlock } from "./subtitle-block";
-import styles from "./styles.module.scss";
+
 import {
   useSubtitleEditor,
   useSubtitleEditorStore,
   useVideoPlayerStore,
-} from "../provider";
+} from "../../provider";
+import styles from "./styles.module.scss";
+import { SubtitleBlock } from "./subtitle-block";
 import { SubtitleLanguges } from "./subtitle-languages";
 
 const ItemRenderer = ({

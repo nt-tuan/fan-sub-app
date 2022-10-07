@@ -11,9 +11,11 @@ import {
   useVideoPlayerStore,
 } from "@/video-sub/provider";
 
+const DISTANCE_TIME_ENUM = 500;
+
 const useTimebar = ({ width }: { width: number }) => {
   const halfOfContainer = width / 2;
-  const { currentTime } = useVideoPlayerStore();
+  const { currentTime, endTime, goTo } = useVideoPlayerStore();
 
   const [editingSubtitles, setEditingSubtitles] = useSubtitleEditorStore(
     (state) => [state.editingSubtitles, state.setSubtitles]
@@ -55,6 +57,7 @@ const useTimebar = ({ width }: { width: number }) => {
     };
   }, [editingSubtitles, selectedIndex]);
 
+  // start: resize handler
   const changePosition = (
     setAction: (state: SubtitleBlockInterface) => SubtitleBlockInterface,
     keepSize: boolean
@@ -112,6 +115,7 @@ const useTimebar = ({ width }: { width: number }) => {
     }, false);
   };
 
+  // move subtitle
   const onMove = ({ distanceDuration }: ResizeEventInterface) => {
     const orginalFrom = edittingSubOrginal?.from ?? 0;
     const orginalTo = edittingSubOrginal?.to ?? 0;
@@ -125,6 +129,7 @@ const useTimebar = ({ width }: { width: number }) => {
     }, true);
   };
 
+  // click to subtitle
   const onFocus = (index: number) => {
     if (index !== selectedIndex && editingSubtitles) {
       setSelectedIndex(index);
@@ -132,13 +137,34 @@ const useTimebar = ({ width }: { width: number }) => {
     }
   };
 
+  // unclick to subtitle
   const onUnfocus = () => {
     setSelectedIndex(null);
     setEditingBlock();
   };
+
   const onMouseUp = () => {
     if (!editingBlock) return;
     updateSubtitle(selectedIndex as number, editingBlock);
+  };
+  // end: resize handler
+
+  const onRewind = () => {
+    const newTime = currentTime - DISTANCE_TIME_ENUM;
+    goTo(Math.max(0, newTime));
+  };
+
+  const onFastForward = () => {
+    if (endTime) {
+      const newTime = currentTime + DISTANCE_TIME_ENUM;
+      goTo(Math.min(endTime, newTime));
+    }
+  };
+
+  const onFindBlanks = () => {
+    if (!editingSubtitles) return;
+    const blankSubtitle = editingSubtitles?.find((sub) => !sub.text);
+    if (blankSubtitle) goTo(blankSubtitle.from);
   };
 
   const subtitles = useMemo(() => {
@@ -167,6 +193,9 @@ const useTimebar = ({ width }: { width: number }) => {
     onMove,
     onResizeLeft,
     onResizeRight,
+    onRewind,
+    onFastForward,
+    onFindBlanks,
     editingSub: editingBlock,
   };
 };

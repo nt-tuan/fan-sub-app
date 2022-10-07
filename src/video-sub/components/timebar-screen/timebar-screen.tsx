@@ -43,6 +43,9 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
       <Timeline {...(props as any)} width={width} />
       <TimelineMenu
         onDelete={handleDelete}
+        onFindBlanks={props.onFindBlanks}
+        onRewind={props.onRewind}
+        onFastForward={props.onFastForward}
         disabled={props.selectedIndex == null}
       />
     </div>

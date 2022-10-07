@@ -1,9 +1,8 @@
 import React, { useMemo } from "react";
 
-// import RemainingBlock from "./RemainingBlock";
 import RulerFiveSecondsBlock from "./RulerFiveSecondsBlock";
 
-// import styles from "./ruler.module.scss";
+// import RemainingBlock from "./RemainingBlock";
 
 const Ruler = ({ duration }: { duration: number }) => {
   const videoDurationBySecond = useMemo(() => duration / 1000, [duration]);

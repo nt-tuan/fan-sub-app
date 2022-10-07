@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
-import { UNIT, UNIT_SPACE } from "./ruler.enum";
 
 import { getTimeLabel } from "../../../../../utils/time-utils";
+import { UNIT, UNIT_SPACE } from "./ruler.enum";
 import styles from "./ruler.module.scss";
 
 const RulerFiveSecondsBlock = ({ index }: { index: number }) => {

@@ -1,9 +1,9 @@
 import { useCallback, useMemo, useRef } from "react";
 
+import useMouseDragging from "@/hooks/useMouseDragging";
 import { getMilisecondFromPx, getPxFromMilisecond } from "@/utils/time-utils";
 import { useVideoPlayerStore } from "@/video-sub/provider";
 
-import useMouseDragging from "../../../../hooks/useMouseDragging";
 import Ruler from "./ruler";
 import Subtitles from "./subtitles/subtitles";
 import styles from "./timeline.module.scss";

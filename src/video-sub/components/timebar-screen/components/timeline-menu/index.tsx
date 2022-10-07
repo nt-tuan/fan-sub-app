@@ -6,16 +6,29 @@ import {
   useSubtitleEditorStore,
   useVideoPlayerStore,
 } from "@/video-sub/provider";
-import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
+  PlusOutlined,
+  SearchOutlined,
+  UndoOutlined,
+} from "@ant-design/icons";
 
 import styles from "./timeline-menu.module.scss";
 
 const TimelineMenu = ({
   onDelete,
+  onRewind,
+  onFastForward,
+  onFindBlanks,
   disabled,
 }: {
   disabled: boolean;
   onDelete: (e: React.MouseEvent) => void;
+  onRewind: () => void;
+  onFastForward: () => void;
+  onFindBlanks: () => void;
 }) => {
   const [createdSubtitleIndex, setCreatedSubtitleIndex] = useState<number>();
   const createSubtitle = useSubtitleEditorStore(
@@ -76,12 +89,35 @@ const TimelineMenu = ({
         >
           Subtitle
         </Button>
+        <Button onClick={onRewind} icon={<DoubleLeftOutlined />} size="large" />
+        <Button
+          onClick={onFastForward}
+          icon={<DoubleRightOutlined />}
+          size="large"
+        />
         <Button
           disabled={disabled}
           onClick={onDelete}
           icon={<DeleteOutlined />}
           size="large"
         />
+        <Button
+          disabled={disabled}
+          onClick={onDelete}
+          icon={<UndoOutlined />}
+          size="large"
+        />
+        <Button onClick={onDelete} size="large">
+          Save
+        </Button>
+        <Button
+          ghost
+          onClick={onFindBlanks}
+          size="large"
+          icon={<SearchOutlined />}
+        >
+          Find blanks
+        </Button>
       </Space>
     </div>
   );

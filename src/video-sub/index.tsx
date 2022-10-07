@@ -26,7 +26,7 @@ const VideoSubTranslator = () => {
             children: <TimebarScreen />,
           },
         ]}
-      ></Tabs>
+      />
     </VideoSubProvider>
   );
 };

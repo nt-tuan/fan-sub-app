@@ -1,15 +1,15 @@
 import React from "react";
-import { createStore, StoreApi, useStore } from "zustand";
-import { createVideoPlayerSlice } from "@/store/video-player-store";
+import { StoreApi, createStore, useStore } from "zustand";
 
 import {
   SubtitleBlock,
-  createSubtitleEditorStore,
   SubtitleEditorStore,
-  createVideoStore,
-  VideoStore,
   VideoPlayerStore,
+  VideoStore,
+  createSubtitleEditorStore,
+  createVideoStore,
 } from "@/store";
+import { createVideoPlayerSlice } from "@/store/video-player-store";
 
 const SubtitleEditorContext = React.createContext<{
   store: StoreApi<SubtitleEditorStore>;

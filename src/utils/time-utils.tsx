@@ -1,4 +1,4 @@
-import { PIXEL_PER_SECOND } from "@/video-sub/components/timebar-screen/components/ruler/ruler.enum";
+import { PIXEL_PER_SECOND } from "@/constant";
 
 export const milisecondsToSeconds = (time: number) => {
   return time / 1000;

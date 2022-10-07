@@ -18,11 +18,11 @@ import {
 import styles from "./timeline-menu.module.scss";
 
 const TimelineMenu = ({
+  disabled,
   onDelete,
   onRewind,
   onFastForward,
   onFindBlanks,
-  disabled,
 }: {
   disabled: boolean;
   onDelete: (e: React.MouseEvent) => void;
@@ -54,7 +54,6 @@ const TimelineMenu = ({
       videoRef.current?.removeEventListener("pause", handlePause);
     };
     videoRef.current.addEventListener("pause", handlePause);
-
     const index = createSubtitle(currentTime);
     setCreatedSubtitleIndex(index);
   }, [currentTime, videoRef, createSubtitle]);

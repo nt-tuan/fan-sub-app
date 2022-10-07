@@ -60,6 +60,7 @@ export const SubtitleForm = () => {
   }, [currentTime, scrollToCurrentTime]);
 
   if (nSubtitleSegments == null) return <Spin />;
+
   return (
     <div className={styles.subtitle_container}>
       <SubtitleLanguges />

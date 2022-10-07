@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+
 import useDrag from "@/hooks/useDrag";
 
 import styles from "./subtitles.module.scss";
@@ -15,11 +16,13 @@ const ExtendMount = ({
   onMouseUpCallback,
 }: ExtendMountProps) => {
   const ref = useRef<HTMLDivElement>(null);
+
   useDrag(ref, {
     id,
     onMouseMove,
     onMouseUpCallback,
   });
+
   return (
     <div
       id={`${id}-extend-mount`}

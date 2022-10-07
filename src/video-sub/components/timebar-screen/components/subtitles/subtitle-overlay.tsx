@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+
 import useDrag from "@/hooks/useDrag";
 
 import styles from "./subtitles.module.scss";

@@ -4,13 +4,8 @@ import VideoPlayer from "@/video-sub/components/video-player/video-player";
 import { useSubtitleEditorStore } from "@/video-sub/provider";
 import useTimebar from "@/video-sub/provider/useTimebar";
 
-import Timeline from "./components/timeline";
+import TimelineContent from "./components/timeline-content";
 import TimelineMenu from "./components/timeline-menu";
-
-const Wrapper = ({ width }: { width: number }) => {
-  if (!width) return null;
-  return <TimebarScreenContent width={width} />;
-};
 
 const TimebarScreenContent = ({ width }: { width: number }) => {
   const props = useTimebar({ width });
@@ -40,16 +35,21 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
           <VideoPlayer key="timeline-video" />
         </div>
       </div>
-      <Timeline {...(props as any)} width={width} />
+      <TimelineContent {...(props as any)} width={width} />
       <TimelineMenu
+        disabled={props.selectedIndex == null}
         onDelete={handleDelete}
-        onFindBlanks={props.onFindBlanks}
         onRewind={props.onRewind}
         onFastForward={props.onFastForward}
-        disabled={props.selectedIndex == null}
+        onFindBlanks={props.onFindBlanks}
       />
     </div>
   );
+};
+
+const Wrapper = ({ width }: { width: number }) => {
+  if (!width) return null;
+  return <TimebarScreenContent width={width} />;
 };
 
 const TimebarScreen = () => {

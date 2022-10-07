@@ -1,5 +1,7 @@
-import { MINIMUM_BLOCK_SIZE } from "@/video-sub/components/timebar-screen/constant";
-import { createStore, StateCreator } from "zustand";
+import { StateCreator, createStore } from "zustand";
+
+import { MINIMUM_BLOCK_SIZE } from "@/constant";
+
 import { SubtitleBlock, SubtitleEditorStore, SubtitleStore } from "./model";
 
 const defaultDstLang = "vi";

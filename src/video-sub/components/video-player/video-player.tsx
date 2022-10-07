@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useVideoPlayerStore, useVideoStore } from "../../provider";
+import { useVideoPlayerStore, useVideoStoreService } from "../../provider";
 import styles from "./video-player.module.scss";
 import { VideoSubtitleDisplayer } from "./video-subtitle-displayer";
 
@@ -8,7 +8,7 @@ interface Props {
   onPlay?: () => void;
 }
 const VideoPlayer = (props: Props) => {
-  const { isLoading, videoUrl, subtitleData } = useVideoStore();
+  const { isLoading, videoUrl, subtitleData } = useVideoStoreService();
   if (isLoading || videoUrl == null || subtitleData == null) return null;
   return <VideoPlayerContent videoUrl={videoUrl} {...props} />;
 };

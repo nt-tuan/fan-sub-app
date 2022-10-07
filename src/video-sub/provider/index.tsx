@@ -5,26 +5,26 @@ import {
   SubtitleBlock,
   SubtitleEditorStore,
   VideoPlayerStore,
-  VideoStore,
   createSubtitleEditorStore,
   createVideoStore,
+  videoStoreService,
 } from "@/store";
 import { createVideoPlayerSlice } from "@/store/video-player-store";
 
 const SubtitleEditorContext = React.createContext<{
   store: StoreApi<SubtitleEditorStore>;
-  videoStore: StoreApi<VideoStore>;
+  videoStoreService: StoreApi<videoStoreService>;
   videoPlayerStore: StoreApi<VideoPlayerStore>;
 }>({} as never);
 
 const VIDEO_URL = "/video/data.json";
 
 const VideoSubProvider = ({ children }: { children: React.ReactNode }) => {
-  const [videoStore] = React.useState(createStore(createVideoStore));
+  const [videoStoreService] = React.useState(createStore(createVideoStore));
   const [videoPlayerStore] = React.useState(
     createStore(createVideoPlayerSlice)
   );
-  const { loadData, subtitleData, subtitleStore } = useStore(videoStore);
+  const { loadData, subtitleData, subtitleStore } = useStore(videoStoreService);
 
   const store = React.useMemo(() => {
     if (subtitleData == null || subtitleStore == null) return null;
@@ -38,16 +38,16 @@ const VideoSubProvider = ({ children }: { children: React.ReactNode }) => {
   if (store == null) return null;
   return (
     <SubtitleEditorContext.Provider
-      value={{ store, videoStore, videoPlayerStore }}
+      value={{ store, videoStoreService, videoPlayerStore }}
     >
       {children}
     </SubtitleEditorContext.Provider>
   );
 };
 
-export const useVideoStore = () => {
-  const { videoStore } = React.useContext(SubtitleEditorContext);
-  return useStore(videoStore);
+export const useVideoStoreService = () => {
+  const { videoStoreService } = React.useContext(SubtitleEditorContext);
+  return useStore(videoStoreService);
 };
 
 export const useVideoPlayerStore = () => {

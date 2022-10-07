@@ -14,7 +14,7 @@ export interface IVideo {
   };
 }
 
-export interface VideoStore extends IVideo {
+export interface videoStoreService extends IVideo {
   loadData: (videoUrl: string) => Promise<void>;
 }
 

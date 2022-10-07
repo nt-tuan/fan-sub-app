@@ -6,6 +6,7 @@ import {
   useSubtitleEditorStore,
   useVideoPlayerStore,
 } from "@/video-sub/provider";
+import { ActionInterface, ActionType } from "@/video-sub/provider/useUndo";
 import {
   DeleteOutlined,
   DoubleLeftOutlined,
@@ -17,19 +18,25 @@ import {
 
 import styles from "./timeline-menu.module.scss";
 
+interface TimelineMenuProps {
+  disabled: boolean;
+  onDelete: (e: React.MouseEvent) => void;
+  onRewind: () => void;
+  onFastForward: () => void;
+  onFindBlanks: () => void;
+  undoAction: () => void;
+  pushAction: (action: ActionInterface) => void;
+}
+
 const TimelineMenu = ({
   disabled,
   onDelete,
   onRewind,
   onFastForward,
   onFindBlanks,
-}: {
-  disabled: boolean;
-  onDelete: (e: React.MouseEvent) => void;
-  onRewind: () => void;
-  onFastForward: () => void;
-  onFindBlanks: () => void;
-}) => {
+  undoAction,
+  pushAction,
+}: TimelineMenuProps) => {
   const [createdSubtitleIndex, setCreatedSubtitleIndex] = useState<number>();
   const createSubtitle = useSubtitleEditorStore(
     (state) => state.createSubtitle
@@ -56,7 +63,8 @@ const TimelineMenu = ({
     videoRef.current.addEventListener("pause", handlePause);
     const index = createSubtitle(currentTime);
     setCreatedSubtitleIndex(index);
-  }, [currentTime, videoRef, createSubtitle]);
+    if (index) pushAction({ type: ActionType.Delete, index });
+  }, [currentTime, videoRef, createSubtitle, pushAction]);
 
   useEffect(() => {
     if (createdSubtitleIndex == null) return;
@@ -100,12 +108,7 @@ const TimelineMenu = ({
           icon={<DeleteOutlined />}
           size="large"
         />
-        <Button
-          disabled={disabled}
-          onClick={onDelete}
-          icon={<UndoOutlined />}
-          size="large"
-        />
+        <Button onClick={undoAction} icon={<UndoOutlined />} size="large" />
         <Button onClick={onDelete} size="large">
           Save
         </Button>

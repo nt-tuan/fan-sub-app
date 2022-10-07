@@ -9,6 +9,7 @@ import {
   useVideoPlayerStore,
 } from "@/video-sub/provider";
 import useTimebar from "@/video-sub/provider/useTimebar";
+import { ActionType } from "@/video-sub/provider/useUndo";
 
 import SubtitleInputOverlay from "./components/subtitle-input-overlay";
 import TimelineContent from "./components/timeline-content";
@@ -30,6 +31,12 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
     if (props.selectedIndex == null) return;
     deleteSubtitle(props.selectedIndex);
     props.onUnfocus();
+    if (editingSubtitles)
+      props.pushAction({
+        type: ActionType.Create,
+        index: props.selectedIndex,
+        subtitle: editingSubtitles[props.selectedIndex],
+      });
   };
 
   const handleChangeSub = (newSubContent: string) => {
@@ -88,6 +95,8 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
         onRewind={props.onRewind}
         onFastForward={props.onFastForward}
         onFindBlanks={props.onFindBlanks}
+        undoAction={props.undoAction}
+        pushAction={props.pushAction}
       />
     </div>
   );

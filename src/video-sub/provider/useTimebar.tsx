@@ -11,6 +11,8 @@ import {
   useVideoPlayerStore,
 } from "@/video-sub/provider";
 
+import useUndo, { ActionType } from "./useUndo";
+
 const DISTANCE_TIME_ENUM = 500;
 
 const useTimebar = ({ width }: { width: number }) => {
@@ -26,7 +28,13 @@ const useTimebar = ({ width }: { width: number }) => {
     state.setEditingBlock,
   ]);
 
+  const { pushAction, popAction } = useUndo();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const edittingSubOrginal = useMemo(() => {
+    if (selectedIndex !== null && editingSubtitles)
+      return editingSubtitles[selectedIndex as number];
+  }, [selectedIndex, editingSubtitles]);
 
   const updateSubtitle = (index: number, segment: SubtitleBlockInterface) => {
     const subtitlesTemp = editingSubtitles;
@@ -35,12 +43,8 @@ const useTimebar = ({ width }: { width: number }) => {
     newSubtitles[index].from = segment.from;
     newSubtitles[index].to = segment.to;
     setEditingSubtitles(newSubtitles);
+    pushAction({ type: ActionType.Edit, index, subtitle: edittingSubOrginal });
   };
-
-  const edittingSubOrginal = useMemo(() => {
-    if (selectedIndex !== null && editingSubtitles)
-      return editingSubtitles[selectedIndex as number];
-  }, [selectedIndex, editingSubtitles]);
 
   const { minFrom, maxTo } = useMemo(() => {
     if (selectedIndex == null || !editingSubtitles)
@@ -145,6 +149,7 @@ const useTimebar = ({ width }: { width: number }) => {
 
   const onMouseUp = () => {
     if (!editingBlock) return;
+    console.log(" onMouseUp:");
     updateSubtitle(selectedIndex as number, editingBlock);
   };
   // end: resize handler
@@ -196,6 +201,8 @@ const useTimebar = ({ width }: { width: number }) => {
     onRewind,
     onFastForward,
     onFindBlanks,
+    undoAction: popAction,
+    pushAction,
     editingSub: editingBlock,
   };
 };

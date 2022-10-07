@@ -5,15 +5,12 @@ import styles from "./video-player.module.scss";
 import { VideoSubtitleDisplayer } from "./video-subtitle-displayer";
 
 interface Props {
+  hideSubtitle?: boolean;
   onPlay?: () => void;
 }
-const VideoPlayer = (props: Props) => {
-  const { isLoading, videoUrl, subtitleData } = useVideoStoreService();
-  if (isLoading || videoUrl == null || subtitleData == null) return null;
-  return <VideoPlayerContent videoUrl={videoUrl} {...props} />;
-};
 
 const VideoPlayerContent = ({
+  hideSubtitle,
   videoUrl,
   onPlay,
 }: { videoUrl: string } & Props) => {
@@ -68,8 +65,15 @@ const VideoPlayerContent = ({
           <source src={videoUrl} type="video/mp4" />
         </video>
       </div>
-      <VideoSubtitleDisplayer />
+      {!hideSubtitle && <VideoSubtitleDisplayer />}
     </div>
   );
 };
+
+const VideoPlayer = (props: Props) => {
+  const { isLoading, videoUrl, subtitleData } = useVideoStoreService();
+  if (isLoading || videoUrl == null || subtitleData == null) return null;
+  return <VideoPlayerContent videoUrl={videoUrl} {...props} />;
+};
+
 export default VideoPlayer;

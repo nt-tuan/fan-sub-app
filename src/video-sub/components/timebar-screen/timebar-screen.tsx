@@ -1,17 +1,28 @@
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 
+import { SubtitleBlock } from "@/store/model";
 import VideoPlayer from "@/video-sub/components/video-player/video-player";
-import { useSubtitleEditorStore } from "@/video-sub/provider";
+import {
+  useSubtitleEditor,
+  useSubtitleEditorStore,
+  useVideoPlayerStore,
+} from "@/video-sub/provider";
 import useTimebar from "@/video-sub/provider/useTimebar";
 
+import SubtitleInputOverlay from "./components/subtitle-input-overlay";
 import TimelineContent from "./components/timeline-content";
 import TimelineMenu from "./components/timeline-menu";
 
 const TimebarScreenContent = ({ width }: { width: number }) => {
+  const inputSubRef = useRef<HTMLInputElement>(null);
   const props = useTimebar({ width });
+  const { currentTime } = useVideoPlayerStore();
+  const { editingSubtitles, changeSubtitleText } = useSubtitleEditor();
   const deleteSubtitle = useSubtitleEditorStore(
     (store) => store.deleteSubtitle
   );
+  const [currentSubIndex, setCurrentSubIndex] = React.useState<number>(-1);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -20,6 +31,36 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
     deleteSubtitle(props.selectedIndex);
     props.onUnfocus();
   };
+
+  const handleChangeSub = (newSubContent: string) => {
+    changeSubtitleText(currentSubIndex, newSubContent);
+  };
+
+  const showCurrentSubtitle = useCallback(
+    (currentTime) => {
+      if (editingSubtitles == null) return;
+      const newCurrentSubIdx = editingSubtitles.findIndex(
+        (sub: SubtitleBlock) => sub.from <= currentTime && currentTime <= sub.to
+      );
+
+      if (currentSubIndex !== newCurrentSubIdx) {
+        setCurrentSubIndex(newCurrentSubIdx);
+        if (inputSubRef.current)
+          inputSubRef.current.value =
+            editingSubtitles[newCurrentSubIdx]?.text ?? "";
+      }
+    },
+    [editingSubtitles, inputSubRef, currentSubIndex]
+  );
+
+  useEffect(() => {
+    showCurrentSubtitle(currentTime);
+  }, [currentTime, showCurrentSubtitle]);
+
+  const showSubtitleInput = useMemo(() => {
+    if (!editingSubtitles) return false;
+    return Boolean(editingSubtitles[currentSubIndex]);
+  }, [currentSubIndex, editingSubtitles]);
 
   return (
     <div style={{ height: "100%", width }}>
@@ -31,8 +72,13 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
           backgroundColor: "#000",
         }}
       >
-        <div style={{ height: 480, width: 640 }}>
-          <VideoPlayer key="timeline-video" />
+        <div style={{ height: 480, width: 640, position: "relative" }}>
+          <VideoPlayer hideSubtitle key="timeline-video" />
+          <SubtitleInputOverlay
+            ref={inputSubRef}
+            onChange={handleChangeSub}
+            showSubtitleInput={showSubtitleInput}
+          />
         </div>
       </div>
       <TimelineContent {...(props as any)} width={width} />

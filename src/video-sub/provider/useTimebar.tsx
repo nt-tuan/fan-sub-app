@@ -153,13 +153,29 @@ const useTimebar = ({ width }: { width: number }) => {
   };
   // end: resize handler
 
-  const onRewind = () => {
-    onMove({ distancePixel: 0, distanceDuration: -1 * DISTANCE_TIME_ENUM });
+  // start: move subtitle block when click onRewind, onFastForward
+  const moveSubtitleBlock = (distance: number) => {
+    if (!editingBlock) return;
+    const orginalFrom = editingBlock?.from ?? 0;
+    const orginalTo = editingBlock?.to ?? 0;
+    changePosition(
+      (state) => ({
+        ...state,
+        to: orginalTo + distance,
+        from: orginalFrom + distance,
+      }),
+      true
+    );
+    updateSubtitle(selectedIndex as number, {
+      ...editingBlock,
+      to: orginalTo + distance,
+      from: orginalFrom + distance,
+    });
   };
 
-  const onFastForward = () => {
-    onMove({ distancePixel: 0, distanceDuration: DISTANCE_TIME_ENUM });
-  };
+  const onRewind = () => moveSubtitleBlock(-1 * DISTANCE_TIME_ENUM);
+  const onFastForward = () => moveSubtitleBlock(DISTANCE_TIME_ENUM);
+  // end: move subtitle block when click onRewind, onFastForward
 
   const onFindBlanks = () => {
     if (!editingSubtitles) return;

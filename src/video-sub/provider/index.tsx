@@ -140,6 +140,13 @@ export const useSubtitleEditor = () => {
     return subtitleData[dstLang]?.[index]?.text ?? "";
   };
 
+  const saveSubtitles = async (nextSubtitles: SubtitleBlock[]) => {
+    if (dstLang == null || nextSubtitles == null) return;
+    await subtitleStore.save(dstLang, nextSubtitles);
+    const nextData = await subtitleStore.get();
+    setSubtitleData(nextData);
+  };
+
   const saveSubtitle = async (index: number) => {
     const editingBlock = editingSubtitles?.[index];
 
@@ -155,9 +162,7 @@ export const useSubtitleEditor = () => {
         text: editingBlock.text,
       };
     });
-    await subtitleStore.save(dstLang, nextSubtitles);
-    const nextData = await subtitleStore.get();
-    setSubtitleData(nextData);
+    await saveSubtitles(nextSubtitles);
   };
 
   const cancelSubtitle = async (index: number) => {
@@ -201,6 +206,7 @@ export const useSubtitleEditor = () => {
     getCurrentSubtitleByTime,
     getDefaultSubtitleText,
     saveSubtitle,
+    saveSubtitles,
     cancelSubtitle,
   };
 };

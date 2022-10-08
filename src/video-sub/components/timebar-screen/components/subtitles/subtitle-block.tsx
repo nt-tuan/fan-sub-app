@@ -40,7 +40,12 @@ const SubtitleBlock = ({
   const subtitleRef = useRef<any>(null);
   const { from = 0, to = 0 } = subtitle ?? {};
 
-  useOutsideClick(subtitleRef, () => onFocus(null), ["click", "touchstart"]);
+  // useOutsideClick(
+  //   subtitleRef,
+  //   () => onFocus(null),
+  //   ["mousedown", "touchstart"],
+  //   getParrent
+  // );
 
   const onResizeLeftSide = (distance: number) => {
     const distanceDuration = getMilisecondFromPx(Math.abs(distance));
@@ -48,7 +53,6 @@ const SubtitleBlock = ({
     onResizeLeft({
       distancePixel: distance,
       distanceDuration: distanceDuration * direction,
-      subElement: subtitleRef,
     });
   };
 
@@ -58,7 +62,6 @@ const SubtitleBlock = ({
     onResizeRight({
       distancePixel: distance,
       distanceDuration: distanceDuration * direction,
-      subElement: subtitleRef,
     });
   };
 
@@ -68,7 +71,6 @@ const SubtitleBlock = ({
     onMove({
       distancePixel: distance,
       distanceDuration: distanceDuration * direction,
-      subElement: subtitleRef,
     });
   };
 

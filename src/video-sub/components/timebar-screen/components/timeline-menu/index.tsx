@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { SubtitleBlock as SubtitleBlockInterface } from "@/store";
 import {
+  useSubtitleEditor,
   useSubtitleEditorStore,
   useVideoPlayerStore,
 } from "@/video-sub/provider";
@@ -45,6 +46,7 @@ const TimelineMenu = ({
   const [editingSubtitles = [], setEditingSubtitles] = useSubtitleEditorStore(
     (state) => [state.editingSubtitles, state.setSubtitles]
   );
+  const { saveSubtitles } = useSubtitleEditor();
   const { currentTime, videoRef } = useVideoPlayerStore();
 
   const disabledAddBtn = useMemo(() => {
@@ -109,7 +111,7 @@ const TimelineMenu = ({
           size="large"
         />
         <Button onClick={undoAction} icon={<UndoOutlined />} size="large" />
-        <Button onClick={onDelete} size="large">
+        <Button onClick={() => saveSubtitles(editingSubtitles)} size="large">
           Save
         </Button>
         <Button

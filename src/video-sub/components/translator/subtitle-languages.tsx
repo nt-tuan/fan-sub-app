@@ -4,7 +4,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import { useSubtitleLanguages } from "../../provider";
 import styles from "./styles.module.scss";
 
-export const SubtitleLanguges = () => {
+export const SubtitleLanguages = () => {
   const { srcLang, setSrcLang, dstLang, setDstLang } = useSubtitleLanguages();
   return (
     <div className={styles.subtitle_lang_select_group}>

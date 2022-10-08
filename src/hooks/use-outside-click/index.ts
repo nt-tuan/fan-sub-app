@@ -5,7 +5,8 @@ const defaultEvents = ["mousedown", "touchstart"];
 const useOutsideClick = (
   ref: React.RefObject<HTMLElement>,
   callback: () => void,
-  events: string[] = defaultEvents
+  events: string[] = defaultEvents,
+  getParrent: () => HTMLElement | Document = () => document
 ) => {
   React.useEffect(() => {
     if (ref.current == null) return;
@@ -16,15 +17,15 @@ const useOutsideClick = (
       }
     };
     for (const event of events) {
-      document.addEventListener(event, listener);
+      getParrent().addEventListener(event, listener);
     }
 
     return () => {
       for (const event of events) {
-        document.removeEventListener(event, listener);
+        getParrent().removeEventListener(event, listener);
       }
     };
-  }, [callback, ref, events]);
+  }, [callback, ref, events, getParrent]);
 
   return ref;
 };

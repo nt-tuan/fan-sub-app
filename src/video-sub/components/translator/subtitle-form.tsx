@@ -10,7 +10,7 @@ import {
 } from "../../provider";
 import styles from "./styles.module.scss";
 import { SubtitleBlock } from "./subtitle-block";
-import { SubtitleLanguges } from "./subtitle-languages";
+import { SubtitleLanguages } from "./subtitle-languages";
 
 const ItemRenderer = ({
   index,
@@ -63,7 +63,7 @@ export const SubtitleForm = () => {
 
   return (
     <div className={styles.subtitle_container}>
-      <SubtitleLanguges />
+      <SubtitleLanguages />
       <div className={styles.subtitle_block_group}>
         <AutoSizer>
           {({ width, height }) => (

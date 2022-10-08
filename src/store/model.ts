@@ -2,6 +2,12 @@ export interface SubtitleBlock {
   from: number;
   to: number;
   text?: string;
+  position?: {
+    top: number;
+    bottom: number;
+    left: number;
+    right: number;
+  };
 }
 
 export interface IVideo {
@@ -63,5 +69,4 @@ export type SubtitleEditorStore = SubtitleEditorStoreState &
 export interface ResizeEventInterface {
   distancePixel: number;
   distanceDuration: number;
-  subElement: any;
 }

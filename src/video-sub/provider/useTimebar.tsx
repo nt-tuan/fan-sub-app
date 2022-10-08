@@ -149,21 +149,16 @@ const useTimebar = ({ width }: { width: number }) => {
 
   const onMouseUp = () => {
     if (!editingBlock) return;
-    console.log(" onMouseUp:");
     updateSubtitle(selectedIndex as number, editingBlock);
   };
   // end: resize handler
 
   const onRewind = () => {
-    const newTime = currentTime - DISTANCE_TIME_ENUM;
-    goTo(Math.max(0, newTime));
+    onMove({ distancePixel: 0, distanceDuration: -1 * DISTANCE_TIME_ENUM });
   };
 
   const onFastForward = () => {
-    if (endTime) {
-      const newTime = currentTime + DISTANCE_TIME_ENUM;
-      goTo(Math.min(endTime, newTime));
-    }
+    onMove({ distancePixel: 0, distanceDuration: DISTANCE_TIME_ENUM });
   };
 
   const onFindBlanks = () => {

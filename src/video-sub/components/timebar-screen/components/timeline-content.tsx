@@ -36,6 +36,8 @@ const TimelineContent = (props: any) => {
 
   const rulerOffset = isDragging ? rulerOffsetByDrag : rulerOffsetByVideoTime;
 
+  const unSelectSubtitleBlock = () => props.onFocus(null);
+
   return (
     <div ref={timelineContainerRef} className={styles.timeline_container}>
       <div className={styles.timeline_cursor} />
@@ -48,7 +50,11 @@ const TimelineContent = (props: any) => {
         }}
       >
         <Subtitles {...props} />
-        <div ref={rulerOuterRef} className={styles.ruler_outer}>
+        <div
+          ref={rulerOuterRef}
+          className={styles.ruler_outer}
+          onClick={unSelectSubtitleBlock}
+        >
           {endTime && <Timeline duration={endTime} />}
         </div>
       </div>

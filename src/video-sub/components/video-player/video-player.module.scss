@@ -21,10 +21,6 @@
   }
 
   .subtitle_container {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 65px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,10 +28,12 @@
       padding: 14px 16px 18px;
       background-color: #000;
       opacity: 0.75;
-      width: 80%;
+      width: fit-content;
       color: #fff;
       text-align: center;
       font-size: 25px;
+      user-select: none;
+      cursor: all-scroll;
     }
   }
 }

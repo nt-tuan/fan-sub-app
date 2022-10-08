@@ -12,7 +12,7 @@ const VideoSubTranslator = () => {
       <Tabs
         className={styles.video_sub_container}
         centered
-        defaultActiveKey="2"
+        defaultActiveKey="1"
         destroyInactiveTabPane
         items={[
           {

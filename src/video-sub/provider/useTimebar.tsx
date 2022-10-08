@@ -17,7 +17,7 @@ const DISTANCE_TIME_ENUM = 500;
 
 const useTimebar = ({ width }: { width: number }) => {
   const halfOfContainer = width / 2;
-  const { currentTime, endTime, goTo } = useVideoPlayerStore();
+  const { currentTime, goTo } = useVideoPlayerStore();
 
   const [editingSubtitles, setEditingSubtitles] = useSubtitleEditorStore(
     (state) => [state.editingSubtitles, state.setSubtitles]

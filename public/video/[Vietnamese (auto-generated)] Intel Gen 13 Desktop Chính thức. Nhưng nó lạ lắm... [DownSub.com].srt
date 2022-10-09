@@ -1,0 +1,708 @@
+1
+00:00:03,620 --> 00:00:06,060
+Ok xin chào anh em đã quay trở lại với
+
+2
+00:00:06,060 --> 00:00:08,220
+Teamviewer vào với hank như vậy là mới
+
+3
+00:00:08,220 --> 00:00:09,900
+đây in theo đó chính thức công bố những
+
+4
+00:00:09,900 --> 00:00:11,880
+dòng vi xử lý mới dành cho desktop Intel
+
+5
+00:00:11,880 --> 00:00:14,700
+13 Project chỉ sau ít ngày Khi mà em đi
+
+6
+00:00:14,700 --> 00:00:17,220
+công bố ration 7000 series những điều
+
+7
+00:00:17,220 --> 00:00:18,500
+đặc biệt có
+
+8
+00:00:18,500 --> 00:00:21,720
+intela 1700 nó vẫn tường thích với dram
+
+9
+00:00:21,720 --> 00:00:24,420
+đeo đầu 4 nó có xung nhịp cao hơn số
+
+10
+00:00:24,420 --> 00:00:27,500
+lượng nhân tăng lên bộ nhớ L2
+
+11
+00:00:27,500 --> 00:00:29,880
+theo cũng công bố một loạt đi bỏ so sánh
+
+12
+00:00:29,880 --> 00:00:32,880
+giữa CPU mới của Intel và MV Rising 5000
+
+13
+00:00:32,880 --> 00:00:34,680
+series Tuy nhiên cái cách mến theo So
+
+14
+00:00:34,680 --> 00:00:36,660
+sánh thì nó lạ lắm anh em ạ đầu tiên đó
+
+15
+00:00:36,660 --> 00:00:38,280
+chính là hệ thống Intel 13 nó được sử
+
+16
+00:00:38,280 --> 00:00:42,420
+dụng ram dr556 còn ryzen năm 950s thì nó
+
+17
+00:00:42,420 --> 00:00:46,079
+vẫn sử dụng là ram dr4 3.200 mà thôi và
+
+18
+00:00:46,079 --> 00:00:47,340
+điều thứ hai nữa đó chính là đối thủ
+
+19
+00:00:47,340 --> 00:00:48,780
+trực tiếp với theo bây giờ ấy nó chính
+
+20
+00:00:48,780 --> 00:00:50,340
+là em đi giật bệnh ngày series mới đúng
+
+21
+00:00:50,340 --> 00:00:52,620
+nên là hai lý do đó thôi đã thấy được
+
+22
+00:00:52,620 --> 00:00:54,480
+rằng là cái màn So sánh này nó không
+
+23
+00:00:54,480 --> 00:00:57,300
+được công bằng cho lắm đối với cả em đi
+
+24
+00:00:57,300 --> 00:00:58,920
+nhưng mà chúng ta cũng thể hiểu được
+
+25
+00:00:58,920 --> 00:01:01,559
+rằng là em đi nó mới ra bắt đầu vào
+
+26
+00:01:01,559 --> 00:01:03,899
+khoảng là gần một tháng thôi Nên là
+
+27
+00:01:03,899 --> 00:01:05,820
+Intel cũng chưa có ben cho bác được nên
+
+28
+00:01:05,820 --> 00:01:07,439
+là thôi tạm bỏ qua những vấn đề đó thì
+
+29
+00:01:07,439 --> 00:01:10,200
+chúng ta sẽ cùng xem giá Intel 13 nó có
+
+30
+00:01:10,200 --> 00:01:12,420
+gì đặc biệt nhá đầu tiên chúng ta sẽ có
+
+31
+00:01:12,420 --> 00:01:14,100
+3 dòng vi xử lý đáng chú ý đó chính là
+
+32
+00:01:14,100 --> 00:01:15,920
+Intel Core
+
+33
+00:01:15,920 --> 00:01:22,020
+i913900k có i7 13700k và Core I5 1350k
+
+34
+00:01:22,020 --> 00:01:24,659
+cả ba dòng CPU này nó đều tăng gấp đôi
+
+35
+00:01:24,659 --> 00:01:26,580
+số lượng nhân ecore và những anh em làm
+
+36
+00:01:26,580 --> 00:01:27,720
+sáng tạo thì sẽ là những người được
+
+37
+00:01:27,720 --> 00:01:29,280
+hưởng lợi chính bởi vì những phần mềm
+
+38
+00:01:29,280 --> 00:01:30,780
+sáng tạo Nó sẽ tận dụng được nhiều hơn
+
+39
+00:01:30,780 --> 00:01:32,280
+sức mạnh đa nhân bên cạnh đó thì việc
+
+40
+00:01:32,280 --> 00:01:33,780
+đẩy số lượng nhân lên cũng là để cho
+
+41
+00:01:33,780 --> 00:01:35,100
+Intel cho em về ba nó sức mạnh tương
+
+42
+00:01:35,100 --> 00:01:37,619
+đồng so với cả mmdragon 7000 series và
+
+43
+00:01:37,619 --> 00:01:40,439
+do trùng hợp khi mà Core i91390 ông K nó
+
+44
+00:01:40,439 --> 00:01:43,680
+có số lượng luồng là tương đồng là 32
+
+45
+00:01:43,680 --> 00:01:47,340
+luồng so với cả ryzen 9 7 9 5 0x còn về
+
+46
+00:01:47,340 --> 00:01:48,420
+số nghiệp của các dòng máy theo chuyên
+
+47
+00:01:48,420 --> 00:01:50,159
+13 nó cũng được đẩy lên tương đối so với
+
+48
+00:01:50,159 --> 00:01:52,320
+cả những phiên bản cung cấp Thế Hệ 12 cả
+
+49
+00:01:52,320 --> 00:01:54,540
+Pico và Pico nó cũng được đẩy công
+
+50
+00:01:54,540 --> 00:01:56,759
+nghiệp lên thấy rõ Tuy nhiên cái thứ mà
+
+51
+00:01:56,759 --> 00:01:57,840
+tác động nhiều nhất và hiệu năng của
+
+52
+00:01:57,840 --> 00:02:00,720
+Intel trên 13 đó chính là bộ nhớ L2 và
+
+53
+00:02:00,720 --> 00:02:03,240
+L3 nó cũng được tăng lên việc tăng bộ
+
+54
+00:02:03,240 --> 00:02:06,119
+nhớ đệm L2 và L3 nó cực kỳ quan trọng và
+
+55
+00:02:06,119 --> 00:02:07,680
+bộ nhớ đệm nhiều hơn thì đồng nghĩa với
+
+56
+00:02:07,680 --> 00:02:09,239
+việc giảm nhiều dữ liệu hơn được đặt
+
+57
+00:02:09,239 --> 00:02:11,340
+cạnh CB để mà xử lý giảm thiểu hiện
+
+58
+00:02:11,340 --> 00:02:13,080
+tượng CPU phải chờ để mà dữ liệu được
+
+59
+00:02:13,080 --> 00:02:15,060
+luân chuyển lên ví dụ điển hình của việc
+
+60
+00:02:15,060 --> 00:02:16,200
+tăng cách tăng hiệu năng đó chính là
+
+61
+00:02:16,200 --> 00:02:19,200
+những dòng CPU AMD badwatch mới ở đây để
+
+62
+00:02:19,200 --> 00:02:20,520
+em đi đã áp dụng công nghệ xếp chồng bộ
+
+63
+00:02:20,520 --> 00:02:22,800
+nhớ lại ba cách của chiếc xesi và nó đưa
+
+64
+00:02:22,800 --> 00:02:24,560
+dung lượng của bộ nhớ ba kích lên đến là
+
+65
+00:02:24,560 --> 00:02:28,080
+192 MB và mmd cũng có chia sẻ giải việc
+
+66
+00:02:28,080 --> 00:02:29,400
+chỉ tăng mỗi dung lượng bộ nhớ không
+
+67
+00:02:29,400 --> 00:02:31,680
+thôi ấy Nó cũng giúp hiệu năng Gaming nó
+
+68
+00:02:31,680 --> 00:02:33,840
+tăng lên Đến 15% mà chưa cần có bất kỳ
+
+69
+00:02:33,840 --> 00:02:34,920
+một can thiệp nào liên quan đến phần mềm
+
+70
+00:02:34,920 --> 00:02:38,220
+cả nên là tăng Cake thì hiệu năng nó
+
+71
+00:02:38,220 --> 00:02:40,440
+cũng sẽ tăng và theo như Intel chia sẻ
+
+72
+00:02:40,440 --> 00:02:42,720
+rằng nhờ ba yếu tố đó tăng số lượng nhân
+
+73
+00:02:42,720 --> 00:02:45,420
+tăng xung nhịp nhân tăng bộ nhớ cách ký
+
+74
+00:02:45,420 --> 00:02:47,400
+hiệu năng đưa nhân của i91390 ông K nó
+
+75
+00:02:47,400 --> 00:02:49,800
+cải thiện lên đến là 15%, còn hiệu năng
+
+76
+00:02:49,800 --> 00:02:52,019
+đa nhân thì nó lên đấy là 41% so với
+
+77
+00:02:52,019 --> 00:02:54,660
+Intel 12 có ý chí một hai chín không k
+
+78
+00:02:54,660 --> 00:02:57,780
+một khoảng cách là rất lớn có nói về
+
+79
+00:02:57,780 --> 00:03:00,180
+công suất điện tiêu thụ thì Intel có thể
+
+80
+00:03:00,180 --> 00:03:03,060
+lên cả kho Club Cake đây là theo như một
+
+81
+00:03:03,060 --> 00:03:05,160
+lẽ tự nhiên thì cường xuất hiện nó cũng
+
+82
+00:03:05,160 --> 00:03:07,560
+sẽ bị đẩy lên và đúng thật công suất
+
+83
+00:03:07,560 --> 00:03:09,260
+điện tiêu thụ tối đa nó tăng lên đến
+
+84
+00:03:09,260 --> 00:03:13,800
+253w thay vì 244w như là i9 1290k Nhưng
+
+85
+00:03:13,800 --> 00:03:15,780
+mà anh em đừng vội chê nhé bằng một cách
+
+86
+00:03:15,780 --> 00:03:18,360
+nào đó mà hiệu năng của i91390k nó lại
+
+87
+00:03:18,360 --> 00:03:21,060
+tương đương so với 912900k mà nó chỉ ăn
+
+88
+00:03:21,060 --> 00:03:23,239
+có 65 có điện mà thôi trong khi đó thì
+
+89
+00:03:23,239 --> 00:03:27,000
+i912900k nó lại cần lên đến 241 w rõ
+
+90
+00:03:27,000 --> 00:03:28,620
+ràng đây là một con số rất là ấn tượng
+
+91
+00:03:28,620 --> 00:03:30,780
+và mình cũng hơi tò mò xem rằng Intel đã
+
+92
+00:03:30,780 --> 00:03:32,099
+làm cách nào để mà làm được những điều
+
+93
+00:03:32,099 --> 00:03:34,860
+như vậy bởi vì kiến trúc nhân cách sắp
+
+94
+00:03:34,860 --> 00:03:36,599
+xếp layout đã gần như tương đồng so với
+
+95
+00:03:36,599 --> 00:03:38,220
+phiên bản thử nghiệm Intel chỉ chia sẻ
+
+96
+00:03:38,220 --> 00:03:39,900
+rằng quy trình sản xuất Intel 7 nó được
+
+97
+00:03:39,900 --> 00:03:41,879
+nâng cấp lên Nên là hiệu năng trên mỗi w
+
+98
+00:03:41,879 --> 00:03:44,159
+điện nó cũng sẽ tăng lên và ở đây thì
+
+99
+00:03:44,159 --> 00:03:45,480
+Intel cũng không giới hạn mức điện cho
+
+100
+00:03:45,480 --> 00:03:47,700
+những dòng CPU trên 13 thay vào đó cho
+
+101
+00:03:47,700 --> 00:03:49,799
+nó chạy maxping lên đến trên 200 đồng
+
+102
+00:03:49,799 --> 00:03:51,420
+Watt và thông thường để các nhà sản xuất
+
+103
+00:03:51,420 --> 00:03:53,340
+main sẽ cho nó chạy luôn lên để nó vào
+
+104
+00:03:53,340 --> 00:03:55,680
+khoảng là 300 W Nghe thơ đã cảm thấy rất
+
+105
+00:03:55,680 --> 00:03:58,920
+là dã man rồi nhưng mà liệu việc nó có
+
+106
+00:03:58,920 --> 00:04:00,599
+khó tản nhiệt hơn hay là dễ tản nhiệt
+
+107
+00:04:00,599 --> 00:04:02,940
+hơn so với cả những dòng CPU AMD Rising
+
+108
+00:04:02,940 --> 00:04:04,920
+7000 series cũng vốn ăn điện khá là
+
+109
+00:04:04,920 --> 00:04:07,620
+nhiều ấy thì chúng ta sẽ phải chờ đợi
+
+110
+00:04:07,620 --> 00:04:09,659
+những sản phẩm trên tay thì mới có thể
+
+111
+00:04:09,659 --> 00:04:11,340
+kết luận được Bây giờ chúng ta sẽ cùng
+
+112
+00:04:11,340 --> 00:04:13,140
+Nói về hiệu năng thực tế đi cái này thì
+
+113
+00:04:13,140 --> 00:04:14,640
+mới hay này bởi vì nó sẽ gây ra rất là
+
+114
+00:04:14,640 --> 00:04:16,620
+nhiều những sự tranh cãi nhưng theo chia
+
+115
+00:04:16,620 --> 00:04:18,120
+sẻ rằng hiệu năng game mình nó tăng lên
+
+116
+00:04:18,120 --> 00:04:22,380
+đến 24%, Tuy nhiên con số 24% đó nó sẽ
+
+117
+00:04:22,380 --> 00:04:25,139
+chỉ đúng với mỗi tựa game lờ mà thôi và
+
+118
+00:04:25,139 --> 00:04:26,580
+sự chênh lệch đáng kể nó cũng sẽ chỉ nằm
+
+119
+00:04:26,580 --> 00:04:28,199
+ở một số tựa game Esport nhẹ nhàng mà
+
+120
+00:04:28,199 --> 00:04:29,880
+thôi Còn đối với cả những tựa game
+
+121
+00:04:29,880 --> 00:04:31,680
+Triple Ace mà cái mà chúng ta cần những
+
+122
+00:04:31,680 --> 00:04:34,380
+con số 20% đó thì chúng lại không có quá
+
+123
+00:04:34,380 --> 00:04:35,699
+nhiều những sự cải thiện so với cả phiên
+
+124
+00:04:35,699 --> 00:04:37,680
+bản thử nghiệm đến với bảng so sánh với
+
+125
+00:04:37,680 --> 00:04:39,540
+cả em đi nhé Thì cái này Intel hơi Quái
+
+126
+00:04:39,540 --> 00:04:42,600
+đấy in theo có so sánh với cả em 5800
+
+127
+00:04:42,600 --> 00:04:45,600
+x3d niềm tự hào của em đi và đợi em đi
+
+128
+00:04:45,600 --> 00:04:47,220
+cho rằng ở đây là một dòng cpo tốt nhất
+
+129
+00:04:47,220 --> 00:04:49,259
+hiện nay dành cho game thủ và nó đúng là
+
+130
+00:04:49,259 --> 00:04:51,300
+thế thật nhưng mà cái bảng mà đi theo vẽ
+
+131
+00:04:51,300 --> 00:04:53,280
+ra nó lại không Quá là rõ ràng chỉ có
+
+132
+00:04:53,280 --> 00:04:55,139
+mỗi cái việc đỏ mà thôi Nên là sự chú ý
+
+133
+00:04:55,139 --> 00:04:56,280
+của người dùng ấy nó sẽ chỉ tập trung
+
+134
+00:04:56,280 --> 00:04:58,740
+vào mỗi cái sự tăng lên của i91390 cam
+
+135
+00:04:58,740 --> 00:04:59,699
+thôi
+
+136
+00:04:59,699 --> 00:05:02,180
+Nếu đúng ra thì nó sẽ phải như thế này
+
+137
+00:05:02,180 --> 00:05:06,060
+đấy anh em nhìn xem thôi anh em tự đánh
+
+138
+00:05:06,060 --> 00:05:09,120
+giá nhá chưa kể là vụ những dòng cbmises
+
+139
+00:05:09,120 --> 00:05:12,120
+Nó chỉ là sử dụng keed ram dr43200 mà
+
+140
+00:05:12,120 --> 00:05:14,699
+thôi Ít ra cũng phải cho loại 3.600 xịn
+
+141
+00:05:14,699 --> 00:05:16,199
+xịn một chút chứ đúng không ạ Nên là
+
+142
+00:05:16,199 --> 00:05:17,160
+trong khuôn khổ video ngày hôm nay thì
+
+143
+00:05:17,160 --> 00:05:18,720
+mình cũng sẽ chỉ muốn là chỉ ra những
+
+144
+00:05:18,720 --> 00:05:20,340
+điểm cần quan tâm và đáng chú mà thôi
+
+145
+00:05:20,340 --> 00:05:22,919
+chứ còn cũng chưa Kết luận được bất kỳ
+
+146
+00:05:22,919 --> 00:05:24,840
+mối điều gì cả thông qua những bài test
+
+147
+00:05:24,840 --> 00:05:27,000
+và thông qua những cái số liệu BenchMark
+
+148
+00:05:27,000 --> 00:05:30,000
+mà Intel và cả AMD đưa ra trước đó và
+
+149
+00:05:30,000 --> 00:05:31,380
+cuối cùng thì mình rất là muốn chia sẻ
+
+150
+00:05:31,380 --> 00:05:32,880
+về một thứ mà cá nhân mình cảm thấy rất
+
+151
+00:05:32,880 --> 00:05:35,280
+ấn tượng đó chính là màn demo của Intel
+
+152
+00:05:35,280 --> 00:05:36,780
+về khả năng đa nhiệm của Intel trên 13
+
+153
+00:05:36,780 --> 00:05:39,900
+mà Intel cọ để công nghệ Intel Hybrid và
+
+154
+00:05:39,900 --> 00:05:41,880
+nó sẽ giúp cho anh em streaming Gaming
+
+155
+00:05:41,880 --> 00:05:44,400
+render ổn định hơn rất là nhiều ví dụ
+
+156
+00:05:44,400 --> 00:05:46,020
+như khi mà anh em đang làm việc với cả
+
+157
+00:05:46,020 --> 00:05:47,100
+một ứng dụng nào đó trên màn hình chính
+
+158
+00:05:47,100 --> 00:05:49,979
+nhá thì Pico nó sẽ là sử dụng chính để
+
+159
+00:05:49,979 --> 00:05:52,199
+mà xử lý những tác vụ đó sau đó thì nếu
+
+160
+00:05:52,199 --> 00:05:53,940
+như mà anh em kéo cửa sổ ứng dụng đó
+
+161
+00:05:53,940 --> 00:05:56,460
+xuống chạy nền và mở ứng dụng khác ví dụ
+
+162
+00:05:56,460 --> 00:05:58,860
+ở đây đó chính là un5 lên để mà chỉnh
+
+163
+00:05:58,860 --> 00:06:01,580
+sửa những hiệu ứng liên quan
+
+164
+00:06:59,580 --> 00:07:02,520
+trong năm nay là vô cùng cân sức ở trên
+
+165
+00:07:02,520 --> 00:07:04,380
+mọi khía cạnh anh em nghĩ sao thì hãy
+
+166
+00:07:04,380 --> 00:07:06,539
+cùng chia sẻ cảm nghĩ và bình luận ở
+
+167
+00:07:06,539 --> 00:07:08,220
+phía bên dưới nhé và hi vọng rằng là
+
+168
+00:07:08,220 --> 00:07:09,539
+video ngày hôm nay thì sẽ giúp cho anh
+
+169
+00:07:09,539 --> 00:07:11,160
+em có được một góc nhìn tổng quan hơn
+
+170
+00:07:11,160 --> 00:07:13,020
+với những dòng CPU mới của Intel và cả
+
+171
+00:07:13,020 --> 00:07:15,000
+em đi ryzone 7 ngày series mình đã có
+
+172
+00:07:15,000 --> 00:07:16,860
+một video tổng quan về dòng CPU này rồi
+
+173
+00:07:16,860 --> 00:07:18,600
+link mình sẽ để dưới phần mô tả để mà
+
+174
+00:07:18,600 --> 00:07:20,280
+cho anh em tham khảo kỹ hơn nhá và hy
+
+175
+00:07:20,280 --> 00:07:21,419
+vọng rằng anh em sẽ cảm thấy yêu thích
+
+176
+00:07:21,419 --> 00:07:23,220
+video này còn bây giờ thì xin chào và
+
+177
+00:07:23,220 --> 00:07:26,240
+hẹn gặp lại
+

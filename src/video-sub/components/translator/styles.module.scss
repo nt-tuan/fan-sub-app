@@ -1,0 +1,101 @@
+@import "../../../styles/var.scss";
+
+.video_translator_container {
+  height: 100%;
+  display: flex;
+}
+
+.subtitle_container {
+  padding: 0 24px 0 24px;
+  height: 100%;
+  flex-direction: column;
+  display: flex;
+
+  .subtitle_actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    margin-top: 8px;
+
+    :global(button) {
+      width: 100px;
+    }
+  }
+  .subtitle_lang_select_group {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+
+    :global(.ant-select) {
+      width: 100%;
+    }
+
+    .subtitle_lang_input {
+      flex-grow: 1;
+      width: 0;
+    }
+    .subtitle_lang_direction_icon {
+      width: 44px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1px solid #d9d9d9;
+      border-bottom: 1px solid #d9d9d9;
+    }
+  }
+
+  .subtitle_block_group {
+    flex-grow: 1;
+    height: 0;
+    padding-top: 24px;
+    margin-right: -8px;
+
+    overflow: hidden;
+
+    .subtitle_block {
+      padding-right: 8px;
+      .subtitle_time_segment {
+        padding-bottom: 0px;
+      }
+      .subtitle_segment_preference {
+        padding-bottom: 8px;
+      }
+      .subtitle_segment_actions {
+        display: flex;
+        flex-direction: row;
+        justify-items: flex-end;
+        justify-content: flex-end;
+        align-items: center;
+
+        .subtitle_segment_action_item {
+          color: #adadad;
+          font-size: 12px;
+          padding: 0;
+          height: auto;
+        }
+        .subtitle_segment_action_item:hover {
+          background: none;
+        }
+      }
+
+      .subtitle_input {
+        background-color: #f0f0f0;
+        width: 100%;
+        border: 1px solid $border-color-base;
+        border-radius: 4px;
+        resize: none;
+      }
+    }
+
+    .subtitle_segment_active {
+      color: $primary-color;
+      .subtitle_input {
+        outline: none;
+        background-color: rgba($primary-color, 10%);
+        border-color: $primary-color;
+      }
+    }
+  }
+}

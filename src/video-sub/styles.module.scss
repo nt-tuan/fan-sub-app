@@ -1,0 +1,12 @@
+.video_sub_container {
+  height: 100%;
+  :global(.ant-tabs-content-holder) {
+    height: 100%;
+    :global(.ant-tabs-content) {
+      height: 100%;
+      :global(.ant-tabs-tabpane) {
+        height: 100%;
+      }
+    }
+  }
+}

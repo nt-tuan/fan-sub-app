@@ -1,0 +1,49 @@
+.subtitles_container {
+  height: 70px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.subtitle_block_container {
+  z-index: 4;
+  height: 35px;
+  background-color: #104027;
+  border-top: 1px solid #12502e;
+  border-bottom: 1px solid #12502e;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: move;
+  box-sizing: border-box;
+}
+
+.subtitle_block_overplay {
+  height: 70px;
+  width: inherit;
+  background-color: #13db62;
+  opacity: 0.3;
+  position: absolute;
+  top: -10;
+  left: 0;
+  z-index: 4;
+}
+
+.subtitle_block_selected {
+  border-top: 1px solid #13db62;
+  border-bottom: 1px solid #13db62;
+}
+
+.subtitle_block_mock {
+  z-index: 5;
+  width: 10px;
+  background-color: #13db62;
+  height: inherit;
+  cursor: ew-resize;
+}

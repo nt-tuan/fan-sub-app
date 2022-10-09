@@ -72,7 +72,8 @@ const useUndo = () => {
     setActions(actionsTemp);
   };
 
-  return { actions, pushAction, popAction };
+  const canUndo = actions.length > 0;
+  return { actions, pushAction, popAction, canUndo };
 };
 
 export default useUndo;

@@ -1,4 +1,4 @@
-import { Spin } from "antd";
+import { Button, Spin } from "antd";
 import React from "react";
 import AutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
@@ -22,10 +22,10 @@ const ItemRenderer = ({
 
 export const SubtitleForm = () => {
   const ref = React.useRef<FixedSizeList<any>>(null);
-  const { editingSubtitles } = useSubtitleEditor();
+  const { editingSubtitles, findBlankIndex, editingBlock } =
+    useSubtitleEditor();
   const dstLang = useSubtitleEditorStore((state) => state.dstLang);
   const { currentTime } = useVideoPlayerStore();
-  const editingBlock = useSubtitleEditorStore((state) => state.editingBlock);
   const lastEditingBlockIndex = React.useRef<number>();
   const nSubtitleSegments = editingSubtitles?.length;
 
@@ -59,11 +59,28 @@ export const SubtitleForm = () => {
     scrollToCurrentTime(currentTime);
   }, [currentTime, scrollToCurrentTime]);
 
+  const handleFindBlank = () => {
+    const index = findBlankIndex();
+    if (index && index >= 0 && editingSubtitles?.[index].from) {
+      scrollToCurrentTime(editingSubtitles[index].from);
+    }
+  };
+
+  const handleFindWords = () => {
+    // TODO: implement here
+  };
+
   if (nSubtitleSegments == null) return <Spin />;
 
   return (
     <div className={styles.subtitle_container}>
-      <SubtitleLanguages />
+      <div>
+        <SubtitleLanguages />
+        <div className={styles.subtitle_actions}>
+          <Button onClick={handleFindBlank}>Find Blanks</Button>
+          <Button onClick={handleFindWords}>Find Word</Button>
+        </div>
+      </div>
       <div className={styles.subtitle_block_group}>
         <AutoSizer>
           {({ width, height }) => (

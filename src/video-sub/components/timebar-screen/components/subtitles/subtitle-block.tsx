@@ -2,7 +2,6 @@ import classNames from "classnames";
 import React, { useRef } from "react";
 
 import { PIXEL_PER_SECOND } from "@/constant";
-import useOutsideClick from "@/hooks/use-outside-click";
 import {
   ResizeEventInterface,
   SubtitleBlock as SubtitleBlockInterface,
@@ -39,13 +38,6 @@ const SubtitleBlock = ({
 }: SubtitleBlockProps) => {
   const subtitleRef = useRef<any>(null);
   const { from = 0, to = 0 } = subtitle ?? {};
-
-  // useOutsideClick(
-  //   subtitleRef,
-  //   () => onFocus(null),
-  //   ["mousedown", "touchstart"],
-  //   getParrent
-  // );
 
   const onResizeLeftSide = (distance: number) => {
     const distanceDuration = getMilisecondFromPx(Math.abs(distance));

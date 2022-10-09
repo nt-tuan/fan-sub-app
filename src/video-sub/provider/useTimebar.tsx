@@ -6,29 +6,23 @@ import {
   SubtitleBlock as SubtitleBlockInterface,
 } from "@/store/model";
 import { getMilisecondFromPx } from "@/utils/time-utils";
-import {
-  useSubtitleEditorStore,
-  useVideoPlayerStore,
-} from "@/video-sub/provider";
+import { useSubtitleEditor, useVideoPlayerStore } from "@/video-sub/provider";
 
 import useUndo, { ActionType } from "./useUndo";
 
-const DISTANCE_TIME_ENUM = 500;
-
 const useTimebar = ({ width }: { width: number }) => {
   const halfOfContainer = width / 2;
-  const { currentTime, goTo } = useVideoPlayerStore();
+  const { currentTime } = useVideoPlayerStore();
 
-  const [editingSubtitles, setEditingSubtitles] = useSubtitleEditorStore(
-    (state) => [state.editingSubtitles, state.setSubtitles]
-  );
+  const {
+    findBlankIndex,
+    editingSubtitles,
+    setEditingSubtitles,
+    editingBlock,
+    setEditingBlock,
+  } = useSubtitleEditor();
 
-  const [editingBlock, setEditingBlock] = useSubtitleEditorStore((state) => [
-    state.editingBlock,
-    state.setEditingBlock,
-  ]);
-
-  const { pushAction, popAction } = useUndo();
+  const { pushAction, popAction, canUndo } = useUndo();
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const edittingSubOrginal = useMemo(() => {
@@ -60,6 +54,11 @@ const useTimebar = ({ width }: { width: number }) => {
       maxTo,
     };
   }, [editingSubtitles, selectedIndex]);
+
+  const canFastForward =
+    editingBlock && editingBlock.to + MINIMUM_BLOCK_SIZE <= maxTo;
+  const canRewind =
+    editingBlock && editingBlock.from - MINIMUM_BLOCK_SIZE >= minFrom;
 
   // start: resize handler
   const changePosition = (
@@ -173,14 +172,18 @@ const useTimebar = ({ width }: { width: number }) => {
     });
   };
 
-  const onRewind = () => moveSubtitleBlock(-1 * DISTANCE_TIME_ENUM);
-  const onFastForward = () => moveSubtitleBlock(DISTANCE_TIME_ENUM);
+  const onRewind = () => moveSubtitleBlock(-1 * MINIMUM_BLOCK_SIZE);
+  const onFastForward = () => moveSubtitleBlock(MINIMUM_BLOCK_SIZE);
   // end: move subtitle block when click onRewind, onFastForward
 
   const onFindBlanks = () => {
     if (!editingSubtitles) return;
-    const blankSubtitle = editingSubtitles?.find((sub) => !sub.text);
-    if (blankSubtitle) goTo(blankSubtitle.from);
+    const blankSubtitleIndex = findBlankIndex();
+    if (blankSubtitleIndex == null) return;
+    const blankSubtitle = editingSubtitles[blankSubtitleIndex];
+    if (blankSubtitle) {
+      setSelectedIndex(blankSubtitleIndex);
+    }
   };
 
   const subtitles = useMemo(() => {
@@ -209,9 +212,15 @@ const useTimebar = ({ width }: { width: number }) => {
     onMove,
     onResizeLeft,
     onResizeRight,
-    onRewind,
+
+    canFastForward,
     onFastForward,
+    canRewind,
+    onRewind,
+
     onFindBlanks,
+
+    canUndo,
     undoAction: popAction,
     pushAction,
     editingSub: editingBlock,

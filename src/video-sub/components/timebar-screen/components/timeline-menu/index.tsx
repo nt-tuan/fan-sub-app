@@ -21,10 +21,15 @@ import styles from "./timeline-menu.module.scss";
 
 interface TimelineMenuProps {
   disabled: boolean;
+  canRewind?: boolean;
+  canFastForward?: boolean;
+
   onDelete: (e: React.MouseEvent) => void;
   onRewind: () => void;
   onFastForward: () => void;
   onFindBlanks: () => void;
+
+  canUndo?: boolean;
   undoAction: () => void;
   pushAction: (action: ActionInterface) => void;
 }
@@ -33,8 +38,11 @@ const TimelineMenu = ({
   disabled,
   onDelete,
   onRewind,
+  canRewind,
   onFastForward,
+  canFastForward,
   onFindBlanks,
+  canUndo,
   undoAction,
   pushAction,
 }: TimelineMenuProps) => {
@@ -98,8 +106,14 @@ const TimelineMenu = ({
         >
           Subtitle
         </Button>
-        <Button onClick={onRewind} icon={<DoubleLeftOutlined />} size="large" />
         <Button
+          disabled={!canRewind}
+          onClick={onRewind}
+          icon={<DoubleLeftOutlined />}
+          size="large"
+        />
+        <Button
+          disabled={!canFastForward}
           onClick={onFastForward}
           icon={<DoubleRightOutlined />}
           size="large"
@@ -110,7 +124,12 @@ const TimelineMenu = ({
           icon={<DeleteOutlined />}
           size="large"
         />
-        <Button onClick={undoAction} icon={<UndoOutlined />} size="large" />
+        <Button
+          disabled={!canUndo}
+          onClick={undoAction}
+          icon={<UndoOutlined />}
+          size="large"
+        />
         <Button onClick={() => saveSubtitles(editingSubtitles)} size="large">
           Save
         </Button>

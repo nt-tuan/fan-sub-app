@@ -1,3 +1,5 @@
+import { getLanguageName } from "@/utils/languages";
+import { useSubtitleEditorStore } from "@/video-sub/provider";
 import debounce from "lodash.debounce";
 import React from "react";
 
@@ -16,6 +18,7 @@ const SubtitleInputOverlay = React.forwardRef<
     () => debounce(onChange, 300),
     [onChange]
   );
+  const dstLang = useSubtitleEditorStore((state) => state.dstLang);
 
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,7 +32,11 @@ const SubtitleInputOverlay = React.forwardRef<
       className={styles.input_outer}
       style={{ display: showSubtitleInput ? "block" : "none" }}
     >
-      <input ref={ref} onChange={handleChange} placeholder="Add subtile" />
+      <input
+        ref={ref}
+        onChange={handleChange}
+        placeholder={`You are now translating in ${getLanguageName(dstLang)}`}
+      />
     </div>
   );
 });

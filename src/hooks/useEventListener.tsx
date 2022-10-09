@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useRef } from "react";
 
-import { useIsomorphicLayoutEffect } from "usehooks-ts";
+// import { useIsomorphicLayoutEffect } from "usehooks-ts";
 
 // Window Event based useEventListener interface
 function useEventListener<K extends keyof WindowEventMap>(
@@ -44,7 +44,7 @@ function useEventListener<
   // Create a ref that stores handler
   const savedHandler = useRef(handler);
 
-  useIsomorphicLayoutEffect(() => {
+  useEffect(() => {
     savedHandler.current = handler;
   }, [handler]);
 

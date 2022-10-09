@@ -15,8 +15,10 @@ export const SubtitleLanguages = () => {
           value={srcLang ?? ""}
         />
       </div>
-      <div className={styles.subtitle_lang_direction_icon}>
-        <ArrowRightOutlined />
+      <div>
+        <div className={styles.subtitle_lang_direction_icon}>
+          <ArrowRightOutlined />
+        </div>
       </div>
       <div className={styles.subtitle_lang_input}>
         <LangSelect

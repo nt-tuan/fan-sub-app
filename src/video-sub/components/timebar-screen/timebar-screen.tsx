@@ -93,9 +93,12 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
         disabled={props.selectedIndex == null}
         onDelete={handleDelete}
         onRewind={props.onRewind}
+        canRewind={props.canRewind}
         onFastForward={props.onFastForward}
+        canFastForward={props.canFastForward}
         onFindBlanks={props.onFindBlanks}
         undoAction={props.undoAction}
+        canUndo={props.canUndo}
         pushAction={props.pushAction}
       />
     </div>

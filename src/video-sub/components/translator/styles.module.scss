@@ -11,10 +11,21 @@
   flex-direction: column;
   display: flex;
 
+  .subtitle_actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+    margin-top: 8px;
+
+    :global(button) {
+      width: 100px;
+    }
+  }
   .subtitle_lang_select_group {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: stretch;
 
     :global(.ant-select) {
       width: 100%;

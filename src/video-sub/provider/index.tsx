@@ -72,6 +72,10 @@ export const useSubtitleEditorStore = <U extends unknown>(
   return useStore(store, selector);
 };
 
+const isCurrentSubtitleBlock = (sub: SubtitleBlock, currentTime: number) => {
+  return sub.from <= currentTime && currentTime < sub.to;
+};
+
 export const useSubtitleEditor = () => {
   const subtitleStore = useSubtitleEditorStore((state) => state.subtitleStore);
   const [subtitleData, setSubtitleData] = useSubtitleEditorStore((state) => [
@@ -89,6 +93,15 @@ export const useSubtitleEditor = () => {
     state.editingBlock,
     state.setEditingBlock,
   ]);
+
+  const findBlockIndex = (block: SubtitleBlock) => {
+    if (editingSubtitles == null) return;
+    for (let i = 0; i < editingSubtitles.length; i++) {
+      if (block.from === editingSubtitles[i].from) return i;
+      if (block.to < editingSubtitles[i].from) return undefined;
+    }
+  };
+
   const setSubtitles = useSubtitleEditorStore((state) => state.setSubtitles);
   const [editingSubtitles, setEditingSubtitles] = useSubtitleEditorStore(
     (state) => [state.editingSubtitles, state.setSubtitles]
@@ -102,7 +115,7 @@ export const useSubtitleEditor = () => {
   const getCurrentSubtitleByTime = React.useCallback(() => {
     if (editingSubtitles == null) return null;
     for (const sub of editingSubtitles) {
-      if (sub.from <= currentTime && currentTime < sub.to) {
+      if (isCurrentSubtitleBlock(sub, currentTime)) {
         return sub;
       }
       if (currentTime < sub.to) {
@@ -138,6 +151,24 @@ export const useSubtitleEditor = () => {
   const getDefaultSubtitleText = (index: number) => {
     if (subtitleData == null || dstLang == null) return "";
     return subtitleData[dstLang]?.[index]?.text ?? "";
+  };
+
+  const saveCurrentSubtitlePosition = async (position: {
+    x: number;
+    y: number;
+  }) => {
+    console.log("begin save", position);
+    if (dstLang == null || editingSubtitles == null) return;
+    const nextSubtitles = editingSubtitles.map((prev) => {
+      if (!isCurrentSubtitleBlock(prev, currentTime)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        position,
+      };
+    });
+    await saveSubtitles(nextSubtitles);
   };
 
   const saveSubtitles = async (nextSubtitles: SubtitleBlock[]) => {
@@ -196,18 +227,34 @@ export const useSubtitleEditor = () => {
     [setEditingBlock]
   );
 
+  const findBlankIndex = () => {
+    if (editingSubtitles == null) return;
+    const index = editingSubtitles?.findIndex((sub) => !sub.text);
+    if (index != null && index >= 0) {
+      setEditingBlock(editingSubtitles[index]);
+      goTo((editingSubtitles[index].from + editingSubtitles[index].to) / 2);
+    }
+    return index;
+  };
+
   return {
+    findBlockIndex,
     changeSubtitleText,
     isActiveSubtitle,
     focus,
     unfocus,
     refSubtitles,
     editingSubtitles,
+    setEditingSubtitles,
     getCurrentSubtitleByTime,
     getDefaultSubtitleText,
+    editingBlock,
+    setEditingBlock,
     saveSubtitle,
+    saveCurrentSubtitlePosition,
     saveSubtitles,
     cancelSubtitle,
+    findBlankIndex,
   };
 };
 

@@ -21,10 +21,12 @@
   }
 
   .subtitle_container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    bottom: 50px;
     .subtitle_text {
+      bottom: 0;
       padding: 14px 16px 18px;
       background-color: #000;
       opacity: 0.75;

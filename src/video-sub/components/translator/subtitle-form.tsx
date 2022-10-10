@@ -8,6 +8,7 @@ import {
   useSubtitleEditorStore,
   useVideoPlayerStore,
 } from "../../provider";
+import FindWordModal from "./find-word-modal";
 import styles from "./styles.module.scss";
 import { SubtitleBlock } from "./subtitle-block";
 import { SubtitleLanguages } from "./subtitle-languages";
@@ -28,6 +29,8 @@ export const SubtitleForm = () => {
   const { currentTime } = useVideoPlayerStore();
   const lastEditingBlockIndex = React.useRef<number>();
   const nSubtitleSegments = editingSubtitles?.length;
+
+  const [isModalOpen, setOpenModal] = React.useState<boolean>(false);
 
   const scrollToCurrentTime = React.useCallback(
     (currentTime: number) => {
@@ -66,14 +69,18 @@ export const SubtitleForm = () => {
     }
   };
 
-  const handleFindWords = () => {
-    // TODO: implement here
-  };
+  const handleFindWords = () => setOpenModal(true);
 
   if (nSubtitleSegments == null) return <Spin />;
 
   return (
     <div className={styles.subtitle_container}>
+      {isModalOpen && (
+        <FindWordModal
+          isModalOpen={isModalOpen}
+          onCancel={() => setOpenModal(false)}
+        />
+      )}
       <div>
         <SubtitleLanguages />
         <div className={styles.subtitle_actions}>

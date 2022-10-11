@@ -2,13 +2,14 @@ import { Button, Checkbox, Input, Space, Typography } from "antd";
 import debounce from "lodash.debounce";
 import { useCallback, useMemo, useState } from "react";
 
-import { useSubtitleEditor, useVideoPlayerStore } from "@/video-sub/provider";
-import useFindWords from "@/video-sub/provider/useFindWords";
+import useSearchReplace from "@/video-sub/provider/useSearchReplace";
 import { CloseOutlined } from "@ant-design/icons";
 import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
 
 import styles from "./styles.module.scss";
+
+// import { useSubtitleEditor, useVideoPlayerStore } from "@/video-sub/provider";
 
 interface FindWordModalProps {
   isModalOpen: boolean;
@@ -17,36 +18,48 @@ interface FindWordModalProps {
 
 const FindWordModal = ({ isModalOpen, onCancel }: FindWordModalProps) => {
   const [matchCase, setMatchCase] = useState<boolean>(false);
-  const [replaceInput, setReplaceInput] = useState<string>("");
-  const [findWords, setFindWords] = useState<string>("");
+  const [alternativeInput, setAlternativeInput] = useState<string>("");
+  const [searchInput, setSearchInput] = useState<string>("");
 
-  const { subIndexFindedOut, findNext, setCurrentFocus, replaceWords } =
-    useFindWords(findWords, matchCase);
+  const {
+    subIndexFoundOut,
+    findNext,
+    currentFocus,
+    setCurrentFocus,
+    replaceWords,
+    replaceAllWords,
+  } = useSearchReplace(searchInput, matchCase);
 
-  const debounceChangeFindWords = useMemo(
+  // Search Input
+  const debounceChangeSearchInput = useMemo(
     () =>
       debounce((value) => {
-        setFindWords(value);
+        setSearchInput(value);
         setCurrentFocus(-1);
       }, 400),
-    [setFindWords, setCurrentFocus]
+    [setSearchInput, setCurrentFocus]
   );
-
-  const handleChangeFindWords = useCallback(
+  const handleChangeSearchInput = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      debounceChangeFindWords(e.target.value);
+      debounceChangeSearchInput(e.target.value);
     },
-    [debounceChangeFindWords]
+    [debounceChangeSearchInput]
   );
-
+  // Alternative Input
+  const debounceChangeAlternativeInput = debounce(setAlternativeInput, 400);
   const onChangeReplaceWord = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setReplaceInput(event.target.value);
+    debounceChangeAlternativeInput(event.target.value);
 
   const handleReplace = () => {
-    if (subIndexFindedOut.length > 0) replaceWords(findWords, replaceInput);
+    if (subIndexFoundOut.length > 0)
+      replaceWords(searchInput, alternativeInput);
   };
-  const handleReplaceAll = () => {};
+  const handleReplaceAll = () => {
+    if (subIndexFoundOut.length > 0)
+      replaceAllWords(searchInput, alternativeInput);
+  };
 
+  // move window handler
   const [{ x, y }, api] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -59,7 +72,11 @@ const FindWordModal = ({ isModalOpen, onCancel }: FindWordModalProps) => {
   return (
     <animated.div style={{ position: "fixed", x, y, zIndex: 100 }}>
       <div className={styles.find_modal}>
-        <Space className={styles.find_modal_title} {...bind()}>
+        <Space
+          className={styles.find_modal_title}
+          style={{ touchAction: "none" }}
+          {...bind()}
+        >
           <Typography.Title level={4}>Find Word</Typography.Title>
           <Button
             style={{ border: "none", backgroundColor: "#fafafa" }}
@@ -73,11 +90,18 @@ const FindWordModal = ({ isModalOpen, onCancel }: FindWordModalProps) => {
             <Space direction="vertical" style={{ width: "100%", flex: 1 }}>
               <Space align="end">
                 <Space direction="vertical">
-                  <Typography.Text>Find what?</Typography.Text>
+                  <Typography.Text>
+                    Find what?{" "}
+                    <span>
+                      {subIndexFoundOut.length === 0
+                        ? "No results"
+                        : `(${currentFocus + 1}/${subIndexFoundOut.length})`}
+                    </span>
+                  </Typography.Text>
                   <Input
                     placeholder="Find word"
                     size="large"
-                    onChange={handleChangeFindWords}
+                    onChange={handleChangeSearchInput}
                   />
                 </Space>
                 <Button type="primary" size="large" onClick={findNext}>
@@ -106,11 +130,15 @@ const FindWordModal = ({ isModalOpen, onCancel }: FindWordModalProps) => {
               <Button
                 size="large"
                 onClick={handleReplace}
-                disabled={subIndexFindedOut.length === 0}
+                disabled={subIndexFoundOut.length === 0}
               >
                 Replace
               </Button>
-              <Button size="large" onClick={handleReplaceAll}>
+              <Button
+                size="large"
+                onClick={handleReplaceAll}
+                disabled={subIndexFoundOut.length === 0}
+              >
                 Replace All
               </Button>
             </Space>

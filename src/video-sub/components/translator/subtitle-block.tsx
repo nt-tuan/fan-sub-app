@@ -26,6 +26,7 @@ export const SubtitleBlock = ({
     getDefaultSubtitleText,
     saveSubtitle,
     cancelSubtitle,
+    isModalOpen,
   } = useSubtitleEditor();
 
   const subtitle = editingSubtitles?.[index];
@@ -54,6 +55,11 @@ export const SubtitleBlock = ({
       ref.current.value = getDefaultSubtitleText(index);
   };
 
+  // for replace word modal
+  React.useEffect(() => {
+    if (ref.current) ref.current.value = subtitle?.text ?? "";
+  }, [ref, subtitle?.text, isModalOpen]);
+
   const isActive = subtitle && isActiveSubtitle(subtitle);
   if (subtitle == null)
     return <div style={style} className={styles.segment_container}></div>;
@@ -75,6 +81,7 @@ export const SubtitleBlock = ({
         ref={ref}
         className={styles.subtitle_input}
         defaultValue={subtitle.text}
+        // value={subtitle.text}
         onChange={handleChange}
         rows={3}
       />

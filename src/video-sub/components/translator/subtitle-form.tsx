@@ -23,14 +23,17 @@ const ItemRenderer = ({
 
 export const SubtitleForm = () => {
   const ref = React.useRef<FixedSizeList<any>>(null);
-  const { editingSubtitles, findBlankIndex, editingBlock } =
-    useSubtitleEditor();
+  const {
+    editingSubtitles,
+    findBlankIndex,
+    editingBlock,
+    setOpenModal,
+    isModalOpen,
+  } = useSubtitleEditor();
   const dstLang = useSubtitleEditorStore((state) => state.dstLang);
   const { currentTime } = useVideoPlayerStore();
   const lastEditingBlockIndex = React.useRef<number>();
   const nSubtitleSegments = editingSubtitles?.length;
-
-  const [isModalOpen, setOpenModal] = React.useState<boolean>(false);
 
   const scrollToCurrentTime = React.useCallback(
     (currentTime: number) => {

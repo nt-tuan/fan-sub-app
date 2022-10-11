@@ -68,3 +68,8 @@ export interface ResizeEventInterface {
   distancePixel: number;
   distanceDuration: number;
 }
+
+export interface AppStoreInterface {
+  isModalOpen: boolean;
+  setOpenModal: (open: boolean) => void;
+}

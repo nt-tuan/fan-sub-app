@@ -56,7 +56,6 @@ const useUndo = () => {
         createSubtitle(action);
         break;
       default:
-        console.log("nothing on you baby!");
         break;
     }
   };

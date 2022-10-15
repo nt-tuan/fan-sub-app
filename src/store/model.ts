@@ -46,6 +46,7 @@ interface SubtitleEditorStoreState {
   subtitleData?: Record<string, SubtitleBlock[]>;
   editingSubtitles?: SubtitleBlock[];
   editingBlock?: SubtitleBlock;
+  shouldPauseAtEditingBlock?: boolean;
   subtitleStore: SubtitleStore;
 }
 
@@ -59,6 +60,7 @@ interface SubtitleEditorAction {
 
   createSubtitle: (at: number) => number | undefined;
   deleteSubtitle: (at: number) => void;
+  setShouldPauseAtEditingBlock: (value: boolean) => void;
 }
 
 export type SubtitleEditorStore = SubtitleEditorStoreState &

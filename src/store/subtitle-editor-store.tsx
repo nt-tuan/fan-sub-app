@@ -34,6 +34,7 @@ export const createSubtitleEditorCreator = (
   subtitleStore: SubtitleStore
 ) => {
   const stateCreator: StateCreator<SubtitleEditorStore> = (set, get) => ({
+    shouldPauseAtEditingBlock: true,
     srcLang: Object.keys(subtitleData)?.[0],
     subtitleStore,
     dstLang: defaultDstLang,
@@ -95,6 +96,9 @@ export const createSubtitleEditorCreator = (
         ],
       });
       return index;
+    },
+    setShouldPauseAtEditingBlock: (shouldPauseAtEditingBlock: boolean) => {
+      set({ shouldPauseAtEditingBlock });
     },
   });
   return stateCreator;

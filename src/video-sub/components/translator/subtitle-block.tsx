@@ -57,7 +57,7 @@ export const SubtitleBlock = ({
 
   // for replace word modal
   React.useEffect(() => {
-    if (ref.current) ref.current.value = subtitle?.text ?? "";
+    if (ref.current && isModalOpen) ref.current.value = subtitle?.text ?? "";
   }, [ref, subtitle?.text, isModalOpen]);
 
   const isActive = subtitle && isActiveSubtitle(subtitle);

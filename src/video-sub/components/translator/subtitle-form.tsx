@@ -29,9 +29,10 @@ export const SubtitleForm = () => {
     editingBlock,
     setOpenModal,
     isModalOpen,
+    setEditingBlock,
   } = useSubtitleEditor();
   const dstLang = useSubtitleEditorStore((state) => state.dstLang);
-  const { currentTime } = useVideoPlayerStore();
+  const { currentTime, videoRef, goTo } = useVideoPlayerStore();
   const lastEditingBlockIndex = React.useRef<number>();
   const nSubtitleSegments = editingSubtitles?.length;
 
@@ -65,11 +66,17 @@ export const SubtitleForm = () => {
     scrollToCurrentTime(currentTime);
   }, [currentTime, scrollToCurrentTime]);
 
-  const handleFindBlank = () => {
+  const handleFindBlank = async () => {
+    videoRef?.current?.pause();
     const index = findBlankIndex();
     if (index && index >= 0 && editingSubtitles?.[index].from) {
+      goTo(editingSubtitles[index].from);
       scrollToCurrentTime(editingSubtitles[index].from);
+      setEditingBlock(editingSubtitles[index]);
     }
+    setTimeout(() => {
+      videoRef?.current?.play();
+    }, 100);
   };
 
   const handleFindWords = () => setOpenModal(true);

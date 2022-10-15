@@ -70,10 +70,18 @@
         align-items: center;
 
         .subtitle_segment_action_item {
-          color: #adadad;
           font-size: 12px;
           padding: 0;
           height: auto;
+        }
+        .subtitle_segment_action_item_default {
+          color: #adadad;
+        }
+        .subtitle_segment_action_item_unsaved {
+          color: $primary-color;
+        }
+        .subtitle_segment_action_item_saved {
+          color: $error-color;
         }
         .subtitle_segment_action_item:hover {
           background: none;

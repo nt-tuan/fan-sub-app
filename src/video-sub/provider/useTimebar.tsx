@@ -83,7 +83,7 @@ const useTimebar = ({ width }: { width: number }) => {
           option.to - option.from > MINIMUM_BLOCK_SIZE
       ) ?? state;
 
-    setEditingBlock({ ...state, ...validOption });
+    setEditingBlock({ ...state, ...validOption }, false);
   };
 
   const onResizeLeft = ({
@@ -136,7 +136,7 @@ const useTimebar = ({ width }: { width: number }) => {
   const onFocus = (index: number) => {
     if (index !== selectedIndex && editingSubtitles) {
       setSelectedIndex(index);
-      setEditingBlock(editingSubtitles[index]);
+      setEditingBlock(editingSubtitles[index], false);
     }
   };
 

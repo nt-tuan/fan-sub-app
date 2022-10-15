@@ -1,4 +1,4 @@
-import VideoSub from "./video-sub";
+import VideoSub from "@/video-sub";
 
 export const App = () => {
   return <VideoSub />;

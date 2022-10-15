@@ -46,6 +46,7 @@ interface SubtitleEditorStoreState {
   subtitleData?: Record<string, SubtitleBlock[]>;
   editingSubtitles?: SubtitleBlock[];
   editingBlock?: SubtitleBlock;
+  shouldPauseAtEditingBlock?: boolean;
   subtitleStore: SubtitleStore;
 }
 
@@ -59,6 +60,7 @@ interface SubtitleEditorAction {
 
   createSubtitle: (at: number) => number | undefined;
   deleteSubtitle: (at: number) => void;
+  setShouldPauseAtEditingBlock: (value: boolean) => void;
 }
 
 export type SubtitleEditorStore = SubtitleEditorStoreState &
@@ -67,4 +69,9 @@ export type SubtitleEditorStore = SubtitleEditorStoreState &
 export interface ResizeEventInterface {
   distancePixel: number;
   distanceDuration: number;
+}
+
+export interface AppStoreInterface {
+  isModalOpen: boolean;
+  setOpenModal: (open: boolean) => void;
 }

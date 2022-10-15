@@ -2,28 +2,34 @@ import React from "react";
 import { StoreApi, createStore, useStore } from "zustand";
 
 import {
+  AppStoreInterface,
   SubtitleBlock,
   SubtitleEditorStore,
   VideoPlayerStore,
+  createAppStore,
   createSubtitleEditorStore,
   createVideoStore,
   videoStoreService,
 } from "@/store";
 import { createVideoPlayerSlice } from "@/store/video-player-store";
+import { replaceText } from "@/utils/format";
 
 const SubtitleEditorContext = React.createContext<{
   store: StoreApi<SubtitleEditorStore>;
   videoStoreService: StoreApi<videoStoreService>;
   videoPlayerStore: StoreApi<VideoPlayerStore>;
+  appStore: StoreApi<AppStoreInterface>;
 }>({} as never);
 
 const VIDEO_URL = "/video/data.json";
 
 const VideoSubProvider = ({ children }: { children: React.ReactNode }) => {
+  const [appStore] = React.useState(createStore(createAppStore));
   const [videoStoreService] = React.useState(createStore(createVideoStore));
   const [videoPlayerStore] = React.useState(
     createStore(createVideoPlayerSlice)
   );
+
   const { loadData, subtitleData, subtitleStore } = useStore(videoStoreService);
 
   const store = React.useMemo(() => {
@@ -38,11 +44,16 @@ const VideoSubProvider = ({ children }: { children: React.ReactNode }) => {
   if (store == null) return null;
   return (
     <SubtitleEditorContext.Provider
-      value={{ store, videoStoreService, videoPlayerStore }}
+      value={{ appStore, store, videoStoreService, videoPlayerStore }}
     >
       {children}
     </SubtitleEditorContext.Provider>
   );
+};
+
+export const useAppStoreService = () => {
+  const { appStore } = React.useContext(SubtitleEditorContext);
+  return useStore(appStore);
 };
 
 export const useVideoStoreService = () => {
@@ -53,16 +64,27 @@ export const useVideoStoreService = () => {
 export const useVideoPlayerStore = () => {
   const { videoPlayerStore, store } = React.useContext(SubtitleEditorContext);
   const editingBlock = useStore(store, (state) => state.editingBlock);
+  const shouldPauseAtEditingBlock = useStore(
+    store,
+    (state) => state.shouldPauseAtEditingBlock
+  );
   const videoPlayer = useStore(videoPlayerStore);
   const enhanceSetCurrentTime = (miliseconds: number) => {
     const nextMiliseconds = miliseconds + 250;
-    if (editingBlock && editingBlock.to < nextMiliseconds) {
+    if (
+      editingBlock &&
+      editingBlock.to < nextMiliseconds &&
+      shouldPauseAtEditingBlock
+    ) {
       videoPlayer.videoRef?.current?.pause();
       return;
     }
     videoPlayer.setCurrentTime(miliseconds);
   };
-  return { ...videoPlayer, setCurrentTime: enhanceSetCurrentTime };
+  return {
+    ...videoPlayer,
+    setCurrentTime: enhanceSetCurrentTime,
+  };
 };
 
 export const useSubtitleEditorStore = <U extends unknown>(
@@ -77,6 +99,7 @@ const isCurrentSubtitleBlock = (sub: SubtitleBlock, currentTime: number) => {
 };
 
 export const useSubtitleEditor = () => {
+  const { isModalOpen, setOpenModal } = useAppStoreService();
   const subtitleStore = useSubtitleEditorStore((state) => state.subtitleStore);
   const [subtitleData, setSubtitleData] = useSubtitleEditorStore((state) => [
     state.subtitleData,
@@ -93,6 +116,10 @@ export const useSubtitleEditor = () => {
     state.editingBlock,
     state.setEditingBlock,
   ]);
+
+  const setShouldPauseAtEditingBlock = useSubtitleEditorStore(
+    (state) => state.setShouldPauseAtEditingBlock
+  );
 
   const findBlockIndex = (block: SubtitleBlock) => {
     if (editingSubtitles == null) return;
@@ -157,7 +184,6 @@ export const useSubtitleEditor = () => {
     x: number;
     y: number;
   }) => {
-    console.log("begin save", position);
     if (dstLang == null || editingSubtitles == null) return;
     const nextSubtitles = editingSubtitles.map((prev) => {
       if (!isCurrentSubtitleBlock(prev, currentTime)) {
@@ -227,14 +253,113 @@ export const useSubtitleEditor = () => {
     [setEditingBlock]
   );
 
-  const findBlankIndex = () => {
-    if (editingSubtitles == null) return;
-    const index = editingSubtitles?.findIndex((sub) => !sub.text);
-    if (index != null && index >= 0) {
-      setEditingBlock(editingSubtitles[index]);
-      goTo((editingSubtitles[index].from + editingSubtitles[index].to) / 2);
+  const getIndexFromCurrentTime = () => {
+    if (editingSubtitles == null) return null;
+    for (let i = 0; i < editingSubtitles.length; i++) {
+      if (
+        editingSubtitles[i].from <= currentTime &&
+        editingSubtitles[i].to > currentTime
+      ) {
+        return i;
+      }
+
+      if (currentTime <= editingSubtitles[i].from) {
+        return i;
+      }
     }
-    return index;
+    return null;
+  };
+
+  const findBlankIndex = () => {
+    const beginIndex = getIndexFromCurrentTime();
+    if (beginIndex == null || editingSubtitles == null) return;
+    if (beginIndex && beginIndex >= 1) {
+      for (let i = beginIndex - 1; 0 <= i; i--) {
+        const sub = editingSubtitles[i];
+        if (!sub.text) {
+          return i;
+        }
+      }
+    }
+    if (beginIndex && beginIndex <= editingSubtitles.length - 1) {
+      for (let j = beginIndex + 1; j < editingSubtitles.length; j++) {
+        const sub = editingSubtitles[j];
+        if (!sub.text) {
+          return j;
+        }
+      }
+    }
+  };
+
+  const findSubIndexByWords = React.useCallback(
+    (searchInput: string, matchCase: boolean) => {
+      if (editingSubtitles == null) return [];
+
+      const keyWord = matchCase ? searchInput : searchInput.toLowerCase();
+      const rex = new RegExp(keyWord);
+      // const rex = new RegExp(`\b${keyWord}\b`); // TODO
+      let findOutwordsIndex: number[] = [];
+
+      editingSubtitles.forEach((sub, index) => {
+        if (sub.text) {
+          const testMatch = rex.test(
+            matchCase ? sub.text : sub.text?.toLowerCase()
+          );
+          if (testMatch) findOutwordsIndex.push(index);
+        }
+      });
+
+      return findOutwordsIndex;
+    },
+    [editingSubtitles]
+  );
+
+  const replaceSubtitleContent = async (
+    index: number,
+    searchText: string,
+    alternativeText: string,
+    callback?: () => void
+  ) => {
+    const subtitles = editingSubtitles;
+    if (subtitles == null) return;
+    const newSubtitles = [...subtitles.map((item) => ({ ...item }))];
+    newSubtitles[index].text = replaceText(
+      searchText,
+      alternativeText,
+      newSubtitles[index].text ?? ""
+    );
+    setEditingSubtitles(newSubtitles);
+    await saveSubtitles(newSubtitles);
+    if (callback) callback();
+  };
+
+  const replaceAllSubtitleContent = async (
+    subIndexFoundOut: number[],
+    searchText: string,
+    alternativeText: string,
+    callback?: () => void
+  ) => {
+    if (editingSubtitles == null) return;
+    const subtitles = editingSubtitles;
+    const newSubtitles = [...subtitles.map((item) => ({ ...item }))];
+    subIndexFoundOut.forEach((foundIndex) => {
+      newSubtitles[foundIndex].text = replaceText(
+        searchText,
+        alternativeText,
+        newSubtitles[foundIndex].text ?? ""
+      );
+    });
+    setEditingSubtitles(newSubtitles);
+    await saveSubtitles(newSubtitles);
+    if (callback) callback();
+  };
+
+  const enhanceSetEditingBlock = (
+    editingBlock?: SubtitleBlock,
+    shouldPauseAtTheEnd: boolean = true
+  ) => {
+    setEditingBlock(editingBlock);
+    setShouldPauseAtEditingBlock(shouldPauseAtTheEnd);
   };
 
   return {
@@ -249,12 +374,17 @@ export const useSubtitleEditor = () => {
     getCurrentSubtitleByTime,
     getDefaultSubtitleText,
     editingBlock,
-    setEditingBlock,
+    setEditingBlock: enhanceSetEditingBlock,
     saveSubtitle,
     saveCurrentSubtitlePosition,
     saveSubtitles,
     cancelSubtitle,
     findBlankIndex,
+    findSubIndexByWords,
+    replaceSubtitleContent,
+    replaceAllSubtitleContent,
+    setOpenModal,
+    isModalOpen,
   };
 };
 

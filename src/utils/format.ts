@@ -6,3 +6,14 @@ export const formatTime = (miliseconds: number) =>
     Math.floor(miliseconds / 1000) % 60,
     2
   )}`;
+
+export const replaceText = (
+  regex: string,
+  alternativeText: string,
+  originalStr: string
+) => {
+  if (!originalStr) return "";
+  const reg = new RegExp(regex);
+  const newStr = originalStr.replace(reg, alternativeText);
+  return newStr;
+};

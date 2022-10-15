@@ -8,6 +8,7 @@ import {
   useSubtitleEditorStore,
   useVideoPlayerStore,
 } from "../../provider";
+import FindWordModal from "./find-word-modal";
 import styles from "./styles.module.scss";
 import { SubtitleBlock } from "./subtitle-block";
 import { SubtitleLanguages } from "./subtitle-languages";
@@ -22,10 +23,16 @@ const ItemRenderer = ({
 
 export const SubtitleForm = () => {
   const ref = React.useRef<FixedSizeList<any>>(null);
-  const { editingSubtitles, findBlankIndex, editingBlock } =
-    useSubtitleEditor();
+  const {
+    editingSubtitles,
+    findBlankIndex,
+    editingBlock,
+    setOpenModal,
+    isModalOpen,
+    setEditingBlock,
+  } = useSubtitleEditor();
   const dstLang = useSubtitleEditorStore((state) => state.dstLang);
-  const { currentTime } = useVideoPlayerStore();
+  const { currentTime, videoRef, goTo } = useVideoPlayerStore();
   const lastEditingBlockIndex = React.useRef<number>();
   const nSubtitleSegments = editingSubtitles?.length;
 
@@ -59,21 +66,31 @@ export const SubtitleForm = () => {
     scrollToCurrentTime(currentTime);
   }, [currentTime, scrollToCurrentTime]);
 
-  const handleFindBlank = () => {
+  const handleFindBlank = async () => {
+    videoRef?.current?.pause();
     const index = findBlankIndex();
     if (index && index >= 0 && editingSubtitles?.[index].from) {
+      goTo(editingSubtitles[index].from);
       scrollToCurrentTime(editingSubtitles[index].from);
+      setEditingBlock(editingSubtitles[index]);
     }
+    setTimeout(() => {
+      videoRef?.current?.play();
+    }, 100);
   };
 
-  const handleFindWords = () => {
-    // TODO: implement here
-  };
+  const handleFindWords = () => setOpenModal(true);
 
   if (nSubtitleSegments == null) return <Spin />;
 
   return (
     <div className={styles.subtitle_container}>
+      {isModalOpen && (
+        <FindWordModal
+          isModalOpen={isModalOpen}
+          onCancel={() => setOpenModal(false)}
+        />
+      )}
       <div>
         <SubtitleLanguages />
         <div className={styles.subtitle_actions}>

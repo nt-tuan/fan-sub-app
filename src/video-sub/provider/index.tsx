@@ -201,7 +201,9 @@ export const useSubtitleEditor = () => {
     if (dstLang == null || nextSubtitles == null) return;
     await subtitleStore.save(dstLang, nextSubtitles);
     const nextData = await subtitleStore.get();
+
     setSubtitleData(nextData);
+    setEditingSubtitles(nextSubtitles);
   };
 
   const saveSubtitle = async (index: number) => {
@@ -272,8 +274,9 @@ export const useSubtitleEditor = () => {
 
   const findBlankIndex = () => {
     const beginIndex = getIndexFromCurrentTime();
+
     if (beginIndex == null || editingSubtitles == null) return;
-    if (beginIndex && beginIndex >= 1) {
+    if (beginIndex >= 1) {
       for (let i = beginIndex - 1; 0 <= i; i--) {
         const sub = editingSubtitles[i];
         if (!sub.text) {
@@ -281,13 +284,16 @@ export const useSubtitleEditor = () => {
         }
       }
     }
-    if (beginIndex && beginIndex <= editingSubtitles.length - 1) {
+    if (beginIndex <= editingSubtitles.length - 1) {
       for (let j = beginIndex + 1; j < editingSubtitles.length; j++) {
         const sub = editingSubtitles[j];
         if (!sub.text) {
           return j;
         }
       }
+    }
+    if (!editingSubtitles[beginIndex]?.text) {
+      return beginIndex;
     }
   };
 
@@ -328,7 +334,7 @@ export const useSubtitleEditor = () => {
       alternativeText,
       newSubtitles[index].text ?? ""
     );
-    setEditingSubtitles(newSubtitles);
+
     await saveSubtitles(newSubtitles);
     if (callback) callback();
   };
@@ -349,7 +355,7 @@ export const useSubtitleEditor = () => {
         newSubtitles[foundIndex].text ?? ""
       );
     });
-    setEditingSubtitles(newSubtitles);
+
     await saveSubtitles(newSubtitles);
     if (callback) callback();
   };

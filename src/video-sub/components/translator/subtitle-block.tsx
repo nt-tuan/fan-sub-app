@@ -7,7 +7,6 @@ import { useCallback } from "react";
 
 import useOutsideClick from "@/hooks/use-outside-click";
 import { formatTime } from "@/utils/format";
-import { SaveFilled } from "@ant-design/icons";
 
 import { useSubtitleEditor } from "../../provider";
 import styles from "./styles.module.scss";

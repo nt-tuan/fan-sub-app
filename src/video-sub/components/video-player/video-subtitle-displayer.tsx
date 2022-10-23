@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 import { animated, useSpring } from "@react-spring/web";
 import { useDrag } from "@use-gesture/react";
@@ -7,7 +7,8 @@ import { useSubtitleEditor } from "../../provider";
 import styles from "./video-player.module.scss";
 
 export const VideoSubtitleDisplayer = () => {
-  const { getCurrentSubtitleByTime } = useSubtitleEditor();
+  const { getCurrentSubtitleByTime, saveCurrentSubtitlePosition } =
+    useSubtitleEditor();
   const currentSub = getCurrentSubtitleByTime();
   const [parentSize, setParentSize] = useState({
     width: 0,
@@ -23,28 +24,28 @@ export const VideoSubtitleDisplayer = () => {
   });
 
   const defaultPosition = useMemo(() => {
-    const currentPercentX = 0;
-    const currentPercentY = -40;
+    const currentPercentX =
+      currentSub?.position?.x ??
+      ((parentSize.width - childSize.width) * 100) / 2 / parentSize.width;
+    const currentPercentY =
+      currentSub?.position?.y ??
+      ((parentSize.height - childSize.height - 40) * 100) / parentSize.height;
+
     const _x = (currentPercentX * parentSize.width) / 100;
     const _y = (currentPercentY * parentSize.height) / 100;
 
     return {
-      x: _x,
-      y: _y,
+      x: Math.min(Math.max(_x, 0), parentSize.width - childSize.width),
+      y: Math.min(Math.max(_y, 0), parentSize.height - childSize.height),
     };
-  }, [parentSize]);
+  }, [parentSize, currentSub, childSize]);
 
   const bounds = useMemo(() => {
-    const maxX = (parentSize.width - childSize.width) / 2;
-    const maxTop =
-      (parentSize.height - childSize.height) / 2 + defaultPosition.y;
-    const maxBotom =
-      (parentSize.height - childSize.height) / 2 - defaultPosition.y;
     return {
-      left: -maxX,
-      right: maxX,
-      top: -maxTop,
-      bottom: maxBotom,
+      left: -defaultPosition.x,
+      top: -defaultPosition.y,
+      right: parentSize.width - childSize.width - defaultPosition.x,
+      bottom: parentSize.height - childSize.height - defaultPosition.y,
     };
   }, [childSize, parentSize, defaultPosition]);
 
@@ -58,29 +59,32 @@ export const VideoSubtitleDisplayer = () => {
       const { width, height } = parentSize;
       let _x = ox + defaultPosition.x;
       let _y = oy + defaultPosition.y;
+
       const percentX = (_x * 100) / width;
       const percentY = (_y * 100) / height;
       if (last) {
-        console.log("todo: save percent", percentX, percentY);
+        saveCurrentSubtitlePosition({ x: percentX, y: percentY });
       }
+
       api.start({ x: _x, y: _y, immediate: true });
     },
     {
       bounds,
+      from: () => [0, 0],
     }
   );
+
   if (currentSub == null) return null;
 
   return (
     <div
+      key={`${defaultPosition.x}_${defaultPosition.y}`}
       style={{
         position: "absolute",
         left: 0,
         right: 0,
-        bottom: "50%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+        top: 0,
+        bottom: 0,
       }}
       ref={(node) => {
         const parentNode = node?.parentElement;
@@ -108,6 +112,7 @@ export const VideoSubtitleDisplayer = () => {
       }}
     >
       <animated.div
+        key={`${defaultPosition.x}_${defaultPosition.y}`}
         className={styles.subtitle_container}
         {...bind()}
         style={{ x, y, touchAction: "none" }}

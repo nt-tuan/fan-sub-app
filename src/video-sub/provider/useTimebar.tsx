@@ -12,7 +12,7 @@ import useUndo, { ActionType } from "./useUndo";
 
 const useTimebar = ({ width }: { width: number }) => {
   const halfOfContainer = width / 2;
-  const { currentTime } = useVideoPlayerStore();
+  const { currentTime, goTo } = useVideoPlayerStore();
 
   const {
     findBlankIndex,
@@ -174,15 +174,18 @@ const useTimebar = ({ width }: { width: number }) => {
 
   const onRewind = () => moveSubtitleBlock(-1 * MINIMUM_BLOCK_SIZE);
   const onFastForward = () => moveSubtitleBlock(MINIMUM_BLOCK_SIZE);
-  // end: move subtitle block when click onRewind, onFastForward
 
   const onFindBlanks = () => {
     if (!editingSubtitles) return;
     const blankSubtitleIndex = findBlankIndex();
     if (blankSubtitleIndex == null) return;
+
     const blankSubtitle = editingSubtitles[blankSubtitleIndex];
+
     if (blankSubtitle) {
       setSelectedIndex(blankSubtitleIndex);
+      setEditingBlock(blankSubtitle);
+      goTo(blankSubtitle.from);
     }
   };
 

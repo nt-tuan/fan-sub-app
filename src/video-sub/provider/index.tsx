@@ -99,7 +99,8 @@ const isCurrentSubtitleBlock = (sub: SubtitleBlock, currentTime: number) => {
 };
 
 export const useSubtitleEditor = () => {
-  const { isModalOpen, setOpenModal } = useAppStoreService();
+  const { isModalOpen, setOpenModal, currentBlankIndex, setBlankIndex } =
+    useAppStoreService();
   const subtitleStore = useSubtitleEditorStore((state) => state.subtitleStore);
   const [subtitleData, setSubtitleData] = useSubtitleEditorStore((state) => [
     state.subtitleData,
@@ -255,46 +256,23 @@ export const useSubtitleEditor = () => {
     [setEditingBlock]
   );
 
-  const getIndexFromCurrentTime = () => {
-    if (editingSubtitles == null) return null;
-    for (let i = 0; i < editingSubtitles.length; i++) {
-      if (
-        editingSubtitles[i].from <= currentTime &&
-        editingSubtitles[i].to > currentTime
-      ) {
-        return i;
-      }
-
-      if (currentTime <= editingSubtitles[i].from) {
-        return i;
-      }
-    }
-    return null;
-  };
-
   const findBlankIndex = () => {
-    const beginIndex = getIndexFromCurrentTime();
-
-    if (beginIndex == null || editingSubtitles == null) return;
-    if (beginIndex >= 1) {
-      for (let i = beginIndex - 1; 0 <= i; i--) {
-        const sub = editingSubtitles[i];
-        if (!sub.text) {
-          return i;
-        }
+    if (editingSubtitles == null) return;
+    for (let i = currentBlankIndex + 1; i < editingSubtitles?.length; i++) {
+      const sub = editingSubtitles[i];
+      if (!sub.text) {
+        setBlankIndex(i);
+        return i;
       }
     }
-    if (beginIndex <= editingSubtitles.length - 1) {
-      for (let j = beginIndex + 1; j < editingSubtitles.length; j++) {
-        const sub = editingSubtitles[j];
-        if (!sub.text) {
-          return j;
-        }
+    for (let j = 0; j <= currentBlankIndex; j++) {
+      const sub = editingSubtitles[j];
+      if (!sub.text) {
+        setBlankIndex(j);
+        return j;
       }
     }
-    if (!editingSubtitles[beginIndex]?.text) {
-      return beginIndex;
-    }
+    return -1;
   };
 
   const findSubIndexByWords = React.useCallback(
@@ -391,6 +369,7 @@ export const useSubtitleEditor = () => {
     replaceAllSubtitleContent,
     setOpenModal,
     isModalOpen,
+    setBlankIndex,
   };
 };
 

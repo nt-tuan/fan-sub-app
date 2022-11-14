@@ -69,6 +69,10 @@ export const SubtitleForm = () => {
   const handleFindBlank = async () => {
     videoRef?.current?.pause();
     const index = findBlankIndex();
+    if (index === -1) {
+      window.alert("There is no blank anymore. All sentences are entered.");
+      return;
+    }
     if (index && index >= 0 && editingSubtitles?.[index].from) {
       goTo(editingSubtitles[index].from);
       scrollToCurrentTime(editingSubtitles[index].from);

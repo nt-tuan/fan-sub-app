@@ -8,6 +8,7 @@ interface MouseDraggingInterface {
   onMouseDownCallBack?: () => void;
   onMouseUpCallBack?: () => void;
   onMouseMouseMoveValidator?: (newLeftPosition: number) => void;
+  disabled: boolean;
 }
 
 const useMouseDragging = ({
@@ -16,6 +17,7 @@ const useMouseDragging = ({
   onMouseDownCallBack,
   onMouseUpCallBack,
   onMouseMouseMoveValidator,
+  disabled,
 }: MouseDraggingInterface) => {
   const dragging = useRef<boolean>(false);
   const previousPosition = useRef<number>(0);
@@ -58,6 +60,7 @@ const useMouseDragging = ({
   const onMouseDown = useCallback(
     (event: any) => {
       event.stopPropagation();
+      if (disabled) return;
       dragging.current = true;
       previousMouseClientX.current = event.clientX;
       // const parentLeft = getParentElement()?.getBoundingClientRect()?.left ?? 0;
@@ -67,7 +70,7 @@ const useMouseDragging = ({
       document.addEventListener("mouseup", onMouseUp);
       if (onMouseDownCallBack) onMouseDownCallBack();
     },
-    [onMove, onMouseUp, elementRef, onMouseDownCallBack]
+    [disabled, onMove, onMouseUp, elementRef, onMouseDownCallBack]
   );
 
   useEventListener("mousedown", onMouseDown, elementRef);

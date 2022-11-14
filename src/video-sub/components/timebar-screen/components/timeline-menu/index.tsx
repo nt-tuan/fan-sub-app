@@ -32,6 +32,7 @@ interface TimelineMenuProps {
   canUndo?: boolean;
   undoAction: () => void;
   pushAction: (action: ActionInterface) => void;
+  setCreatingSubtitle: (e: boolean) => void;
 }
 
 const TimelineMenu = ({
@@ -45,6 +46,7 @@ const TimelineMenu = ({
   canUndo,
   undoAction,
   pushAction,
+  setCreatingSubtitle,
 }: TimelineMenuProps) => {
   const [createdSubtitleIndex, setCreatedSubtitleIndex] = useState<number>();
   const createSubtitle = useSubtitleEditorStore(
@@ -73,11 +75,17 @@ const TimelineMenu = ({
     videoRef.current.addEventListener("pause", handlePause);
     const index = createSubtitle(currentTime);
     setCreatedSubtitleIndex(index);
-    if (index) pushAction({ type: ActionType.Delete, index });
-  }, [currentTime, videoRef, createSubtitle, pushAction]);
+    if (index !== undefined && index >= 0) {
+      pushAction({ type: ActionType.Delete, index });
+      setCreatingSubtitle(true);
+    }
+  }, [currentTime, videoRef, createSubtitle, pushAction, setCreatingSubtitle]);
 
   useEffect(() => {
-    if (createdSubtitleIndex == null) return;
+    if (createdSubtitleIndex == null) {
+      setCreatingSubtitle(false);
+      return;
+    }
     const next = editingSubtitles[createdSubtitleIndex + 1];
     if (next && next.from <= currentTime) {
       setCreatedSubtitleIndex(undefined);
@@ -92,6 +100,7 @@ const TimelineMenu = ({
     editingSubtitles,
     createdSubtitleIndex,
     setEditingSubtitles,
+    setCreatingSubtitle,
   ]);
 
   return (

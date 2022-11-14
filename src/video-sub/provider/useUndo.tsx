@@ -16,12 +16,19 @@ export interface ActionInterface {
 }
 
 const useUndo = () => {
-  const [editingSubtitles, setEditingSubtitles, deleteSubtitle] =
-    useSubtitleEditorStore((state) => [
-      state.editingSubtitles,
-      state.setSubtitles,
-      state.deleteSubtitle,
-    ]);
+  const [
+    editingSubtitles,
+    setEditingSubtitles,
+    deleteSubtitle,
+    editingBlock,
+    setEditingBlock,
+  ] = useSubtitleEditorStore((state) => [
+    state.editingSubtitles,
+    state.setSubtitles,
+    state.deleteSubtitle,
+    state.editingBlock,
+    state.setEditingBlock,
+  ]);
 
   const [actions, setActions] = useState<ActionInterface[]>([]);
 
@@ -30,6 +37,14 @@ const useUndo = () => {
     const { index, subtitle } = action;
     if (subtitlesTemp == null || subtitle === undefined) return;
     const newSubtitles = [...subtitlesTemp.map((item) => ({ ...item }))];
+    if (editingBlock && newSubtitles[index].from === editingBlock.from) {
+      setEditingBlock({
+        ...editingBlock,
+        from: subtitle.from,
+        to: subtitle.to,
+      });
+    }
+
     newSubtitles[index].from = subtitle.from;
     newSubtitles[index].to = subtitle.to;
     setEditingSubtitles(newSubtitles);

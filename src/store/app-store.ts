@@ -7,4 +7,8 @@ export const createAppStore: StateCreator<AppStoreInterface> = (set) => ({
   setOpenModal: (open: boolean) => {
     set({ isModalOpen: open });
   },
+  currentBlankIndex: -1,
+  setBlankIndex: (index: number) => {
+    set({ currentBlankIndex: index });
+  },
 });

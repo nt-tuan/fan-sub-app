@@ -19,11 +19,14 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
   const inputSubRef = useRef<HTMLInputElement>(null);
   const props = useTimebar({ width });
   const { currentTime } = useVideoPlayerStore();
-  const { editingSubtitles, changeSubtitleText } = useSubtitleEditor();
+  const { editingSubtitles, changeSubtitleText, setBlankIndex } =
+    useSubtitleEditor();
   const deleteSubtitle = useSubtitleEditorStore(
     (store) => store.deleteSubtitle
   );
   const [currentSubIndex, setCurrentSubIndex] = React.useState<number>(-1);
+  const [isCreatingSubtitle, setCreatingSubtitle] =
+    React.useState<boolean>(false);
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -69,6 +72,10 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
     return Boolean(editingSubtitles[currentSubIndex]);
   }, [currentSubIndex, editingSubtitles]);
 
+  useEffect(() => {
+    return () => setBlankIndex(-1);
+  }, [setBlankIndex]);
+
   return (
     <div style={{ height: "100%", width }}>
       <div
@@ -88,7 +95,11 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
           />
         </div>
       </div>
-      <TimelineContent {...(props as any)} width={width} />
+      <TimelineContent
+        {...(props as any)}
+        width={width}
+        isCreatingSubtitle={isCreatingSubtitle}
+      />
       <TimelineMenu
         disabled={props.selectedIndex == null}
         onDelete={handleDelete}
@@ -100,6 +111,7 @@ const TimebarScreenContent = ({ width }: { width: number }) => {
         undoAction={props.undoAction}
         canUndo={props.canUndo}
         pushAction={props.pushAction}
+        setCreatingSubtitle={setCreatingSubtitle}
       />
     </div>
   );

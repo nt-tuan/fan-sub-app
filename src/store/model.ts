@@ -74,4 +74,6 @@ export interface ResizeEventInterface {
 export interface AppStoreInterface {
   isModalOpen: boolean;
   setOpenModal: (open: boolean) => void;
+  currentBlankIndex: number;
+  setBlankIndex: (index: number) => void;
 }

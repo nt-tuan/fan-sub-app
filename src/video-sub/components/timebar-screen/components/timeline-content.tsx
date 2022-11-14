@@ -27,6 +27,7 @@ const TimelineContent = (props: any) => {
     initPosition: 0,
     elementRef: rulerOuterRef,
     onMouseUpCallBack,
+    disabled: Boolean(props.isCreatingSubtitle),
   });
 
   const rulerOffsetByVideoTime = useMemo(() => {

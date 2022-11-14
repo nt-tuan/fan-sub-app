@@ -179,7 +179,10 @@ const useTimebar = ({ width }: { width: number }) => {
     if (!editingSubtitles) return;
     const blankSubtitleIndex = findBlankIndex();
     if (blankSubtitleIndex == null) return;
-
+    if (blankSubtitleIndex === -1) {
+      window.alert("There is no blank anymore. All sentences are entered.");
+      return;
+    }
     const blankSubtitle = editingSubtitles[blankSubtitleIndex];
 
     if (blankSubtitle) {
